@@ -1,0 +1,9 @@
+import universe U;
+import author computationalAlchemist;
+
+~ATH(U) {
+    ~ATH(computationalAlchemist) {
+    } EXECUTE(NULL);
+} EXECUTE(NULL);
+
+THIS.DIE();

@@ -1,0 +1,31 @@
+import stream stdout;
+index = 3;
+prev = 0;
+import bit looping;
+looping.bind(TRUE);
+stdout.print(`. 2');
+~ATH(looping) {
+    cur = 2;
+    import bit sublooping;
+    sublooping.bind(TRUE);
+    isprime = TRUE;
+    ~ATH(sublooping) {
+        isprime = isprime && (index % cur != 0);
+        cur += 1;
+        sublooping.bind(cur < index);
+    } EXECUTE(sublooping.bind(isprime));
+    ~ATH(sublooping) {
+        stdout.print(` ');
+        stdout.print(cur);
+        sublooping.bind(FALSE);
+    } EXECUTE(sublooping.bind(index / 100 != prev));
+    ~ATH(sublooping) {
+        stdout.println();
+        stdout.print(`.');
+        prev = index / 100;
+        sublooping.bind(FALSE);
+    } EXECUTE(NULL);
+    index += 1;
+    looping.bind(index < 10000);
+} EXECUTE(NULL);
+stdout.println();

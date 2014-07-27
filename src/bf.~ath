@@ -1,0 +1,100 @@
+import stream stdin;
+import stream stdout;
+
+program = stdin.readline();
+pointer = 0;
+
+import turingtape tape;
+import turingtapehead head;
+head.insert(tape);
+
+import bit running;
+
+running.bind(TRUE);
+
+~ATH(running) {
+    running.bind(pointer >= 0 && pointer < program.length);
+    ~ATH(running) {
+        instruction = program[pointer];
+
+        value = head.read();
+
+        import bit option;
+
+        option.bind(instruction == \+);
+        ~ATH(option) {
+            head.erase();
+            head.write((value + 1) & 255);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \-);
+        ~ATH(option) {
+            head.erase();
+            head.write((value - 1) & 255);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \<);
+        ~ATH(option) {
+            head.rewind(1);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \>);
+        ~ATH(option) {
+            head.play(1);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \,);
+        ~ATH(option) {
+            head.erase();
+            head.write(stdin.read());
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \.);
+        ~ATH(option) {
+            stdout.write(value);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \[ && value == 0);
+        depth = 1;
+        ~ATH(option) {
+            pointer += 1;
+            option.bind(program[pointer] == \[);
+            ~ATH(option) {
+                depth += 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(program[pointer] == \]);
+            ~ATH(option) {
+                depth -= 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(depth > 0);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \] && value != 0);
+        depth = 1;
+        ~ATH(option) {
+            pointer -= 1;
+            option.bind(program[pointer] == \]);
+            ~ATH(option) {
+                depth += 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(program[pointer] == \[);
+            ~ATH(option) {
+                depth -= 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(depth > 0);
+        } EXECUTE(NULL);
+
+        pointer += 1;
+        running.bind(FALSE);
+    } EXECUTE(running.bind(TRUE));
+} EXECUTE(NULL);
