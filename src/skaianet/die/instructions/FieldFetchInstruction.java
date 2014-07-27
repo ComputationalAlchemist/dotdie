@@ -15,7 +15,7 @@ public class FieldFetchInstruction implements Instruction {
     }
 
     @Override
-    public void print() {
+    public void print(int indent) {
         System.out.println("FIELD " + target + "." + field);
     }
 

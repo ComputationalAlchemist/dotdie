@@ -8,7 +8,7 @@ import java.util.Collection;
  * Created on 2014-07-23.
  */
 public enum ExpressionType {
-    VARIABLE, CONST_INTEGER, CONST_STRING, INVOKE, FIELDREF, ARRAYREF, NULL, TRUE, FALSE, THIS,
+    VARIABLE, CONST_INTEGER, CONST_STRING, INVOKE, FIELDREF, ARRAYREF, NULL, TRUE, FALSE, THIS, ARGLIST,
     ADD(Operation.ADD), SUBTRACT(Operation.SUBTRACT), MULTIPLY(Operation.MULTIPLY), DIVIDE(Operation.DIVIDE), REMAINDER(Operation.REMAINDER),
     BIAND(Operation.BIAND), BIXOR(Operation.BIXOR), BIOR(Operation.BIOR), RASHIFT(Operation.RASHIFT), LOR(Operation.LOR),
     RLSHIFT(Operation.RLSHIFT), LSHIFT(Operation.LSHIFT), LAND(Operation.LAND), CMPLT(Operation.CMPLT), CMPLE(Operation.CMPLE),

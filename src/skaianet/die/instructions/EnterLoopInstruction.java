@@ -22,7 +22,7 @@ public class EnterLoopInstruction implements Instruction {
     }
 
     @Override
-    public void print() {
+    public void print(int indent) {
         System.out.println("ENTER " + object + " -> " + label);
     }
 

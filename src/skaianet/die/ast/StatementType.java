@@ -6,7 +6,7 @@ import java.util.Collection;
  * Created on 2014-07-23.
  */
 public enum StatementType {
-    EMPTY, COMPOUND, EXPRESSION, ATHLOOP, IMPORT, ASSIGN;
+    EMPTY, COMPOUND, EXPRESSION, ATHLOOP, IMPORT, ASSIGN, UTILDEF, RETURN, COMPOUND_RETURN;
 
     public Statement make(String traceInfo, GenericNode<?, ?>... children) {
         return new Statement(traceInfo, this, children);

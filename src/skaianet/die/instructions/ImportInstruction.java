@@ -17,7 +17,7 @@ public class ImportInstruction implements Instruction {
     }
 
     @Override
-    public void print() {
+    public void print(int indent) {
         System.out.println("IMPORT " + namespace + "/" + name + " -> " + target);
     }
 

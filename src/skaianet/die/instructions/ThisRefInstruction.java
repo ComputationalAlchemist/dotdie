@@ -13,7 +13,7 @@ public class ThisRefInstruction implements Instruction {
     }
 
     @Override
-    public void print() {
+    public void print(int indent) {
         System.out.println("THIS -> " + target);
     }
 

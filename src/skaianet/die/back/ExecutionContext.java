@@ -5,63 +5,76 @@ import skaianet.die.middle.CompiledProcedure;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * Created on 2014-07-26.
  */
 public class ExecutionContext {
     public final ExecutionExtension extension;
-    private final CompiledProcedure procedure;
-    private Object[] variables;
-    private int codePointer;
+    private final Stack<Frame> stack = new Stack<>();
+    private Object outerReturnValue;
 
-    public ExecutionContext(CompiledProcedure procedure, ExecutionExtension extension) {
-        this.procedure = procedure;
+    public ExecutionContext(ExecutionExtension extension) {
         this.extension = extension;
     }
 
-    public void init(EnergyPacket packet, Object... arguments) {
-        variables = null;
-        if (arguments.length != procedure.argcount) {
+    public void init(CompiledProcedure procedure, EnergyPacket packet, Object... arguments) {
+        outerReturnValue = null;
+        if (arguments.length != procedure.argumentCount) {
             throw new IllegalArgumentException("Bad number of arguments!");
         }
-        this.codePointer = 0;
-        Object[] out = new Object[procedure.maxVars];
-        out[0] = packet;
-        System.arraycopy(arguments, 0, out, 1, arguments.length);
-        variables = out;
+        Object[] variables = new Object[procedure.maxVars];
+        variables[0] = packet;
+        System.arraycopy(arguments, 0, variables, 1, arguments.length);
+        stack.push(new Frame(procedure, variables));
     }
 
     public boolean runSweep() { // Return true if more sweeps are needed.
+        //noinspection StatementWithEmptyBody
         while (runSingle()) ;
-        return codePointer < procedure.instructions.length;
+        return !stack.isEmpty();
+    }
+
+    public Object getReturnValue() {
+        return outerReturnValue;
     }
 
     public boolean runStep() { // Return true if more steps are needed.
         runSingle();
-        return codePointer < procedure.instructions.length;
+        return !stack.isEmpty();
     }
 
     private boolean runSingle() { // Return false after each backwards branch instruction or end of procedure.
-        if (codePointer >= procedure.instructions.length) {
+        if (stack.isEmpty()) {
             return false;
         }
-        int ptr = codePointer;
-        procedure.instructions[codePointer++].execute(this);
-        return codePointer > ptr;
+        Frame f = stack.peek();
+        if (f.isDone()) {
+            stack.pop();
+            Object retVal = f.getReturnValue();
+            if (stack.isEmpty()) {
+                this.outerReturnValue = retVal;
+            } else {
+                stack.peek().returnValue(this, retVal);
+            }
+            return false; // Counts as backwards branch.
+        }
+        int ptr = f.getCodePointer();
+        f.execute(this);
+        return f == stack.peek() && f.getCodePointer() > ptr;
     }
 
     public void jump(int label) {
-        codePointer = label;
+        stack.peek().jump(label);
     }
 
     public Object get(int i) {
-        return variables[i];
+        return stack.peek().get(i);
     }
 
     public void put(int i, Object o) {
-        variables[i] = o;
+        stack.peek().put(i, o);
     }
 
     public Object calcImport(String namespace, String name) {
@@ -82,7 +95,8 @@ public class ExecutionContext {
             if (javaField.getAnnotation(ATHcessible.class) != null || extension.fieldAccessible(object.getClass(), field, javaField, object)) {
                 return javaField.get(object);
             }
-        } catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException ignored) {
+            // Fall through.
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Expected @ATHcessible field " + object.getClass() + "." + field + " to be accessible!");
         }
@@ -138,6 +152,13 @@ public class ExecutionContext {
     }
 
     public void report() {
-        System.out.println("Execution is at " + codePointer + " with " + Arrays.toString(variables));
+        System.out.println("Stack Trace:");
+        for (Frame frame : stack) {
+            frame.report();
+        }
+    }
+
+    public void repeatInstruction() {
+        stack.peek().repeatInstruction();
     }
 }

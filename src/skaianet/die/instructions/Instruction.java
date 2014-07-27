@@ -6,7 +6,7 @@ import skaianet.die.back.ExecutionContext;
  * Created on 2014-07-25.
  */
 public interface Instruction {
-    void print();
+    void print(int indent);
 
     void execute(ExecutionContext executionContext); // Return true if backwards branch.
 }

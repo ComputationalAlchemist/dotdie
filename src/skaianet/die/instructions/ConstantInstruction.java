@@ -1,6 +1,7 @@
 package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
+import skaianet.die.middle.CompiledProcedure;
 
 /**
  * Created on 2014-07-25.
@@ -22,6 +23,10 @@ public class ConstantInstruction implements Instruction {
         this(target, Type.INTEGER, constant);
     }
 
+    public ConstantInstruction(int target, CompiledProcedure constant) {
+        this(target, Type.PROCEDURE, constant);
+    }
+
     public ConstantInstruction(int target, Type type, Object value) {
         this.target = target;
         this.type = type;
@@ -29,7 +34,7 @@ public class ConstantInstruction implements Instruction {
     }
 
     @Override
-    public void print() {
+    public void print(int indent) {
         switch (type) {
             case NULL:
                 System.out.println("CONST NULL -> " + target);
@@ -43,6 +48,10 @@ public class ConstantInstruction implements Instruction {
             case INTEGER:
                 System.out.println("CONST #" + value + " -> " + target);
                 break;
+            case PROCEDURE:
+                System.out.println("CONST PROCEDURE -> " + target);
+                ((CompiledProcedure) value).print(indent + 1);
+                break;
             default:
                 throw new IllegalStateException();
         }
@@ -54,6 +63,6 @@ public class ConstantInstruction implements Instruction {
     }
 
     public static enum Type {
-        NULL, BOOLEAN, STRING, INTEGER
+        NULL, BOOLEAN, STRING, PROCEDURE, INTEGER
     }
 }

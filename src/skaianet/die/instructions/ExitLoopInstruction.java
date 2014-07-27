@@ -18,7 +18,7 @@ public class ExitLoopInstruction implements Instruction {
     }
 
     @Override
-    public void print() {
+    public void print(int indent) {
         System.out.println("EXIT " + context + " -> " + loopTop);
     }
 

@@ -41,36 +41,66 @@ public class Parser {
     }
 
     public Statement parseProgram() throws ParsingException {
-        Statement result = parseBlock();
+        Statement result = parseBlock(true);
         expect(Token.NONE); // End of file.
         return result;
     }
 
-    public Statement parseStatement(boolean nullable) throws ParsingException {
+    public Statement parseStatement(boolean nullable, boolean canBeReturn) throws ParsingException {
         String traceInfo = tokenizer.traceInfo();
-        switch (accept(Token.OPEN_CURLY, Token.SEMICOLON, Token.ATH, Token.IMPORT)) {
+        switch (accept(Token.OPEN_CURLY, Token.SEMICOLON, Token.ATH, Token.IMPORT, Token.UTILDEF, Token.RETURN)) {
             case OPEN_CURLY: {
-                Statement out = parseBlock();
+                Statement out = parseBlock(canBeReturn);
                 expect(Token.CLOSE_CURLY);
                 return out;
             }
             case SEMICOLON:
                 return EMPTY.make(traceInfo);
-            case ATH:
+            case ATH: {
                 expect(Token.OPEN_PAREN);
                 Expression condition = parseExpression(false);
                 expect(Token.CLOSE_PAREN);
-                Statement stmt = parseStatement(false);
+                Statement stmt = parseStatement(false, false);
                 expect(Token.EXECUTE);
-                Statement exec = parseStatement(false);
+                Statement exec = parseStatement(false, false);
                 return ATHLOOP.make(traceInfo, condition, stmt, exec);
-            case IMPORT:
+            }
+            case IMPORT: {
                 expect(Token.IDENTIFIER);
                 Expression identifier = VARIABLE.make(traceInfo, assoc);
                 expect(Token.IDENTIFIER);
                 Expression spec = VARIABLE.make(traceInfo, assoc);
                 expect(Token.SEMICOLON);
                 return IMPORT.make(traceInfo, identifier, spec);
+            }
+            case UTILDEF: {
+                expect(Token.IDENTIFIER);
+                Expression name = VARIABLE.make(traceInfo, assoc);
+                expect(Token.OPEN_PAREN);
+                Expression[] args;
+                if (accept(Token.IDENTIFIER)) {
+                    ArrayList<Expression> arguments = new ArrayList<>();
+                    arguments.add(VARIABLE.make(traceInfo, assoc));
+                    while (accept(Token.COMMA)) {
+                        expect(Token.IDENTIFIER);
+                        arguments.add(VARIABLE.make(traceInfo, assoc));
+                    }
+                    args = arguments.toArray(new Expression[arguments.size()]);
+                } else {
+                    args = new Expression[0];
+                }
+                expect(Token.CLOSE_PAREN);
+                Statement stmt = parseStatement(false, true);
+                return UTILDEF.make(traceInfo, name, ARGLIST.make(traceInfo, args), stmt);
+            }
+            case RETURN: {
+                if (!canBeReturn) {
+                    throw new ParsingException("Found RETURN where disallowed!");
+                }
+                Expression expression = parseExpression(false);
+                expect(Token.SEMICOLON);
+                return RETURN.make(traceInfo, expression);
+            }
             default: {
                 Expression expression = parseExpression(nullable);
                 if (expression == null) {
@@ -138,7 +168,7 @@ public class Parser {
             Expression total = left;
             while ((operator = accept(operators[level - 1])) != Token.NONE) {
                 if (operator == Token.OPEN_PAREN) { // Function calls
-                    ArrayList<Expression> out = new ArrayList<Expression>();
+                    ArrayList<Expression> out = new ArrayList<>();
                     out.add(total);
                     Expression firstArgument = parseExpression(true);
                     if (firstArgument == null) {
@@ -165,15 +195,18 @@ public class Parser {
         }
     }
 
-    public Statement parseBlock() throws ParsingException {
+    public Statement parseBlock(boolean canBeReturn) throws ParsingException {
         String traceInfo = tokenizer.traceInfo();
-        ArrayList<Statement> statements = new ArrayList<Statement>();
+        ArrayList<Statement> statements = new ArrayList<>();
         while (true) {
-            Statement next = parseStatement(true);
+            Statement next = parseStatement(true, canBeReturn);
             if (next == null) {
                 return COMPOUND.make(traceInfo, statements);
             }
             statements.add(next);
+            if (next.type == RETURN || next.type == COMPOUND_RETURN) {
+                return COMPOUND_RETURN.make(traceInfo, statements);
+            }
         }
     }
 

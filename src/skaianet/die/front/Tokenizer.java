@@ -23,7 +23,7 @@ public class Tokenizer {
     public Tokenizer(String filename, Reader reader) throws IOException {
         this.filename = filename;
         BufferedReader byline = (reader instanceof BufferedReader) ? (BufferedReader) reader : new BufferedReader(reader);
-        StringBuffer code = new StringBuffer(1024);
+        StringBuilder code = new StringBuilder(1024);
         while (true) {
             String line = byline.readLine();
             if (line == null) {
@@ -55,6 +55,7 @@ public class Tokenizer {
     }
 
     public Token next() throws ParsingException {
+        //noinspection StatementWithEmptyBody
         while (accept(' ') || accept('\t') || accept('\n') || accept('\r')) ; // Strip whitespace
         if (isEOF()) {
             return Token.NONE;
@@ -119,7 +120,7 @@ public class Tokenizer {
             }
             char expected = (c == '`') ? '\'' : '`';
             int sequential = 0;
-            StringBuffer sbuf = new StringBuffer();
+            StringBuilder sbuf = new StringBuilder();
             while (sequential < count) {
                 char cur = nextChar();
                 if (cur == expected) {
@@ -133,7 +134,7 @@ public class Tokenizer {
             associated = sbuf.toString();
             return STRING;
         } else {
-            StringBuffer ibuf = new StringBuffer();
+            StringBuilder ibuf = new StringBuilder();
             boolean isInt = true;
             while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
                     || c == '~' || c == '@' || c == '_' || c == '#' || c == '$') {
@@ -164,6 +165,10 @@ public class Tokenizer {
                 return FALSE;
             } else if ("THIS".equalsIgnoreCase(strval)) {
                 return THIS;
+            } else if ("U~F".equalsIgnoreCase(strval)) {
+                return UTILDEF;
+            } else if ("RETURN".equalsIgnoreCase(strval)) {
+                return RETURN;
             } else {
                 associated = strval;
                 return IDENTIFIER;

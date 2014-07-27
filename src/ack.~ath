@@ -1,0 +1,18 @@
+U~F ack(ack, m, n) {
+    out = n + 1;
+    import bit iloop;
+    iloop.bind(m > 0 && n == 0);
+    ~ATH(iloop) {
+        out = ack(ack, m - 1, 1);
+        iloop.bind(FALSE);
+    } EXECUTE(NULL);
+    iloop.bind(m > 0 && n > 0);
+    ~ATH(iloop) {
+        out = ack(ack, m - 1, ack(ack, m, n - 1));
+        iloop.bind(FALSE);
+    } EXECUTE(NULL);
+    return out;
+}
+import stream stdout;
+stdout.println(`Ackermann: ');
+stdout.println(ack(ack, 3, 6));

@@ -18,7 +18,7 @@ import java.io.IOException;
 public class Standalone {
 
     public static void main(String[] args) throws IOException, ParsingException, CompilingException, InterruptedException {
-        String filename = "src/prime.~ath";
+        String filename = "src/ack.~ath";
         Parser parser = new Parser(filename, new FileReader(filename));
         System.out.println("=== Source Code ===");
         parser.dumpCode();
@@ -28,15 +28,14 @@ public class Standalone {
         Compiler compiler = new Compiler();
         CompiledProcedure procedure = compiler.compile(stmt, new String[0]);
         System.out.println("=== Compiled Bytecode ===");
-        procedure.print();
-        ExecutionContext context = new ExecutionContext(procedure, new StandaloneExtension());
-        context.init(new EnergyPacket(0, null));
+        procedure.print(0);
+        ExecutionContext context = new ExecutionContext(new StandaloneExtension());
+        context.init(procedure, new EnergyPacket(0, null));
         System.out.println("=== Execution ===");
         //context.report();
         long begin = System.currentTimeMillis();
         while (context.runSweep()) {
-            /*context.report();
-            Thread.sleep(10);*/
+            //Thread.sleep(10);
         }
         long end = System.currentTimeMillis();
         System.out.println("=== Timing Statistics ===");

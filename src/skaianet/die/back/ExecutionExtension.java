@@ -9,11 +9,11 @@ import java.lang.reflect.Method;
 public interface ExecutionExtension {
     Object arrayRef(Object array, Object index);
 
-    boolean fieldAccessible(Class<? extends Object> klass, String field, Field javaField, Object object);
+    boolean fieldAccessible(Class<?> class_, String field, Field javaField, Object object);
 
     Object fieldRef(Object object, String field);
 
-    boolean methodAccessible(Class<? extends Object> klass, String method, Method javaMethod, Object object);
+    boolean methodAccessible(Class<?> class_, String method, Method javaMethod, Object object);
 
     Object invoke(Object procedure, Object... arguments);
 

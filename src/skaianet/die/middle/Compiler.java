@@ -3,6 +3,7 @@ package skaianet.die.middle;
 import skaianet.die.ast.Expression;
 import skaianet.die.ast.GenericNode;
 import skaianet.die.ast.Statement;
+import skaianet.die.ast.StatementType;
 import skaianet.die.instructions.*;
 
 import java.util.ArrayList;
@@ -26,22 +27,29 @@ public class Compiler {
         for (String argument : arguments) {
             outermost.defineVar(argument, nextFreeVar++);
         }
-        compileStatement(procedure, outermost);
+        Integer returned;
+        if (procedure.type == StatementType.RETURN || procedure.type == StatementType.COMPOUND_RETURN) {
+            returned = compileReturnStatement(procedure, outermost);
+        } else {
+            compileStatement(procedure, outermost);
+            returned = null;
+        }
 
         Instruction[] instructions = output.toArray(new Instruction[output.size()]);
         output.clear();
-        return new CompiledProcedure(arguments.length, maxVars, instructions, debugging);
+        return new CompiledProcedure(arguments.length, maxVars, instructions, debugging, returned);
     }
 
     private void compileStatement(Statement statement, Scope scope) throws CompilingException {
         debugging.put(label(), statement.getTraceInfo());
         try {
             switch (statement.type) {
-                case EMPTY:
+                case EMPTY: {
                     statement.checkSize(0);
                     // No code to generate.
                     break;
-                case COMPOUND:
+                }
+                case COMPOUND: {
                     int prevDepth = nextFreeVar;
                     Scope inner = new Scope(scope);
                     for (GenericNode<?, ?> node : statement) {
@@ -52,11 +60,13 @@ public class Compiler {
                     }
                     nextFreeVar = prevDepth;
                     break;
-                case EXPRESSION:
+                }
+                case EXPRESSION: {
                     compileExpression((Expression) statement.get(), scope);
                     freeVar();
                     break;
-                case ATHLOOP:
+                }
+                case ATHLOOP: {
                     statement.checkSize(3);
                     int condition = nextFreeVar;
                     compileExpression((Expression) statement.get(0), scope);
@@ -69,13 +79,15 @@ public class Compiler {
                     enterInstruction.bind(label());
                     freeVar(condition);
                     break;
-                case IMPORT:
+                }
+                case IMPORT: {
                     statement.checkSize(2);
                     int out = nextVar();
                     output.add(new ImportInstruction(out, (String) statement.get(0).getAssoc(), (String) statement.get(1).getAssoc()));
                     scope.defineVar((String) statement.get(1).getAssoc(), out);
                     break;
-                case ASSIGN:
+                }
+                case ASSIGN: {
                     statement.checkSize(2);
                     int temp = nextFreeVar;
                     compileExpression((Expression) statement.get(1), scope);
@@ -86,8 +98,51 @@ public class Compiler {
                         scope.defineVar((String) statement.get(0).getAssoc(), temp);
                     }
                     break;
+                }
+                case UTILDEF: {
+                    statement.checkSize(3);
+                    String name = (String) statement.get(0).getAssoc();
+                    Compiler compiler = new Compiler();
+                    Expression children = (Expression) statement.get(1);
+                    String[] arguments = new String[children.size()];
+                    for (int i = 0; i < arguments.length; i++) {
+                        arguments[i] = (String) children.get(i).getAssoc();
+                    }
+                    CompiledProcedure procedure = compiler.compile((Statement) statement.get(2), arguments);
+                    int out = nextVar();
+                    output.add(new ConstantInstruction(out, procedure));
+                    scope.defineVar(name, out);
+                    break;
+                }
                 default:
                     throw new CompilingException("Unhandled statement: " + statement.type);
+            }
+        } catch (CompilingException ex) {
+            ex.addTrace(statement.getTraceInfo());
+            throw ex;
+        }
+    }
+
+    // Callers must throw away any extra variables!
+    private int compileReturnStatement(Statement statement, Scope scope) throws CompilingException {
+        debugging.put(label(), statement.getTraceInfo());
+        try {
+            switch (statement.type) {
+                case RETURN: {
+                    statement.checkSize(1);
+                    int out = nextFreeVar;
+                    compileExpression((Expression) statement.get(0), scope);
+                    return out;
+                }
+                case COMPOUND_RETURN: {
+                    Scope inner = new Scope(scope);
+                    for (int i = 0; i < statement.size() - 1; i++) {
+                        compileStatement((Statement) statement.get(i), inner);
+                    }
+                    return compileReturnStatement((Statement) statement.get(statement.size() - 1), inner);
+                }
+                default:
+                    throw new CompilingException("Unhandled return statement: " + statement.type);
             }
         } catch (CompilingException ex) {
             ex.addTrace(statement.getTraceInfo());
@@ -134,7 +189,7 @@ public class Compiler {
                     for (GenericNode<?, ?> exp : expression) {
                         compileExpression((Expression) exp, scope);
                     }
-                    output.add(new InvokeInstruction(varOut, nextFreeVar - varOut - 1));
+                    output.add(new InvokeInstruction(varOut, nextFreeVar - varOut - 1, scope.getEnergyRef()));
                     nextFreeVar = varOut + 1;
                     return;
                 case FIELDREF:

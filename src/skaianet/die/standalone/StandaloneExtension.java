@@ -10,27 +10,31 @@ import java.lang.reflect.Array;
 public class StandaloneExtension extends EmptyExtension {
     @Override
     public Object calcImport(String namespace, String name) {
-        if ("universe".equals(namespace)) {
-            return new Universe(name);
-        } else if ("author".equals(namespace)) {
-            return new Author(name);
-        } else if ("stream".equals(namespace)) {
-            if ("stdin".equals(name)) {
-                return new StreamIn(System.in, name);
-            } else if ("stdout".equals(name)) {
-                return new StreamOut(System.out, name);
-            } else if ("stderr".equals(name)) {
-                return new StreamOut(System.err, name);
-            }
-            throw new IllegalArgumentException("No such stream " + name);
-        } else if ("turingtape".equals(namespace)) {
-            return new TuringTape();
-        } else if ("turingtapehead".equals(namespace)) {
-            return new TuringTapeHead();
-        } else if ("bit".equals(namespace)) {
-            return new Bit();
+        switch (namespace) {
+            case "universe":
+                return new Universe(name);
+            case "author":
+                return new Author(name);
+            case "stream":
+                switch (name) {
+                    case "stdin":
+                        return new StreamIn(System.in, name);
+                    case "stdout":
+                        return new StreamOut(System.out, name);
+                    case "stderr":
+                        return new StreamOut(System.err, name);
+                    default:
+                        throw new IllegalArgumentException("No such stream " + name);
+                }
+            case "turingtape":
+                return new TuringTape();
+            case "turingtapehead":
+                return new TuringTapeHead();
+            case "bit":
+                return new Bit();
+            default:
+                return super.calcImport(namespace, name);
         }
-        return super.calcImport(namespace, name);
     }
 
     @Override

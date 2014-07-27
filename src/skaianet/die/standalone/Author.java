@@ -8,7 +8,7 @@ import skaianet.die.back.ATHcessible;
  */
 public class Author implements ATHAlive {
     @ATHcessible
-    public final String name;
+    private final String name;
 
     public Author(String name) {
         this.name = name;

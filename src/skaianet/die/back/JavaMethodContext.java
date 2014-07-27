@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Created on 2014-07-26.
  */
-public class JavaMethodContext {
+class JavaMethodContext {
     private final Object object;
     private final String method;
     private final ExecutionContext context;
@@ -48,7 +48,7 @@ public class JavaMethodContext {
         throw new IllegalArgumentException("No matching method for " + object + "." + method + Arrays.toString(types) + "!");
     }
 
-    private boolean parameterMatches(Class<?> parameterType, Class<? extends Object> argumentType) {
+    private boolean parameterMatches(Class<?> parameterType, Class<?> argumentType) {
         if (parameterType.isAssignableFrom(argumentType)) {
             return true;
         } else if (parameterType.isPrimitive()) {

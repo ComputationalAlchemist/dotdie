@@ -10,11 +10,11 @@ import java.util.*;
  */
 public class GenericNode<T extends Enum, U extends GenericNode<T, U>> implements Iterable<GenericNode<?, ?>> {
     public final T type;
-    public final List<GenericNode<?, ?>> children;
-    public final Object assoc;
-    public final String traceInfo;
+    private final List<GenericNode<?, ?>> children;
+    private final Object assoc;
+    private final String traceInfo;
 
-    public GenericNode(String traceInfo, T type, GenericNode<?, ?>... children) {
+    GenericNode(String traceInfo, T type, GenericNode<?, ?>... children) {
         if (type == null) {
             throw new NullPointerException();
         }
@@ -24,7 +24,7 @@ public class GenericNode<T extends Enum, U extends GenericNode<T, U>> implements
         this.assoc = null;
     }
 
-    public GenericNode(String traceInfo, T type, Collection<? extends GenericNode<?, ?>> children) {
+    GenericNode(String traceInfo, T type, Collection<? extends GenericNode<?, ?>> children) {
         if (type == null) {
             throw new NullPointerException();
         }
@@ -34,7 +34,7 @@ public class GenericNode<T extends Enum, U extends GenericNode<T, U>> implements
         this.assoc = null;
     }
 
-    public GenericNode(String traceInfo, T type, Object associated) {
+    GenericNode(String traceInfo, T type, Object associated) {
         if (type == null || associated == null) {
             throw new NullPointerException();
         }
@@ -59,7 +59,7 @@ public class GenericNode<T extends Enum, U extends GenericNode<T, U>> implements
         print(out, 0);
     }
 
-    public void print(PrintStream out, int indent) {
+    void print(PrintStream out, int indent) {
         for (int i = 0; i < indent; i++) {
             out.print('\t');
         }
@@ -101,5 +101,9 @@ public class GenericNode<T extends Enum, U extends GenericNode<T, U>> implements
 
     public String getTraceInfo() {
         return traceInfo;
+    }
+
+    public int size() {
+        return children.size();
     }
 }

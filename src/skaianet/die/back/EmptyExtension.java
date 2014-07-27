@@ -13,7 +13,7 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
-    public boolean fieldAccessible(Class<? extends Object> klass, String field, Field javaField, Object object) {
+    public boolean fieldAccessible(Class<?> class_, String field, Field javaField, Object object) {
         return false;
     }
 
@@ -23,7 +23,7 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
-    public boolean methodAccessible(Class<? extends Object> klass, String method, Method javaMethod, Object object) {
+    public boolean methodAccessible(Class<?> class_, String method, Method javaMethod, Object object) {
         return false;
     }
 
