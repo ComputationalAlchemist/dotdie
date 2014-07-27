@@ -132,11 +132,11 @@ public class MathInstruction implements Instruction {
             }
         }
 
-        private Object applyObject(Object left, Object right) {
+        Object applyObject(Object left, Object right) {
             throw new IllegalArgumentException("Unsupported: " + this + " on " + left.getClass() + ", " + right.getClass());
         }
 
-        protected Number applyNumber(Number left, Number right) {
+        Number applyNumber(Number left, Number right) {
             if (left instanceof Integer && right instanceof Integer) {
                 return applyInteger((Integer) left, (Integer) right);
             } else {
@@ -144,7 +144,7 @@ public class MathInstruction implements Instruction {
             }
         }
 
-        protected int applyInteger(int left, int right) {
+        int applyInteger(int left, int right) {
             throw new IllegalArgumentException("Unsupported: " + this + " on integers");
         }
     }

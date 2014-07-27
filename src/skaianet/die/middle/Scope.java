@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Created on 2014-07-24.
  */
-public class Scope {
+class Scope {
     private final Scope parent;
     private final int energyRef;
     private final HashMap<String, Integer> variables = new HashMap<>();

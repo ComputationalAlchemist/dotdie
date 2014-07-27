@@ -9,7 +9,7 @@ import static skaianet.die.front.Token.*;
 /**
  * Created on 2014-07-24.
  */
-public class Tokenizer {
+class Tokenizer {
     private final String filename;
     private final String code;
     private int index = 0;
@@ -147,30 +147,30 @@ public class Tokenizer {
                 c = nextChar();
             }
             index--; // Push back the last character.
-            String strval = ibuf.toString();
+            String stringValue = ibuf.toString();
             if (isInt) {
-                associated = Integer.parseInt(strval);
+                associated = Integer.parseInt(stringValue);
                 return INTEGER;
-            } else if ("~ATH".equalsIgnoreCase(strval)) {
+            } else if ("~ATH".equalsIgnoreCase(stringValue)) {
                 return ATH;
-            } else if ("EXECUTE".equalsIgnoreCase(strval)) {
+            } else if ("EXECUTE".equalsIgnoreCase(stringValue)) {
                 return EXECUTE;
-            } else if ("import".equalsIgnoreCase(strval)) {
+            } else if ("import".equalsIgnoreCase(stringValue)) {
                 return IMPORT;
-            } else if ("NULL".equalsIgnoreCase(strval)) {
+            } else if ("NULL".equalsIgnoreCase(stringValue)) {
                 return NULL;
-            } else if ("TRUE".equalsIgnoreCase(strval)) {
+            } else if ("TRUE".equalsIgnoreCase(stringValue)) {
                 return TRUE;
-            } else if ("FALSE".equalsIgnoreCase(strval)) {
+            } else if ("FALSE".equalsIgnoreCase(stringValue)) {
                 return FALSE;
-            } else if ("THIS".equalsIgnoreCase(strval)) {
+            } else if ("THIS".equalsIgnoreCase(stringValue)) {
                 return THIS;
-            } else if ("U~F".equalsIgnoreCase(strval)) {
+            } else if ("U~F".equalsIgnoreCase(stringValue)) {
                 return UTILDEF;
-            } else if ("RETURN".equalsIgnoreCase(strval)) {
+            } else if ("RETURN".equalsIgnoreCase(stringValue)) {
                 return RETURN;
             } else {
-                associated = strval;
+                associated = stringValue;
                 return IDENTIFIER;
             }
         }

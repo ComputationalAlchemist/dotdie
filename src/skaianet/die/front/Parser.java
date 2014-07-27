@@ -46,7 +46,7 @@ public class Parser {
         return result;
     }
 
-    public Statement parseStatement(boolean nullable, boolean canBeReturn) throws ParsingException {
+    private Statement parseStatement(boolean nullable, boolean canBeReturn) throws ParsingException {
         String traceInfo = tokenizer.traceInfo();
         switch (accept(Token.OPEN_CURLY, Token.SEMICOLON, Token.ATH, Token.IMPORT, Token.UTILDEF, Token.RETURN)) {
             case OPEN_CURLY: {
@@ -124,7 +124,7 @@ public class Parser {
         }
     }
 
-    public Expression parseExpression(boolean nullable) throws ParsingException {
+    private Expression parseExpression(boolean nullable) throws ParsingException {
         return parseExpression(operators.length, nullable);
     }
 
@@ -195,7 +195,7 @@ public class Parser {
         }
     }
 
-    public Statement parseBlock(boolean canBeReturn) throws ParsingException {
+    private Statement parseBlock(boolean canBeReturn) throws ParsingException {
         String traceInfo = tokenizer.traceInfo();
         ArrayList<Statement> statements = new ArrayList<>();
         while (true) {
@@ -210,18 +210,18 @@ public class Parser {
         }
     }
 
-    public void pull() throws ParsingException {
+    private void pull() throws ParsingException {
         if (active == null) {
             active = tokenizer.next();
             assoc = tokenizer.getAssociated();
         }
     }
 
-    public void consume() {
+    private void consume() {
         active = null;
     }
 
-    public boolean accept(Token token) throws ParsingException {
+    private boolean accept(Token token) throws ParsingException {
         pull();
         if (token == active) {
             consume();
@@ -230,7 +230,7 @@ public class Parser {
         return false;
     }
 
-    public Token accept(Token... acceptable) throws ParsingException {
+    private Token accept(Token... acceptable) throws ParsingException {
         pull();
         for (Token t : acceptable) {
             if (t == active) {
@@ -241,7 +241,7 @@ public class Parser {
         return Token.NONE;
     }
 
-    public void expect(Token token) throws ParsingException {
+    private void expect(Token token) throws ParsingException {
         pull();
         if (token == active) {
             consume();

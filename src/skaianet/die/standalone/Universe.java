@@ -8,7 +8,7 @@ import skaianet.die.back.ATHcessible;
  */
 public class Universe implements ATHAlive {
     @ATHcessible
-    public final String name;
+    private final String name;
 
     public Universe(String name) {
         this.name = name;
@@ -22,5 +22,9 @@ public class Universe implements ATHAlive {
     @Override
     public double getEnergy() {
         return 4e69; // Total energy in the universe, in Joules.
+    }
+
+    public String toString() {
+        return "Universe " + name;
     }
 }

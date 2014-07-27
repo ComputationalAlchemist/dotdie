@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Created on 2014-07-23.
  */
-public class Standalone {
+class Standalone {
 
     public static void main(String[] args) throws IOException, ParsingException, CompilingException, InterruptedException {
         String filename = "src/ack.~ath";

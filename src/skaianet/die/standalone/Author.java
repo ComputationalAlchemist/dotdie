@@ -23,4 +23,8 @@ public class Author implements ATHAlive {
     public double getEnergy() {
         return 6e18; // Estimated mass-energy of a human, in Joules.
     }
+
+    public String toString() {
+        return "Author " + name;
+    }
 }

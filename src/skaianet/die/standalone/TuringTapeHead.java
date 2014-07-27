@@ -5,7 +5,7 @@ import skaianet.die.back.ATHcessible;
 /**
  * Created on 2014-07-26.
  */
-public class TuringTapeHead {
+class TuringTapeHead {
     private TuringTape inserted;
     private int index = 0;
 

@@ -6,10 +6,6 @@ package skaianet.die.middle;
 public class CompilingException extends Exception {
     private String traceInfo;
 
-    public CompilingException() {
-        super();
-    }
-
     public CompilingException(String message) {
         super(message);
     }

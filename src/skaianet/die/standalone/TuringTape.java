@@ -16,7 +16,7 @@ public class TuringTape {
         master = this;
     }
 
-    public TuringTape(TuringTape previous, int length, TuringTape next, TuringTape master) {
+    private TuringTape(TuringTape previous, int length, TuringTape next, TuringTape master) {
         this.previous = previous;
         this.next = next;
         this.master = master;

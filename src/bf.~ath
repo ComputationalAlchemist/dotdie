@@ -1,7 +1,7 @@
 import stream stdin;
 import stream stdout;
 
-program = stdin.readline();
+program = stdin.readLine();
 pointer = 0;
 
 import turingtape tape;

@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 class Frame {
     private final CompiledProcedure procedure;
-    private Object[] variables;
+    private final Object[] variables;
     private int codePointer = 0;
 
     public Frame(CompiledProcedure procedure, Object[] variables) {

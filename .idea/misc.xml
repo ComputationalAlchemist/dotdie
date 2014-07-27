@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+    <entry_points version="2.0">
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.Bit void bind(boolean value)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.back.ExecutionContext java.lang.Object getReturnValue()" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.front.Parser Parser(java.lang.String filename, java.lang.String code)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.StreamIn java.lang.String readline()" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.StreamOut void write(int c)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.StreamOut void print(java.lang.Object o)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.StreamOut void println(java.lang.Object o)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.StreamOut void println()" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.TuringTapeHead void insert(skaianet.die.standalone.TuringTape t)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.TuringTapeHead skaianet.die.standalone.TuringTape eject()" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.TuringTapeHead int read()" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.TuringTapeHead void erase()" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.TuringTapeHead void write(int value)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.TuringTapeHead void play(int relative)" />
+      <entry_point TYPE="method" FQNAME="skaianet.die.standalone.TuringTapeHead void rewind(int relative)" />
+    </entry_points>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

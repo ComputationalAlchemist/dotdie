@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * Created on 2014-07-26.
  */
-public class StreamIn {
+class StreamIn {
     private final Scanner in;
     private final String name;
 
@@ -18,7 +18,7 @@ public class StreamIn {
     }
 
     @ATHcessible
-    public String readline() {
+    public String readLine() {
         return this.in.nextLine();
     }
 
