@@ -3,6 +3,7 @@ package skaianet.die.back;
 import skaianet.die.instructions.InvokeInstruction;
 import skaianet.die.middle.CompiledProcedure;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 
 /**
@@ -46,8 +47,8 @@ class Frame {
         variables[i] = o;
     }
 
-    public void report() {
-        System.out.println(procedure + "+" + codePointer + " " + Arrays.toString(variables));
+    public void report(PrintStream out) {
+        out.println(procedure + "+" + codePointer + " " + Arrays.toString(variables));
     }
 
     public void returnValue(ExecutionContext exc, Object value) {

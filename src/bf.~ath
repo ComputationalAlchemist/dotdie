@@ -2,6 +2,7 @@ import stream stdin;
 import stream stdout;
 
 program = stdin.readLine();
+
 pointer = 0;
 
 import turingtape tape;

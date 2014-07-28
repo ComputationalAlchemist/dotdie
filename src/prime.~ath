@@ -26,6 +26,6 @@ stdout.print(`. 2');
         sublooping.bind(FALSE);
     } EXECUTE(NULL);
     index += 1;
-    looping.bind(index < 10000);
+    looping.bind(index < 150);
 } EXECUTE(NULL);
 stdout.println();

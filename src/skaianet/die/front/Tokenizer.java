@@ -1,8 +1,8 @@
 package skaianet.die.front;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
+import skaianet.die.utils.Utilities;
+
+import java.io.PrintStream;
 
 import static skaianet.die.front.Token.*;
 
@@ -10,28 +10,13 @@ import static skaianet.die.front.Token.*;
  * Created on 2014-07-24.
  */
 class Tokenizer {
-    private final String filename;
-    private final String code;
+    private final String filename, code;
     private int index = 0;
     private Object associated;
 
     public Tokenizer(String filename, String code) {
         this.filename = filename;
         this.code = code;
-    }
-
-    public Tokenizer(String filename, Reader reader) throws IOException {
-        this.filename = filename;
-        BufferedReader byline = (reader instanceof BufferedReader) ? (BufferedReader) reader : new BufferedReader(reader);
-        StringBuilder code = new StringBuilder(1024);
-        while (true) {
-            String line = byline.readLine();
-            if (line == null) {
-                break;
-            }
-            code.append(line).append('\n');
-        }
-        this.code = code.toString();
     }
 
     private boolean isEOF() {
@@ -151,30 +136,16 @@ class Tokenizer {
             if (isInt) {
                 associated = Integer.parseInt(stringValue);
                 return INTEGER;
-            } else if ("~ATH".equalsIgnoreCase(stringValue)) {
-                return ATH;
-            } else if ("EXECUTE".equalsIgnoreCase(stringValue)) {
-                return EXECUTE;
-            } else if ("import".equalsIgnoreCase(stringValue)) {
-                return IMPORT;
-            } else if ("NULL".equalsIgnoreCase(stringValue)) {
-                return NULL;
-            } else if ("TRUE".equalsIgnoreCase(stringValue)) {
-                return TRUE;
-            } else if ("FALSE".equalsIgnoreCase(stringValue)) {
-                return FALSE;
-            } else if ("THIS".equalsIgnoreCase(stringValue)) {
-                return THIS;
-            } else if ("U~F".equalsIgnoreCase(stringValue)) {
-                return UTILDEF;
-            } else if ("RETURN".equalsIgnoreCase(stringValue)) {
-                return RETURN;
             } else {
-                associated = stringValue;
-                return IDENTIFIER;
+                Token t = Token.lookupIdentifierToken(stringValue);
+                if (t != null) {
+                    return t;
+                } else {
+                    associated = stringValue;
+                    return IDENTIFIER;
+                }
             }
         }
-        // INTEGER, STRING, IDENTIFIER, EXECUTE, ~ATH, IMPORT
     }
 
     public Object getAssociated() {
@@ -182,16 +153,10 @@ class Tokenizer {
     }
 
     public String traceInfo() {
-        int lineNo = 1;
-        for (int i = 0; i < index; i++) {
-            if (code.charAt(i) == '\n') {
-                lineNo++;
-            }
-        }
-        return "near " + filename + ":" + lineNo; // + ":" + colNo; // TODO: More accuracy!
+        return filename + ":" + (1 + Utilities.countCharacters(code, '\n', 0, index));
     }
 
-    public void dumpCode() {
-        System.out.println(code);
+    public void dumpCode(PrintStream out) {
+        out.println(code);
     }
 }

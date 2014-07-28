@@ -3,8 +3,7 @@ package skaianet.die.front;
 import skaianet.die.ast.Expression;
 import skaianet.die.ast.Statement;
 
-import java.io.IOException;
-import java.io.Reader;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static skaianet.die.ast.ExpressionType.*;
@@ -34,10 +33,6 @@ public class Parser {
 
     public Parser(String filename, String code) {
         tokenizer = new Tokenizer(filename, code);
-    }
-
-    public Parser(String filename, Reader reader) throws IOException {
-        tokenizer = new Tokenizer(filename, reader);
     }
 
     public Statement parseProgram() throws ParsingException {
@@ -250,7 +245,7 @@ public class Parser {
         }
     }
 
-    public void dumpCode() {
-        tokenizer.dumpCode();
+    public void dumpCode(PrintStream out) {
+        tokenizer.dumpCode(out);
     }
 }

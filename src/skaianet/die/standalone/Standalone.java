@@ -8,38 +8,48 @@ import skaianet.die.front.ParsingException;
 import skaianet.die.middle.CompiledProcedure;
 import skaianet.die.middle.Compiler;
 import skaianet.die.middle.CompilingException;
+import skaianet.die.utils.Utilities;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 /**
  * Created on 2014-07-23.
  */
-class Standalone {
+public class Standalone {
 
-    public static void main(String[] args) throws IOException, ParsingException, CompilingException, InterruptedException {
+    public static PrintStream standaloneOutput;
+    public static InputStream standaloneInput;
+
+    public static void main(String[] args) throws IOException, ParsingException, CompilingException {
         String filename = "src/ack.~ath";
-        Parser parser = new Parser(filename, new FileReader(filename));
-        System.out.println("=== Source Code ===");
-        parser.dumpCode();
+        execute(filename, true, System.out, System.in);
+    }
+
+    public static void execute(String filename, boolean useTiming, PrintStream out, InputStream in) throws IOException, ParsingException, CompilingException {
+        standaloneOutput = out;
+        standaloneInput = in;
+        Parser parser = new Parser(filename, Utilities.readEntireFile(filename));
+        out.println("=== Source Code ===");
+        parser.dumpCode(out);
         Statement stmt = parser.parseProgram();
-        System.out.println("=== Abstract Syntax Tree ===");
-        stmt.print();
+        out.println("=== Abstract Syntax Tree ===");
+        stmt.print(out);
         Compiler compiler = new Compiler();
         CompiledProcedure procedure = compiler.compile(stmt, new String[0]);
-        System.out.println("=== Compiled Bytecode ===");
-        procedure.print(0);
+        out.println("=== Compiled Bytecode ===");
+        procedure.print(0, out);
         ExecutionContext context = new ExecutionContext(new StandaloneExtension());
         context.init(procedure, new EnergyPacket(0, null));
-        System.out.println("=== Execution ===");
-        //context.report();
-        long begin = System.currentTimeMillis();
-        while (context.runSweep()) {
-            //Thread.sleep(10);
+        out.println("=== Execution ===");
+        long begin = useTiming ? System.currentTimeMillis() : 0;
+        while (context.runSweep()) ;
+        if (useTiming) {
+            long end = System.currentTimeMillis();
+            out.println("=== Timing Statistics ===");
+            out.println((end - begin) / 1000.0 + " seconds.");
         }
-        long end = System.currentTimeMillis();
-        System.out.println("=== Timing Statistics ===");
-        System.out.println((end - begin) / 1000.0 + " seconds.");
-        System.out.println("=== Printout End ===");
+        out.println("=== Printout End ===");
     }
 }

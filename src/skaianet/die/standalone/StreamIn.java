@@ -2,24 +2,26 @@ package skaianet.die.standalone;
 
 import skaianet.die.back.ATHcessible;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Scanner;
+import java.io.InputStreamReader;
 
 /**
  * Created on 2014-07-26.
  */
-class StreamIn {
-    private final Scanner in;
+public class StreamIn {
+    private final BufferedReader in;
     private final String name;
 
     public StreamIn(InputStream in, String name) {
         this.name = name;
-        this.in = new Scanner(in);
+        this.in = new BufferedReader(new InputStreamReader(in));
     }
 
     @ATHcessible
-    public String readLine() {
-        return this.in.nextLine();
+    public String readLine() throws IOException {
+        return this.in.readLine();
     }
 
     @Override

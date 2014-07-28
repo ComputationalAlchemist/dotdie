@@ -18,9 +18,9 @@ public class StandaloneExtension extends EmptyExtension {
             case "stream":
                 switch (name) {
                     case "stdin":
-                        return new StreamIn(System.in, name);
+                        return new StreamIn(Standalone.standaloneInput, name);
                     case "stdout":
-                        return new StreamOut(System.out, name);
+                        return new StreamOut(Standalone.standaloneOutput, name);
                     case "stderr":
                         return new StreamOut(System.err, name);
                     default:

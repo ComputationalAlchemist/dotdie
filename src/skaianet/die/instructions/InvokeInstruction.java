@@ -4,6 +4,8 @@ import skaianet.die.back.EnergyPacket;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.middle.CompiledProcedure;
 
+import java.io.PrintStream;
+
 /**
  * Created on 2014-07-25.
  */
@@ -19,15 +21,15 @@ public class InvokeInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent) {
-        System.out.print("INVOKE " + target + "(");
+    public void print(int indent, PrintStream out) {
+        out.print("INVOKE " + target + "(");
         if (argumentCount != 0) {
-            System.out.print(target + 1);
+            out.print(target + 1);
             for (int i = 1; i < argumentCount; i++) {
-                System.out.print(", " + (target + i + 1));
+                out.print(", " + (target + i + 1));
             }
         }
-        System.out.println(") -> " + target);
+        out.println(") -> " + target);
     }
 
     @Override

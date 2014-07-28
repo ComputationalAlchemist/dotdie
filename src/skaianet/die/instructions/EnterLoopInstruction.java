@@ -3,6 +3,8 @@ package skaianet.die.instructions;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.back.LoopContext;
 
+import java.io.PrintStream;
+
 /**
  * Created on 2014-07-25.
  */
@@ -22,8 +24,8 @@ public class EnterLoopInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent) {
-        System.out.println("ENTER " + object + " -> " + label);
+    public void print(int indent, PrintStream out) {
+        out.println("ENTER " + object + " -> " + label);
     }
 
     @Override

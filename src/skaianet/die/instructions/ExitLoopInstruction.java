@@ -4,6 +4,8 @@ import skaianet.die.back.EnergyPacket;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.back.LoopContext;
 
+import java.io.PrintStream;
+
 /**
  * Created on 2014-07-25.
  */
@@ -18,8 +20,8 @@ public class ExitLoopInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent) {
-        System.out.println("EXIT " + context + " -> " + loopTop);
+    public void print(int indent, PrintStream out) {
+        out.println("EXIT " + context + " -> " + loopTop);
     }
 
     @Override

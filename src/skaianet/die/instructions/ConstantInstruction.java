@@ -3,6 +3,8 @@ package skaianet.die.instructions;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.middle.CompiledProcedure;
 
+import java.io.PrintStream;
+
 /**
  * Created on 2014-07-25.
  */
@@ -34,23 +36,23 @@ public class ConstantInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent) {
+    public void print(int indent, PrintStream out) {
         switch (type) {
             case NULL:
-                System.out.println("CONST NULL -> " + target);
+                out.println("CONST NULL -> " + target);
                 break;
             case BOOLEAN:
-                System.out.println("CONST " + value + " -> " + target);
+                out.println("CONST " + value + " -> " + target);
                 break;
             case STRING:
-                System.out.println("CONST `" + value + "' -> " + target);
+                out.println("CONST `" + value + "' -> " + target);
                 break;
             case INTEGER:
-                System.out.println("CONST #" + value + " -> " + target);
+                out.println("CONST #" + value + " -> " + target);
                 break;
             case PROCEDURE:
-                System.out.println("CONST PROCEDURE -> " + target);
-                ((CompiledProcedure) value).print(indent + 1);
+                out.println("CONST PROCEDURE -> " + target);
+                ((CompiledProcedure) value).print(indent + 1, out);
                 break;
             default:
                 throw new IllegalStateException();

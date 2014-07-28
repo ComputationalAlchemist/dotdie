@@ -2,6 +2,8 @@ package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
 
+import java.io.PrintStream;
+
 /**
  * Created on 2014-07-25.
  */
@@ -17,8 +19,8 @@ public class MathInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent) {
-        System.out.println("MATH " + paramRef + " " + mathOp + " -> " + target);
+    public void print(int indent, PrintStream out) {
+        out.println("MATH " + paramRef + " " + mathOp + " -> " + target);
     }
 
     @Override

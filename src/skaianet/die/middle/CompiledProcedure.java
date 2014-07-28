@@ -2,6 +2,7 @@ package skaianet.die.middle;
 
 import skaianet.die.instructions.Instruction;
 
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -23,28 +24,28 @@ public class CompiledProcedure {
         this.toReturn = toReturn;
     }
 
-    private static void indent(int indent) {
-        char[] out = new char[indent];
-        Arrays.fill(out, '\t');
-        System.out.print(out);
+    private static void indent(int indent, PrintStream out) {
+        char[] chars = new char[indent];
+        Arrays.fill(chars, '\t');
+        out.print(chars);
     }
 
-    public void print(int indent) {
-        indent(indent);
-        System.out.println("Procedure[" + argumentCount + "/" + maxVars + "]: " + instructions.length);
+    public void print(int indent, PrintStream out) {
+        indent(indent, out);
+        out.println("Procedure[" + argumentCount + "/" + maxVars + "]: " + instructions.length);
         int i = 0;
         String prev = null;
         for (Instruction instruction : instructions) {
             String s = debugging.get(i);
             if (s != null && !s.equals(prev)) {
-                indent(indent);
-                System.out.println(s);
+                indent(indent, out);
+                out.println(s);
                 prev = s;
             }
-            indent(indent);
-            System.out.print((i++) + "\t");
-            indent(indent);
-            instruction.print(indent);
+            indent(indent, out);
+            out.print((i++) + "\t");
+            indent(indent, out);
+            instruction.print(indent, out);
         }
     }
 }

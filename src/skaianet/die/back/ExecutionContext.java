@@ -2,6 +2,7 @@ package skaianet.die.back;
 
 import skaianet.die.middle.CompiledProcedure;
 
+import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -151,10 +152,10 @@ public class ExecutionContext {
         return extension.calcEnergy(object);
     }
 
-    public void report() {
-        System.out.println("Stack Trace:");
+    public void report(PrintStream out) {
+        out.println("Stack Trace:");
         for (Frame frame : stack) {
-            frame.report();
+            frame.report(out);
         }
     }
 

@@ -34,6 +34,31 @@ public enum Token {
         this.expressionType = expressionType;
     }
 
+    public static Token lookupIdentifierToken(String identifier) {
+        switch (identifier.toUpperCase()) {
+            case "~ATH":
+                return ATH;
+            case "EXECUTE":
+                return EXECUTE;
+            case "IMPORT":
+                return IMPORT;
+            case "NULL":
+                return NULL;
+            case "FALSE":
+                return FALSE;
+            case "TRUE":
+                return TRUE;
+            case "THIS":
+                return THIS;
+            case "U~F":
+                return UTILDEF;
+            case "RETURN":
+                return RETURN;
+            default:
+                return null;
+        }
+    }
+
     public ExpressionType getExpressionType() {
         return expressionType;
     }

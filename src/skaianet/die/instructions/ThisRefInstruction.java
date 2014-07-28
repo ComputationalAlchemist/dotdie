@@ -2,6 +2,8 @@ package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
 
+import java.io.PrintStream;
+
 /**
  * Created on 2014-07-26.
  */
@@ -13,8 +15,8 @@ public class ThisRefInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent) {
-        System.out.println("THIS -> " + target);
+    public void print(int indent, PrintStream out) {
+        out.println("THIS -> " + target);
     }
 
     @Override

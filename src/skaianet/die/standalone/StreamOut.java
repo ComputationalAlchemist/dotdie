@@ -7,7 +7,7 @@ import java.io.PrintStream;
 /**
  * Created on 2014-07-26.
  */
-class StreamOut {
+public class StreamOut {
     private final PrintStream output;
     private final String name;
 

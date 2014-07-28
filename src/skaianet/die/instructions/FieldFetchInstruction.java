@@ -2,6 +2,8 @@ package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
 
+import java.io.PrintStream;
+
 /**
  * Created on 2014-07-25.
  */
@@ -15,8 +17,8 @@ public class FieldFetchInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent) {
-        System.out.println("FIELD " + target + "." + field);
+    public void print(int indent, PrintStream out) {
+        out.println("FIELD " + target + "." + field);
     }
 
     @Override
