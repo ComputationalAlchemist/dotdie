@@ -4,9 +4,6 @@ import skaianet.die.back.ExecutionContext;
 
 import java.io.PrintStream;
 
-/**
- * Created on 2014-07-25.
- */
 public class MathInstruction implements Instruction {
     private final int target;
     private final int paramRef;

@@ -14,9 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-/**
- * Created on 2014-07-23.
- */
 public class Standalone {
 
     public static PrintStream standaloneOutput;

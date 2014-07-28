@@ -2,9 +2,6 @@ package skaianet.die.ast;
 
 import java.util.Collection;
 
-/**
- * Created on 2014-07-23.
- */
 public enum StatementType {
     EMPTY, COMPOUND, EXPRESSION, ATHLOOP, IMPORT, ASSIGN, UTILDEF, RETURN, COMPOUND_RETURN;
 

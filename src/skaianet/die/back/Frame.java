@@ -6,9 +6,6 @@ import skaianet.die.middle.CompiledProcedure;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-/**
- * Created on 2014-07-27.
- */
 class Frame {
     private final CompiledProcedure procedure;
     private final Object[] variables;

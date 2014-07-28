@@ -5,9 +5,6 @@ import skaianet.die.middle.CompiledProcedure;
 
 import java.io.PrintStream;
 
-/**
- * Created on 2014-07-25.
- */
 public class ConstantInstruction implements Instruction {
     private final int target;
     private final Type type;

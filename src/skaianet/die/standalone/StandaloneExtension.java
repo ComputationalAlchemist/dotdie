@@ -4,9 +4,6 @@ import skaianet.die.back.EmptyExtension;
 
 import java.lang.reflect.Array;
 
-/**
- * Created on 2014-07-26.
- */
 public class StandaloneExtension extends EmptyExtension {
     @Override
     public Object calcImport(String namespace, String name) {

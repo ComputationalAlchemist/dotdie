@@ -6,9 +6,6 @@ import java.io.PrintStream;
 
 import static skaianet.die.front.Token.*;
 
-/**
- * Created on 2014-07-24.
- */
 class Tokenizer {
     private final String filename, code;
     private int index = 0;
@@ -40,7 +37,6 @@ class Tokenizer {
     }
 
     public Token next() throws ParsingException {
-        //noinspection StatementWithEmptyBody
         while (accept(' ') || accept('\t') || accept('\n') || accept('\r')) ; // Strip whitespace
         if (isEOF()) {
             return Token.NONE;

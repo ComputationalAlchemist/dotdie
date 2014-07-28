@@ -5,9 +5,6 @@ import skaianet.die.middle.CompilingException;
 import java.io.PrintStream;
 import java.util.*;
 
-/**
- * Created on 2014-07-23.
- */
 public class GenericNode<T extends Enum, U extends GenericNode<T, U>> implements Iterable<GenericNode<?, ?>> {
     public final T type;
     private final List<GenericNode<?, ?>> children;

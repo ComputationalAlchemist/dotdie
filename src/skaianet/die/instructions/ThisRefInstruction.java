@@ -4,9 +4,6 @@ import skaianet.die.back.ExecutionContext;
 
 import java.io.PrintStream;
 
-/**
- * Created on 2014-07-26.
- */
 public class ThisRefInstruction implements Instruction {
     private final int target;
 

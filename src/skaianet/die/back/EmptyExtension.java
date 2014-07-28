@@ -3,9 +3,6 @@ package skaianet.die.back;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-/**
- * Created on 2014-07-26.
- */
 public class EmptyExtension implements ExecutionExtension {
     @Override
     public Object arrayRef(Object array, Object index) {

@@ -2,9 +2,6 @@ package skaianet.die.standalone;
 
 import java.util.Arrays;
 
-/**
- * Created on 2014-07-26.
- */
 public class TuringTape {
     public final byte[] local;
     public final TuringTape master;

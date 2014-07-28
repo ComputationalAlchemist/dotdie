@@ -2,9 +2,6 @@ package skaianet.die.middle;
 
 import java.util.HashMap;
 
-/**
- * Created on 2014-07-24.
- */
 class Scope {
     private final Scope parent;
     private final int energyRef;

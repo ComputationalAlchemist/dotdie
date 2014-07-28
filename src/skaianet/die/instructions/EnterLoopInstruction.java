@@ -5,9 +5,6 @@ import skaianet.die.back.LoopContext;
 
 import java.io.PrintStream;
 
-/**
- * Created on 2014-07-25.
- */
 public class EnterLoopInstruction implements Instruction {
     private final int object;
     private Integer label = null;

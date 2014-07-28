@@ -1,8 +1,5 @@
 package skaianet.die.back;
 
-/**
- * Created on 2014-07-26.
- */
 public class LoopContext {
     private final Object object;
     private final ExecutionContext ctx;

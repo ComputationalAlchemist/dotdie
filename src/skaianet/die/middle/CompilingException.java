@@ -1,8 +1,5 @@
 package skaianet.die.middle;
 
-/**
- * Created on 2014-07-24.
- */
 public class CompilingException extends Exception {
     private String traceInfo;
 

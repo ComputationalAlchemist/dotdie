@@ -5,9 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-/**
- * Created on 2014-07-27.
- */
 public class Utilities {
     public static String readEntireFile(Reader reader) throws IOException {
         BufferedReader byline = (reader instanceof BufferedReader) ? (BufferedReader) reader : new BufferedReader(reader);

@@ -3,9 +3,6 @@ package skaianet.die.standalone;
 import skaianet.die.back.ATHAlive;
 import skaianet.die.back.ATHcessible;
 
-/**
- * Created on 2014-07-26.
- */
 public class Author implements ATHAlive {
     @ATHcessible
     private final String name;

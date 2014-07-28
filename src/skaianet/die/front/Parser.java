@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import static skaianet.die.ast.ExpressionType.*;
 import static skaianet.die.ast.StatementType.*;
 
-/**
- * Created on 2014-07-23.
- */
 public class Parser {
 
     private static final Token[][] operators = new Token[][]{

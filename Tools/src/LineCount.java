@@ -3,9 +3,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * Created on 2014-07-27.
- */
 public class LineCount {
     private int totalLines, totalChars;
 

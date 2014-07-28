@@ -9,9 +9,6 @@ import skaianet.die.instructions.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created on 2014-07-24.
- */
 public class Compiler {
     private final ArrayList<Instruction> output = new ArrayList<>();
     private HashMap<Integer, String> debugging;

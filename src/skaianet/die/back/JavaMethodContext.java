@@ -4,9 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-/**
- * Created on 2014-07-26.
- */
 class JavaMethodContext {
     private final Object object;
     private final String method;

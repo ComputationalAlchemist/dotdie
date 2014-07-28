@@ -6,9 +6,6 @@ import skaianet.die.middle.CompilingException;
 import java.io.*;
 import java.util.Scanner;
 
-/**
- * Created on 2014-07-27.
- */
 public class Tests {
     public static void main(String[] args) throws ParsingException, CompilingException, IOException {
         for (File test : new File("src").listFiles()) {

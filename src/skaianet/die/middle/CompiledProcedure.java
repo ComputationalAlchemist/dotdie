@@ -6,9 +6,6 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
-/**
- * Created on 2014-07-24.
- */
 public class CompiledProcedure {
     public final int argumentCount;
     public final int maxVars;

@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-/**
- * Created on 2014-07-26.
- */
 public class StreamIn {
     private final BufferedReader in;
     private final String name;

@@ -4,9 +4,6 @@ import skaianet.die.instructions.MathInstruction.Operation;
 
 import java.util.Collection;
 
-/**
- * Created on 2014-07-23.
- */
 public enum ExpressionType {
     VARIABLE, CONST_INTEGER, CONST_STRING, INVOKE, FIELDREF, ARRAYREF, NULL, TRUE, FALSE, THIS, ARGLIST,
     ADD(Operation.ADD), SUBTRACT(Operation.SUBTRACT), MULTIPLY(Operation.MULTIPLY), DIVIDE(Operation.DIVIDE), REMAINDER(Operation.REMAINDER),

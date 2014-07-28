@@ -8,9 +8,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Stack;
 
-/**
- * Created on 2014-07-26.
- */
 public class ExecutionContext {
     public final ExecutionExtension extension;
     private final Stack<Frame> stack = new Stack<>();
@@ -32,7 +29,6 @@ public class ExecutionContext {
     }
 
     public boolean runSweep() { // Return true if more sweeps are needed.
-        //noinspection StatementWithEmptyBody
         while (runSingle()) ;
         return !stack.isEmpty();
     }
