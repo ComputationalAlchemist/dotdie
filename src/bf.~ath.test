@@ -1,0 +1,937 @@
+=== Source Code ===
+import stream stdin;
+import stream stdout;
+
+program = stdin.readLine();
+
+pointer = 0;
+
+import turingtape tape;
+import turingtapehead head;
+head.insert(tape);
+
+import bit running;
+
+running.bind(TRUE);
+
+~ATH(running) {
+    running.bind(pointer >= 0 && pointer < program.length);
+    ~ATH(running) {
+        instruction = program[pointer];
+
+        value = head.read();
+
+        import bit option;
+
+        option.bind(instruction == \+);
+        ~ATH(option) {
+            head.erase();
+            head.write((value + 1) & 255);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \-);
+        ~ATH(option) {
+            head.erase();
+            head.write((value - 1) & 255);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \<);
+        ~ATH(option) {
+            head.rewind(1);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \>);
+        ~ATH(option) {
+            head.play(1);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \,);
+        ~ATH(option) {
+            head.erase();
+            head.write(stdin.read());
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \.);
+        ~ATH(option) {
+            stdout.write(value);
+            option.bind(FALSE);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \[ && value == 0);
+        depth = 1;
+        ~ATH(option) {
+            pointer += 1;
+            option.bind(program[pointer] == \[);
+            ~ATH(option) {
+                depth += 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(program[pointer] == \]);
+            ~ATH(option) {
+                depth -= 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(depth > 0);
+        } EXECUTE(NULL);
+
+        option.bind(instruction == \] && value != 0);
+        depth = 1;
+        ~ATH(option) {
+            pointer -= 1;
+            option.bind(program[pointer] == \]);
+            ~ATH(option) {
+                depth += 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(program[pointer] == \[);
+            ~ATH(option) {
+                depth -= 1;
+                option.bind(FALSE);
+            } EXECUTE(NULL);
+            option.bind(depth > 0);
+        } EXECUTE(NULL);
+
+        pointer += 1;
+        running.bind(FALSE);
+    } EXECUTE(running.bind(TRUE));
+} EXECUTE(NULL);
+
+=== Abstract Syntax Tree ===
+COMPOUND
+	IMPORT
+		VARIABLE: stream
+		VARIABLE: stdin
+	IMPORT
+		VARIABLE: stream
+		VARIABLE: stdout
+	ASSIGN
+		VARIABLE: program
+		INVOKE
+			FIELDREF
+				VARIABLE: stdin
+				VARIABLE: readLine
+	ASSIGN
+		VARIABLE: pointer
+		CONST_INTEGER: 0
+	IMPORT
+		VARIABLE: turingtape
+		VARIABLE: tape
+	IMPORT
+		VARIABLE: turingtapehead
+		VARIABLE: head
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				VARIABLE: head
+				VARIABLE: insert
+			VARIABLE: tape
+	IMPORT
+		VARIABLE: bit
+		VARIABLE: running
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				VARIABLE: running
+				VARIABLE: bind
+			TRUE
+	ATHLOOP
+		VARIABLE: running
+		COMPOUND
+			EXPRESSION
+				INVOKE
+					FIELDREF
+						VARIABLE: running
+						VARIABLE: bind
+					LAND
+						CMPGE
+							VARIABLE: pointer
+							CONST_INTEGER: 0
+						CMPLT
+							VARIABLE: pointer
+							FIELDREF
+								VARIABLE: program
+								VARIABLE: length
+			ATHLOOP
+				VARIABLE: running
+				COMPOUND
+					ASSIGN
+						VARIABLE: instruction
+						ARRAYREF
+							VARIABLE: program
+							VARIABLE: pointer
+					ASSIGN
+						VARIABLE: value
+						INVOKE
+							FIELDREF
+								VARIABLE: head
+								VARIABLE: read
+					IMPORT
+						VARIABLE: bit
+						VARIABLE: option
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							CMPEQ
+								VARIABLE: instruction
+								CONST_INTEGER: 43
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: erase
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: write
+									BIAND
+										ADD
+											VARIABLE: value
+											CONST_INTEGER: 1
+										CONST_INTEGER: 255
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									FALSE
+						EXPRESSION
+							NULL
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							CMPEQ
+								VARIABLE: instruction
+								CONST_INTEGER: 45
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: erase
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: write
+									BIAND
+										SUBTRACT
+											VARIABLE: value
+											CONST_INTEGER: 1
+										CONST_INTEGER: 255
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									FALSE
+						EXPRESSION
+							NULL
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							CMPEQ
+								VARIABLE: instruction
+								CONST_INTEGER: 60
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: rewind
+									CONST_INTEGER: 1
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									FALSE
+						EXPRESSION
+							NULL
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							CMPEQ
+								VARIABLE: instruction
+								CONST_INTEGER: 62
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: play
+									CONST_INTEGER: 1
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									FALSE
+						EXPRESSION
+							NULL
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							CMPEQ
+								VARIABLE: instruction
+								CONST_INTEGER: 44
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: erase
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: head
+										VARIABLE: write
+									INVOKE
+										FIELDREF
+											VARIABLE: stdin
+											VARIABLE: read
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									FALSE
+						EXPRESSION
+							NULL
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							CMPEQ
+								VARIABLE: instruction
+								CONST_INTEGER: 46
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: stdout
+										VARIABLE: write
+									VARIABLE: value
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									FALSE
+						EXPRESSION
+							NULL
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							LAND
+								CMPEQ
+									VARIABLE: instruction
+									CONST_INTEGER: 91
+								CMPEQ
+									VARIABLE: value
+									CONST_INTEGER: 0
+					ASSIGN
+						VARIABLE: depth
+						CONST_INTEGER: 1
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							ASSIGN
+								VARIABLE: pointer
+								ADD
+									VARIABLE: pointer
+									CONST_INTEGER: 1
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									CMPEQ
+										ARRAYREF
+											VARIABLE: program
+											VARIABLE: pointer
+										CONST_INTEGER: 91
+							ATHLOOP
+								VARIABLE: option
+								COMPOUND
+									ASSIGN
+										VARIABLE: depth
+										ADD
+											VARIABLE: depth
+											CONST_INTEGER: 1
+									EXPRESSION
+										INVOKE
+											FIELDREF
+												VARIABLE: option
+												VARIABLE: bind
+											FALSE
+								EXPRESSION
+									NULL
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									CMPEQ
+										ARRAYREF
+											VARIABLE: program
+											VARIABLE: pointer
+										CONST_INTEGER: 93
+							ATHLOOP
+								VARIABLE: option
+								COMPOUND
+									ASSIGN
+										VARIABLE: depth
+										SUBTRACT
+											VARIABLE: depth
+											CONST_INTEGER: 1
+									EXPRESSION
+										INVOKE
+											FIELDREF
+												VARIABLE: option
+												VARIABLE: bind
+											FALSE
+								EXPRESSION
+									NULL
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									CMPGT
+										VARIABLE: depth
+										CONST_INTEGER: 0
+						EXPRESSION
+							NULL
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: option
+								VARIABLE: bind
+							LAND
+								CMPEQ
+									VARIABLE: instruction
+									CONST_INTEGER: 93
+								CMPNE
+									VARIABLE: value
+									CONST_INTEGER: 0
+					ASSIGN
+						VARIABLE: depth
+						CONST_INTEGER: 1
+					ATHLOOP
+						VARIABLE: option
+						COMPOUND
+							ASSIGN
+								VARIABLE: pointer
+								SUBTRACT
+									VARIABLE: pointer
+									CONST_INTEGER: 1
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									CMPEQ
+										ARRAYREF
+											VARIABLE: program
+											VARIABLE: pointer
+										CONST_INTEGER: 93
+							ATHLOOP
+								VARIABLE: option
+								COMPOUND
+									ASSIGN
+										VARIABLE: depth
+										ADD
+											VARIABLE: depth
+											CONST_INTEGER: 1
+									EXPRESSION
+										INVOKE
+											FIELDREF
+												VARIABLE: option
+												VARIABLE: bind
+											FALSE
+								EXPRESSION
+									NULL
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									CMPEQ
+										ARRAYREF
+											VARIABLE: program
+											VARIABLE: pointer
+										CONST_INTEGER: 91
+							ATHLOOP
+								VARIABLE: option
+								COMPOUND
+									ASSIGN
+										VARIABLE: depth
+										SUBTRACT
+											VARIABLE: depth
+											CONST_INTEGER: 1
+									EXPRESSION
+										INVOKE
+											FIELDREF
+												VARIABLE: option
+												VARIABLE: bind
+											FALSE
+								EXPRESSION
+									NULL
+							EXPRESSION
+								INVOKE
+									FIELDREF
+										VARIABLE: option
+										VARIABLE: bind
+									CMPGT
+										VARIABLE: depth
+										CONST_INTEGER: 0
+						EXPRESSION
+							NULL
+					ASSIGN
+						VARIABLE: pointer
+						ADD
+							VARIABLE: pointer
+							CONST_INTEGER: 1
+					EXPRESSION
+						INVOKE
+							FIELDREF
+								VARIABLE: running
+								VARIABLE: bind
+							FALSE
+				EXPRESSION
+					INVOKE
+						FIELDREF
+							VARIABLE: running
+							VARIABLE: bind
+						TRUE
+		EXPRESSION
+			NULL
+=== Compiled Bytecode ===
+Procedure[0/18]: 312
+src\bf.~ath:1
+0	IMPORT stream/stdin -> 1
+1	IMPORT stream/stdout -> 2
+src\bf.~ath:4
+2	MOVE 1 -> 3
+3	FIELD 3.readLine
+4	INVOKE 3() -> 3
+src\bf.~ath:6
+5	CONST #0 -> 4
+6	IMPORT turingtape/tape -> 5
+src\bf.~ath:8
+7	IMPORT turingtapehead/head -> 6
+src\bf.~ath:10
+8	MOVE 6 -> 7
+9	FIELD 7.insert
+10	MOVE 5 -> 8
+11	INVOKE 7(8) -> 7
+12	IMPORT bit/running -> 7
+src\bf.~ath:14
+13	MOVE 7 -> 8
+14	FIELD 8.bind
+15	CONST true -> 9
+16	INVOKE 8(9) -> 8
+src\bf.~ath:16
+17	MOVE 7 -> 8
+18	ENTER 8 -> 312
+src\bf.~ath:17
+19	MOVE 7 -> 9
+20	FIELD 9.bind
+21	MOVE 4 -> 10
+22	CONST #0 -> 11
+23	MATH 11 CMPGE -> 10
+24	MOVE 4 -> 11
+25	MOVE 3 -> 12
+26	FIELD 12.length
+27	MATH 12 CMPLT -> 11
+28	MATH 11 LAND -> 10
+29	INVOKE 9(10) -> 9
+src\bf.~ath:18
+30	MOVE 7 -> 9
+31	ENTER 9 -> 310
+src\bf.~ath:19
+32	MOVE 3 -> 10
+33	MOVE 4 -> 11
+34	INDEX 10[11]
+src\bf.~ath:21
+35	MOVE 6 -> 11
+36	FIELD 11.read
+37	INVOKE 11() -> 11
+38	IMPORT bit/option -> 12
+src\bf.~ath:25
+39	MOVE 12 -> 13
+40	FIELD 13.bind
+41	MOVE 10 -> 14
+42	CONST #43 -> 15
+43	MATH 15 CMPEQ -> 14
+44	INVOKE 13(14) -> 13
+src\bf.~ath:26
+45	MOVE 12 -> 13
+46	ENTER 13 -> 64
+src\bf.~ath:27
+47	MOVE 6 -> 14
+48	FIELD 14.erase
+49	INVOKE 14() -> 14
+src\bf.~ath:28
+50	MOVE 6 -> 14
+51	FIELD 14.write
+52	MOVE 11 -> 15
+53	CONST #1 -> 16
+54	MATH 16 ADD -> 15
+55	CONST #255 -> 16
+56	MATH 16 BIAND -> 15
+57	INVOKE 14(15) -> 14
+src\bf.~ath:29
+58	MOVE 12 -> 14
+59	FIELD 14.bind
+60	CONST false -> 15
+61	INVOKE 14(15) -> 14
+62	EXIT 13 -> 47
+src\bf.~ath:30
+63	CONST NULL -> 14
+src\bf.~ath:32
+64	MOVE 12 -> 13
+65	FIELD 13.bind
+66	MOVE 10 -> 14
+67	CONST #45 -> 15
+68	MATH 15 CMPEQ -> 14
+69	INVOKE 13(14) -> 13
+src\bf.~ath:33
+70	MOVE 12 -> 13
+71	ENTER 13 -> 89
+src\bf.~ath:34
+72	MOVE 6 -> 14
+73	FIELD 14.erase
+74	INVOKE 14() -> 14
+src\bf.~ath:35
+75	MOVE 6 -> 14
+76	FIELD 14.write
+77	MOVE 11 -> 15
+78	CONST #1 -> 16
+79	MATH 16 SUBTRACT -> 15
+80	CONST #255 -> 16
+81	MATH 16 BIAND -> 15
+82	INVOKE 14(15) -> 14
+src\bf.~ath:36
+83	MOVE 12 -> 14
+84	FIELD 14.bind
+85	CONST false -> 15
+86	INVOKE 14(15) -> 14
+87	EXIT 13 -> 72
+src\bf.~ath:37
+88	CONST NULL -> 14
+src\bf.~ath:39
+89	MOVE 12 -> 13
+90	FIELD 13.bind
+91	MOVE 10 -> 14
+92	CONST #60 -> 15
+93	MATH 15 CMPEQ -> 14
+94	INVOKE 13(14) -> 13
+src\bf.~ath:40
+95	MOVE 12 -> 13
+96	ENTER 13 -> 107
+src\bf.~ath:41
+97	MOVE 6 -> 14
+98	FIELD 14.rewind
+99	CONST #1 -> 15
+100	INVOKE 14(15) -> 14
+src\bf.~ath:42
+101	MOVE 12 -> 14
+102	FIELD 14.bind
+103	CONST false -> 15
+104	INVOKE 14(15) -> 14
+105	EXIT 13 -> 97
+src\bf.~ath:43
+106	CONST NULL -> 14
+src\bf.~ath:45
+107	MOVE 12 -> 13
+108	FIELD 13.bind
+109	MOVE 10 -> 14
+110	CONST #62 -> 15
+111	MATH 15 CMPEQ -> 14
+112	INVOKE 13(14) -> 13
+src\bf.~ath:46
+113	MOVE 12 -> 13
+114	ENTER 13 -> 125
+src\bf.~ath:47
+115	MOVE 6 -> 14
+116	FIELD 14.play
+117	CONST #1 -> 15
+118	INVOKE 14(15) -> 14
+src\bf.~ath:48
+119	MOVE 12 -> 14
+120	FIELD 14.bind
+121	CONST false -> 15
+122	INVOKE 14(15) -> 14
+123	EXIT 13 -> 115
+src\bf.~ath:49
+124	CONST NULL -> 14
+src\bf.~ath:51
+125	MOVE 12 -> 13
+126	FIELD 13.bind
+127	MOVE 10 -> 14
+128	CONST #44 -> 15
+129	MATH 15 CMPEQ -> 14
+130	INVOKE 13(14) -> 13
+src\bf.~ath:52
+131	MOVE 12 -> 13
+132	ENTER 13 -> 148
+src\bf.~ath:53
+133	MOVE 6 -> 14
+134	FIELD 14.erase
+135	INVOKE 14() -> 14
+src\bf.~ath:54
+136	MOVE 6 -> 14
+137	FIELD 14.write
+138	MOVE 1 -> 15
+139	FIELD 15.read
+140	INVOKE 15() -> 15
+141	INVOKE 14(15) -> 14
+src\bf.~ath:55
+142	MOVE 12 -> 14
+143	FIELD 14.bind
+144	CONST false -> 15
+145	INVOKE 14(15) -> 14
+146	EXIT 13 -> 133
+src\bf.~ath:56
+147	CONST NULL -> 14
+src\bf.~ath:58
+148	MOVE 12 -> 13
+149	FIELD 13.bind
+150	MOVE 10 -> 14
+151	CONST #46 -> 15
+152	MATH 15 CMPEQ -> 14
+153	INVOKE 13(14) -> 13
+src\bf.~ath:59
+154	MOVE 12 -> 13
+155	ENTER 13 -> 166
+src\bf.~ath:60
+156	MOVE 2 -> 14
+157	FIELD 14.write
+158	MOVE 11 -> 15
+159	INVOKE 14(15) -> 14
+src\bf.~ath:61
+160	MOVE 12 -> 14
+161	FIELD 14.bind
+162	CONST false -> 15
+163	INVOKE 14(15) -> 14
+164	EXIT 13 -> 156
+src\bf.~ath:62
+165	CONST NULL -> 14
+src\bf.~ath:64
+166	MOVE 12 -> 13
+167	FIELD 13.bind
+168	MOVE 10 -> 14
+169	CONST #91 -> 15
+170	MATH 15 CMPEQ -> 14
+171	MOVE 11 -> 15
+172	CONST #0 -> 16
+173	MATH 16 CMPEQ -> 15
+174	MATH 15 LAND -> 14
+175	INVOKE 13(14) -> 13
+src\bf.~ath:65
+176	CONST #1 -> 13
+src\bf.~ath:66
+177	MOVE 12 -> 14
+178	ENTER 14 -> 231
+src\bf.~ath:67
+179	MOVE 4 -> 15
+180	CONST #1 -> 16
+181	MATH 16 ADD -> 15
+182	MOVE 15 -> 4
+src\bf.~ath:68
+183	MOVE 12 -> 15
+184	FIELD 15.bind
+185	MOVE 3 -> 16
+186	MOVE 4 -> 17
+187	INDEX 16[17]
+188	CONST #91 -> 17
+189	MATH 17 CMPEQ -> 16
+190	INVOKE 15(16) -> 15
+src\bf.~ath:69
+191	MOVE 12 -> 15
+192	ENTER 15 -> 203
+src\bf.~ath:70
+193	MOVE 13 -> 16
+194	CONST #1 -> 17
+195	MATH 17 ADD -> 16
+196	MOVE 16 -> 13
+src\bf.~ath:71
+197	MOVE 12 -> 16
+198	FIELD 16.bind
+199	CONST false -> 17
+200	INVOKE 16(17) -> 16
+201	EXIT 15 -> 193
+src\bf.~ath:72
+202	CONST NULL -> 16
+src\bf.~ath:73
+203	MOVE 12 -> 15
+204	FIELD 15.bind
+205	MOVE 3 -> 16
+206	MOVE 4 -> 17
+207	INDEX 16[17]
+208	CONST #93 -> 17
+209	MATH 17 CMPEQ -> 16
+210	INVOKE 15(16) -> 15
+src\bf.~ath:74
+211	MOVE 12 -> 15
+212	ENTER 15 -> 223
+src\bf.~ath:75
+213	MOVE 13 -> 16
+214	CONST #1 -> 17
+215	MATH 17 SUBTRACT -> 16
+216	MOVE 16 -> 13
+src\bf.~ath:76
+217	MOVE 12 -> 16
+218	FIELD 16.bind
+219	CONST false -> 17
+220	INVOKE 16(17) -> 16
+221	EXIT 15 -> 213
+src\bf.~ath:77
+222	CONST NULL -> 16
+src\bf.~ath:78
+223	MOVE 12 -> 15
+224	FIELD 15.bind
+225	MOVE 13 -> 16
+226	CONST #0 -> 17
+227	MATH 17 CMPGT -> 16
+228	INVOKE 15(16) -> 15
+229	EXIT 14 -> 179
+src\bf.~ath:79
+230	CONST NULL -> 15
+src\bf.~ath:81
+231	MOVE 12 -> 14
+232	FIELD 14.bind
+233	MOVE 10 -> 15
+234	CONST #93 -> 16
+235	MATH 16 CMPEQ -> 15
+236	MOVE 11 -> 16
+237	CONST #0 -> 17
+238	MATH 17 CMPNE -> 16
+239	MATH 16 LAND -> 15
+240	INVOKE 14(15) -> 14
+src\bf.~ath:82
+241	CONST #1 -> 14
+242	MOVE 14 -> 13
+src\bf.~ath:83
+243	MOVE 12 -> 14
+244	ENTER 14 -> 297
+src\bf.~ath:84
+245	MOVE 4 -> 15
+246	CONST #1 -> 16
+247	MATH 16 SUBTRACT -> 15
+248	MOVE 15 -> 4
+src\bf.~ath:85
+249	MOVE 12 -> 15
+250	FIELD 15.bind
+251	MOVE 3 -> 16
+252	MOVE 4 -> 17
+253	INDEX 16[17]
+254	CONST #93 -> 17
+255	MATH 17 CMPEQ -> 16
+256	INVOKE 15(16) -> 15
+src\bf.~ath:86
+257	MOVE 12 -> 15
+258	ENTER 15 -> 269
+src\bf.~ath:87
+259	MOVE 13 -> 16
+260	CONST #1 -> 17
+261	MATH 17 ADD -> 16
+262	MOVE 16 -> 13
+src\bf.~ath:88
+263	MOVE 12 -> 16
+264	FIELD 16.bind
+265	CONST false -> 17
+266	INVOKE 16(17) -> 16
+267	EXIT 15 -> 259
+src\bf.~ath:89
+268	CONST NULL -> 16
+src\bf.~ath:90
+269	MOVE 12 -> 15
+270	FIELD 15.bind
+271	MOVE 3 -> 16
+272	MOVE 4 -> 17
+273	INDEX 16[17]
+274	CONST #91 -> 17
+275	MATH 17 CMPEQ -> 16
+276	INVOKE 15(16) -> 15
+src\bf.~ath:91
+277	MOVE 12 -> 15
+278	ENTER 15 -> 289
+src\bf.~ath:92
+279	MOVE 13 -> 16
+280	CONST #1 -> 17
+281	MATH 17 SUBTRACT -> 16
+282	MOVE 16 -> 13
+src\bf.~ath:93
+283	MOVE 12 -> 16
+284	FIELD 16.bind
+285	CONST false -> 17
+286	INVOKE 16(17) -> 16
+287	EXIT 15 -> 279
+src\bf.~ath:94
+288	CONST NULL -> 16
+src\bf.~ath:95
+289	MOVE 12 -> 15
+290	FIELD 15.bind
+291	MOVE 13 -> 16
+292	CONST #0 -> 17
+293	MATH 17 CMPGT -> 16
+294	INVOKE 15(16) -> 15
+295	EXIT 14 -> 245
+src\bf.~ath:96
+296	CONST NULL -> 15
+src\bf.~ath:98
+297	MOVE 4 -> 14
+298	CONST #1 -> 15
+299	MATH 15 ADD -> 14
+300	MOVE 14 -> 4
+src\bf.~ath:99
+301	MOVE 7 -> 14
+302	FIELD 14.bind
+303	CONST false -> 15
+304	INVOKE 14(15) -> 14
+305	EXIT 9 -> 32
+src\bf.~ath:100
+306	MOVE 7 -> 10
+307	FIELD 10.bind
+308	CONST true -> 11
+309	INVOKE 10(11) -> 10
+310	EXIT 8 -> 19
+src\bf.~ath:101
+311	CONST NULL -> 9
+=== Execution ===
+Hello World!
+=== Printout End ===
