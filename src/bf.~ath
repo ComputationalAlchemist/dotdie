@@ -99,3 +99,5 @@ running.bind(TRUE);
         running.bind(FALSE);
     } EXECUTE(running.bind(TRUE));
 } EXECUTE(NULL);
+
+THIS.DIE();

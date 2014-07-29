@@ -12,12 +12,14 @@ public class ExecutionContext {
     public final ExecutionExtension extension;
     private final Stack<Frame> stack = new Stack<>();
     private Object outerReturnValue;
+    private boolean isTerminated = false;
 
     public ExecutionContext(ExecutionExtension extension) {
         this.extension = extension;
     }
 
     public void init(CompiledProcedure procedure, EnergyPacket packet, Object... arguments) {
+        isTerminated = false;
         outerReturnValue = null;
         if (arguments.length != procedure.argumentCount) {
             throw new IllegalArgumentException("Bad number of arguments!");
@@ -59,7 +61,7 @@ public class ExecutionContext {
         }
         int ptr = f.getCodePointer();
         f.execute(this);
-        return f == stack.peek() && f.getCodePointer() > ptr;
+        return !stack.isEmpty() && f == stack.peek() && f.getCodePointer() > ptr;
     }
 
     public void jump(int label) {
@@ -71,7 +73,9 @@ public class ExecutionContext {
     }
 
     public void put(int i, Object o) {
-        stack.peek().put(i, o);
+        if (!stack.isEmpty()) {
+            stack.peek().put(i, o);
+        }
     }
 
     public Object calcImport(String namespace, String name) {
@@ -123,7 +127,7 @@ public class ExecutionContext {
     }
 
     public Object getATHThis() {
-        return this;
+        return new ThisObject(this);
     }
 
     public LoopContext loopContext(Object object) {
@@ -157,5 +161,14 @@ public class ExecutionContext {
 
     public void repeatInstruction() {
         stack.peek().repeatInstruction();
+    }
+
+    public void programRequestedTerminate() {
+        stack.clear();
+        isTerminated = true;
+    }
+
+    public boolean isTerminatedNormally() {
+        return isTerminated;
     }
 }

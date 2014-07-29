@@ -42,6 +42,9 @@ public class Standalone {
         out.println("=== Execution ===");
         long begin = useTiming ? System.currentTimeMillis() : 0;
         while (context.runSweep()) ;
+        if (!context.isTerminatedNormally()) {
+            throw new RuntimeException("Abnormal termination - did not call THIS.DIE()!");
+        }
         if (useTiming) {
             long end = System.currentTimeMillis();
             out.println("=== Timing Statistics ===");

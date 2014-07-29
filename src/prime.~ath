@@ -29,3 +29,5 @@ stdout.print(`. 2');
     looping.bind(index < 150);
 } EXECUTE(NULL);
 stdout.println();
+
+THIS.DIE();

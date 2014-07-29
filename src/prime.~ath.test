@@ -31,6 +31,8 @@ stdout.print(`. 2');
 } EXECUTE(NULL);
 stdout.println();
 
+THIS.DIE();
+
 === Abstract Syntax Tree ===
 COMPOUND
 	IMPORT
@@ -184,8 +186,13 @@ COMPOUND
 			FIELDREF
 				VARIABLE: stdout
 				VARIABLE: println
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				THIS
+				VARIABLE: DIE
 === Compiled Bytecode ===
-Procedure[0/13]: 103
+Procedure[0/13]: 106
 src\prime.~ath:1
 0	IMPORT stream/stdout -> 1
 src\prime.~ath:2
@@ -318,6 +325,10 @@ src\prime.~ath:31
 100	MOVE 1 -> 5
 101	FIELD 5.println
 102	INVOKE 5() -> 5
+src\prime.~ath:33
+103	THIS -> 5
+104	FIELD 5.DIE
+105	INVOKE 5() -> 5
 === Execution ===
 . 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101
 . 103 107 109 113 127 131 137 139 149

@@ -101,6 +101,8 @@ running.bind(TRUE);
     } EXECUTE(running.bind(TRUE));
 } EXECUTE(NULL);
 
+THIS.DIE();
+
 === Abstract Syntax Tree ===
 COMPOUND
 	IMPORT
@@ -538,8 +540,13 @@ COMPOUND
 						TRUE
 		EXPRESSION
 			NULL
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				THIS
+				VARIABLE: DIE
 === Compiled Bytecode ===
-Procedure[0/18]: 312
+Procedure[0/18]: 315
 src\bf.~ath:1
 0	IMPORT stream/stdin -> 1
 1	IMPORT stream/stdout -> 2
@@ -932,6 +939,10 @@ src\bf.~ath:100
 310	EXIT 8 -> 19
 src\bf.~ath:101
 311	CONST NULL -> 9
+src\bf.~ath:103
+312	THIS -> 8
+313	FIELD 8.DIE
+314	INVOKE 8() -> 8
 === Execution ===
 Hello World!
 === Printout End ===

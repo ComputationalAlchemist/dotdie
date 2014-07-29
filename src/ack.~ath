@@ -16,3 +16,5 @@ U~F ack(ack, m, n) {
 import stream stdout;
 stdout.println(`Ackermann: ');
 stdout.println(ack(ack, 3, 5));
+
+THIS.DIE();

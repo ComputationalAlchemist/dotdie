@@ -17,8 +17,13 @@ public class Tests {
                         System.out.print("Cannot find test file: " + testFile + " - would you like to create a log now? (y/n) ");
                         if (new Scanner(System.in).nextLine().toLowerCase().startsWith("y")) {
                             System.out.println("Creating.");
-                            try (PrintStream outputStream = new PrintStream(new FileOutputStream(testFile))) {
-                                Standalone.execute(test.getPath(), false, outputStream, testInputStream);
+                            try {
+                                try (PrintStream outputStream = new PrintStream(new FileOutputStream(testFile))) {
+                                    Standalone.execute(test.getPath(), false, outputStream, testInputStream);
+                                }
+                            } catch (Throwable thr) {
+                                testFile.delete();
+                                throw thr;
                             }
                             continue;
                         } else {
