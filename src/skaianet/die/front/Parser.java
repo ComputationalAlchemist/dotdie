@@ -38,7 +38,7 @@ public class Parser {
         return result;
     }
 
-    private Statement parseStatement(boolean nullable, boolean canBeReturn) throws ParsingException {
+    private Statement parseStatement(boolean nullable, boolean canBeReturn, boolean needsSemicolon) throws ParsingException {
         String traceInfo = tokenizer.traceInfo();
         switch (accept(Token.OPEN_CURLY, Token.SEMICOLON, Token.ATH, Token.IMPORT, Token.UTILDEF, Token.RETURN)) {
             case OPEN_CURLY: {
@@ -52,9 +52,16 @@ public class Parser {
                 expect(Token.OPEN_PAREN);
                 Expression condition = parseExpression(false);
                 expect(Token.CLOSE_PAREN);
-                Statement stmt = parseStatement(false, false);
+                Statement stmt = parseStatement(false, false, true);
                 expect(Token.EXECUTE);
-                Statement exec = parseStatement(false, false);
+                expect(Token.OPEN_PAREN);
+                Statement exec = parseStatement(false, false, false);
+                expect(Token.CLOSE_PAREN);
+                if (needsSemicolon) {
+                    expect(Token.SEMICOLON);
+                } else {
+                    accept(Token.SEMICOLON);
+                }
                 return ATHLOOP.make(traceInfo, condition, stmt, exec);
             }
             case IMPORT: {
@@ -62,7 +69,11 @@ public class Parser {
                 Expression identifier = VARIABLE.make(traceInfo, assoc);
                 expect(Token.IDENTIFIER);
                 Expression spec = VARIABLE.make(traceInfo, assoc);
-                expect(Token.SEMICOLON);
+                if (needsSemicolon) {
+                    expect(Token.SEMICOLON);
+                } else {
+                    accept(Token.SEMICOLON);
+                }
                 return IMPORT.make(traceInfo, identifier, spec);
             }
             case UTILDEF: {
@@ -82,7 +93,7 @@ public class Parser {
                     args = new Expression[0];
                 }
                 expect(Token.CLOSE_PAREN);
-                Statement stmt = parseStatement(false, true);
+                Statement stmt = parseStatement(false, true, true);
                 return UTILDEF.make(traceInfo, name, ARGLIST.make(traceInfo, args), stmt);
             }
             case RETURN: {
@@ -90,7 +101,11 @@ public class Parser {
                     throw new ParsingException("Found RETURN where disallowed!");
                 }
                 Expression expression = parseExpression(false);
-                expect(Token.SEMICOLON);
+                if (needsSemicolon) {
+                    expect(Token.SEMICOLON);
+                } else {
+                    accept(Token.SEMICOLON);
+                }
                 return RETURN.make(traceInfo, expression);
             }
             default: {
@@ -103,14 +118,22 @@ public class Parser {
                             Token.SETLSHIFT, Token.SETRLSHIFT, Token.SETRASHIFT, Token.SETAND, Token.SETOR, Token.SETXOR);
                     if (t != Token.NONE) {
                         Expression param = parseExpression(false);
-                        expect(Token.SEMICOLON);
+                        if (needsSemicolon) {
+                            expect(Token.SEMICOLON);
+                        } else {
+                            accept(Token.SEMICOLON);
+                        }
                         if (t != Token.SET) {
                             param = t.getExpressionType().make(traceInfo, expression, param);
                         }
                         return ASSIGN.make(traceInfo, expression, param);
                     }
                 }
-                expect(Token.SEMICOLON);
+                if (needsSemicolon) {
+                    expect(Token.SEMICOLON);
+                } else {
+                    accept(Token.SEMICOLON);
+                }
                 return EXPRESSION.make(traceInfo, expression);
             }
         }
@@ -191,7 +214,7 @@ public class Parser {
         String traceInfo = tokenizer.traceInfo();
         ArrayList<Statement> statements = new ArrayList<>();
         while (true) {
-            Statement next = parseStatement(true, canBeReturn);
+            Statement next = parseStatement(true, canBeReturn, true);
             if (next == null) {
                 return COMPOUND.make(traceInfo, statements);
             }
