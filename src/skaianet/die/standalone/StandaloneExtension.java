@@ -1,10 +1,16 @@
 package skaianet.die.standalone;
 
+import skaianet.die.back.ATHAlive;
+import skaianet.die.back.ATHcessible;
 import skaianet.die.back.EmptyExtension;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.front.ColoredIdentifier;
+import skaianet.die.gui.Label;
+import skaianet.die.gui.Panel;
+import skaianet.die.gui.Window;
 
 import java.lang.reflect.Array;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StandaloneExtension extends EmptyExtension {
     @Override
@@ -31,6 +37,41 @@ public class StandaloneExtension extends EmptyExtension {
                 return new TuringTapeHead();
             case "bit":
                 return new Bit();
+            case "window":
+                return new Window(name.name);
+            case "label":
+                return new Label(name.name);
+            case "panel":
+                return new Panel();
+            case "dream":
+                final int length = name.name.length();
+                return new ATHAlive() {
+                    private final AtomicInteger ctr = new AtomicInteger();
+
+                    @ATHcessible
+                    public void sleep() throws InterruptedException {
+                        ctr.incrementAndGet();
+                        try {
+                            Thread.sleep(length);
+                        } finally {
+                            ctr.decrementAndGet();
+                        }
+                    }
+
+                    @Override
+                    public boolean isAlive() {
+                        return ctr.get() > 0;
+                    }
+
+                    @Override
+                    public double getEnergy() {
+                        return 0;
+                    }
+                };
+            case "color":
+                return namespace.color;
+            case "uncolor":
+                return new Uncolor(namespace.color);
             default:
                 return super.calcImport(namespace, name);
         }

@@ -1,0 +1,53 @@
+
+import uncolor bgcolor;
+import uncolor bdcolor;
+import uncolor fgcolor;
+
+bgcolor.red = 255;
+bgcolor.green = 181;
+bgcolor.blue = 0;
+
+bdcolor.red = 255;
+bdcolor.green = 247;
+bdcolor.blue = 0;
+
+fgcolor.red = 255;
+fgcolor.green = 255;
+fgcolor.blue = 255;
+
+import window TestWindow;
+
+TestWindow.width = 232;
+TestWindow.height = 346;
+TestWindow.background = bgcolor.get();
+TestWindow.border = bdcolor.get();
+TestWindow.borderWidth = 2;
+// TestWindow.decorated = false;
+
+import label title;
+
+title.x = 4;
+title.scale = 2;
+title.color = fgcolor.get();
+title.text = `~ATHTERCHUM v1';
+TestWindow.add(title);
+
+import panel TitlePanel;
+
+TitlePanel.x = 12;
+TitlePanel.y = 32;
+TitlePanel.width = 209;
+TitlePanel.height = 55;
+TitlePanel.border = bdcolor.get();
+TitlePanel.borderWidth = 2;
+TestWindow.add(TitlePanel);
+
+TestWindow.start();
+
+import dream HalfLength;
+
+~ATH(TestWindow) {
+    HalfLength.sleep();
+} EXECUTE(NULL);
+
+THIS.DIE();

@@ -135,9 +135,9 @@ public class Parser {
                 if (expression == null) {
                     return null;
                 }
-                if (expression.type == VARIABLE) {
+                if (isAssignableValue(expression)) {
                     pull();
-                    thread = color; // Use color from the assignment operator.
+                    Color lthread = color; // Use color from the assignment operator.
                     Token t = accept(Token.SET, Token.SETADD, Token.SETSUBTRACT, Token.SETMULTIPLY, Token.SETDIVIDE, Token.SETREMAINDER,
                             Token.SETLSHIFT, Token.SETRLSHIFT, Token.SETRASHIFT, Token.SETAND, Token.SETOR, Token.SETXOR);
                     if (t != Token.NONE) {
@@ -150,7 +150,7 @@ public class Parser {
                         if (t != Token.SET) {
                             param = t.getExpressionType().make(traceInfo, expression, param);
                         }
-                        return ASSIGN.make(traceInfo, thread, expression, param);
+                        return ASSIGN.make(traceInfo, lthread, expression, param);
                     }
                 }
                 if (needsSemicolon) {
@@ -163,6 +163,10 @@ public class Parser {
         }
     }
 
+    private boolean isAssignableValue(Expression expression) {
+        return expression.type == VARIABLE || expression.type == FIELDREF;
+    }
+
     private Expression parseExpression(boolean nullable) throws ParsingException {
         return parseExpression(operators.length, nullable);
     }
@@ -172,9 +176,11 @@ public class Parser {
         if (level < 0) {
             throw new IllegalArgumentException("Bad precedence level: " + level);
         } else if (level == 0) {
-            switch (accept(Token.INTEGER, Token.STRING, Token.IDENTIFIER, Token.OPEN_PAREN, Token.OPEN_SQUARE, Token.NULL, Token.TRUE, Token.FALSE, Token.THIS)) {
+            switch (accept(Token.INTEGER, Token.DOUBLE, Token.STRING, Token.IDENTIFIER, Token.OPEN_PAREN, Token.OPEN_SQUARE, Token.NULL, Token.TRUE, Token.FALSE, Token.THIS)) {
                 case INTEGER:
                     return CONST_INTEGER.make(traceInfo, assoc);
+                case DOUBLE:
+                    return CONST_DOUBLE.make(traceInfo, assoc);
                 case STRING:
                     return CONST_STRING.make(traceInfo, assoc);
                 case IDENTIFIER:

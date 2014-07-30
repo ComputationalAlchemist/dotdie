@@ -14,7 +14,7 @@ public class Color {
 
     public Color(int red, int green, int blue) {
         this((byte) red, (byte) green, (byte) blue);
-        if (this.red != red || this.green != green || this.blue != blue) {
+        if ((this.red & 0xFF) != red || (this.green & 0xFF) != green || (this.blue & 0xFF) != blue) {
             throw new IllegalArgumentException("Arguments must fit in bytes!");
         }
     }
@@ -65,5 +65,9 @@ public class Color {
 
     private boolean isSameColor(Color o) {
         return red == o.red && green == o.green && blue == o.blue;
+    }
+
+    public java.awt.Color toAWTColor() {
+        return new java.awt.Color(red & 0xFF, green & 0xFF, blue & 0xFF);
     }
 }

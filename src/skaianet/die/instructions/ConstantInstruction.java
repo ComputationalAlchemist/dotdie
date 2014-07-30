@@ -27,6 +27,10 @@ public class ConstantInstruction extends Instruction {
         this(thread, target, Type.PROCEDURE, constant);
     }
 
+    public ConstantInstruction(Color thread, int target, double constant) {
+        this(thread, target, Type.DOUBLE, constant);
+    }
+
     public ConstantInstruction(Color thread, int target, Type type, Object value) {
         super(thread);
         this.target = target;
@@ -49,6 +53,9 @@ public class ConstantInstruction extends Instruction {
             case INTEGER:
                 out.println("CONST #" + value + " -> " + target);
                 break;
+            case DOUBLE:
+                out.println("CONST ~" + value + " -> " + target);
+                break;
             case PROCEDURE:
                 out.println("CONST PROCEDURE -> " + target);
                 ((CompiledProcedure) value).print(indent + 1, out);
@@ -64,6 +71,6 @@ public class ConstantInstruction extends Instruction {
     }
 
     public static enum Type {
-        NULL, BOOLEAN, STRING, PROCEDURE, INTEGER
+        NULL, BOOLEAN, STRING, PROCEDURE, DOUBLE, INTEGER
     }
 }

@@ -37,8 +37,9 @@ class JavaMethodContext {
                 }
             }
             try {
+                m.setAccessible(true);
                 return m.invoke(object, arguments);
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException | SecurityException e) {
                 throw new RuntimeException("Expected @ATHcessible method " + object.getClass() + "." + method + " to be accessible!");
             } catch (InvocationTargetException e) {
                 throw new RuntimeException(e);

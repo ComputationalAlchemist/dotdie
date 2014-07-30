@@ -12,12 +12,17 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
-    public boolean fieldAccessible(Class<?> class_, ColoredIdentifier field, Field javaField, Object object) {
+    public boolean fieldAccessible(Class<?> class_, ColoredIdentifier field, Field javaField, Object object, boolean isWrite) {
         return false;
     }
 
     @Override
     public Object fieldRef(Object object, ColoredIdentifier field, ExecutionContext context) {
+        throw new IllegalArgumentException("No such field " + field + " on " + object);
+    }
+
+    @Override
+    public void fieldPut(Object object, ColoredIdentifier field, ExecutionContext context, Object value) {
         throw new IllegalArgumentException("No such field " + field + " on " + object);
     }
 

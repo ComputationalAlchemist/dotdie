@@ -8,9 +8,11 @@ import java.lang.reflect.Method;
 public interface ExecutionExtension {
     Object arrayRef(Object array, Object index);
 
-    boolean fieldAccessible(Class<?> class_, ColoredIdentifier field, Field javaField, Object object);
+    boolean fieldAccessible(Class<?> class_, ColoredIdentifier field, Field javaField, Object object, boolean isWrite);
 
     Object fieldRef(Object object, ColoredIdentifier field, ExecutionContext context);
+
+    void fieldPut(Object object, ColoredIdentifier field, ExecutionContext context, Object value);
 
     boolean methodAccessible(Class<?> class_, ColoredIdentifier method, Method javaMethod, Object object);
 

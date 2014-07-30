@@ -124,10 +124,12 @@ class Tokenizer {
             return STRING;
         } else {
             StringBuilder ibuf = new StringBuilder();
-            boolean isInt = true;
+            boolean isInt = true, hadDot = false, isDouble = true;
             while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
-                    || c == '~' || c == '_' || c == '#' || c == '$') {
+                    || c == '~' || c == '_' || c == '#' || c == '$' || (isDouble && !hadDot && c == '.')) {
                 isInt &= (c >= '0' && c <= '9');
+                isDouble &= (c >= '0' && c <= '9') || (c == '.' && !hadDot);
+                hadDot |= c == '.';
                 ibuf.append(c);
                 if (isEOF()) {
                     index++; // To counteract the index-- that will happen momentarily.
@@ -140,7 +142,10 @@ class Tokenizer {
                 throw new ParsingException("Unhandled character: " + nextChar());
             }
             String stringValue = ibuf.toString();
-            if (isInt) {
+            if (hadDot && isDouble) {
+                associated = Double.parseDouble(stringValue);
+                return DOUBLE;
+            } else if (isInt) {
                 associated = Integer.parseInt(stringValue);
                 return INTEGER;
             } else {

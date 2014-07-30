@@ -88,12 +88,7 @@ public class Compiler {
                     statement.checkSize(2);
                     int temp = nextFreeVar;
                     compileExpression((Expression) statement.get(1), scope, statement.getThread(executionThread));
-                    if (scope.isDefined((ColoredIdentifier) statement.get(0).getAssoc())) {
-                        output.add(new MoveInstruction(statement.getThread(executionThread), temp, scope.get((ColoredIdentifier) statement.get(0).getAssoc())));
-                        freeVar(temp);
-                    } else {
-                        scope.defineVar((ColoredIdentifier) statement.get(0).getAssoc(), temp);
-                    }
+                    assignToExpression((Expression) statement.get(0), scope, statement.getThread(executionThread), temp);
                     break;
                 }
                 case UTILDEF: {
@@ -127,6 +122,26 @@ public class Compiler {
         } catch (CompilingException ex) {
             ex.addTrace(statement.getTraceInfo());
             throw ex;
+        }
+    }
+
+    private void assignToExpression(Expression target, Scope scope, Color thread, int source) throws CompilingException {
+        if (target.type == ExpressionType.VARIABLE) {
+            if (scope.isDefined((ColoredIdentifier) target.getAssoc())) {
+                output.add(new MoveInstruction(thread, source, scope.get((ColoredIdentifier) target.getAssoc())));
+                freeVar(source);
+            } else {
+                scope.defineVar((ColoredIdentifier) target.getAssoc(), source);
+            }
+        } else if (target.type == ExpressionType.FIELDREF) {
+            target.checkSize(2);
+            int objectId = nextFreeVar;
+            compileExpression((Expression) target.get(0), scope, thread);
+            output.add(new FieldStoreInstruction(thread, objectId, (ColoredIdentifier) target.get(1).getAssoc(), source));
+            freeVar(objectId);
+            freeVar(source);
+        } else {
+            throw new CompilingException("Unassignable expression type: " + target.type);
         }
     }
 
@@ -188,6 +203,9 @@ public class Compiler {
                     return;
                 case CONST_INTEGER:
                     output.add(new ConstantInstruction(executionThread, varOut, (Integer) expression.getAssoc()));
+                    return;
+                case CONST_DOUBLE:
+                    output.add(new ConstantInstruction(executionThread, varOut, (Double) expression.getAssoc()));
                     return;
                 case CONST_STRING:
                     output.add(new ConstantInstruction(executionThread, varOut, (String) expression.getAssoc()));

@@ -3,7 +3,7 @@ package skaianet.die.front;
 import skaianet.die.ast.ExpressionType;
 
 public enum Token {
-    NONE, OPEN_CURLY, CLOSE_CURLY, SEMICOLON, INTEGER, STRING, IDENTIFIER, OPEN_PAREN, CLOSE_PAREN,
+    NONE, OPEN_CURLY, CLOSE_CURLY, SEMICOLON, INTEGER, DOUBLE, STRING, IDENTIFIER, OPEN_PAREN, CLOSE_PAREN,
     EXECUTE, DOT, OPEN_SQUARE, CLOSE_SQUARE, ATH, COMMA, IMPORT, THIS, UTILDEF, RETURN, BIFURCATE,
     // Arithmetic/logical infix operators!
     MULTIPLY(ExpressionType.MULTIPLY), DIVIDE(ExpressionType.DIVIDE), REMAINDER(ExpressionType.REMAINDER),

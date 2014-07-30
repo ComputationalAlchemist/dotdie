@@ -21,11 +21,17 @@ public class Standalone {
     public static InputStream standaloneInput;
 
     public static void main(String[] args) throws IOException, ParsingException, CompilingException {
-        String filename = "src/skaianet/die/tests/mobius.~ath";
+        String filename = "src/skaianet/die/examples/gui.~ath";
         try {
-            execute(filename, true, System.out, System.in);
-        } finally {
-            System.out.flush();
+            try {
+                execute(filename, true, System.out, System.in);
+            } finally {
+                System.out.flush();
+            }
+            System.exit(0);
+        } catch (Throwable thr) {
+            thr.printStackTrace();
+            System.exit(1);
         }
     }
 

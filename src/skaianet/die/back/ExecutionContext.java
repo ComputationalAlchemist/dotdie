@@ -105,7 +105,7 @@ public class ExecutionContext {
     public Object fieldRef(Object object, ColoredIdentifier field) {
         try {
             Field javaField = object.getClass().getField(field.name);
-            if (javaField.getAnnotation(ATHcessible.class) != null || extension.fieldAccessible(object.getClass(), field, javaField, object)) {
+            if (javaField.getAnnotation(ATHcessible.class) != null || extension.fieldAccessible(object.getClass(), field, javaField, object, false)) {
                 return javaField.get(object);
             }
         } catch (NoSuchFieldException ignored) {
@@ -119,6 +119,21 @@ public class ExecutionContext {
             }
         }
         return extension.fieldRef(object, field, this);
+    }
+
+    public void fieldPut(Object object, ColoredIdentifier field, Object value) {
+        try {
+            Field javaField = object.getClass().getField(field.name);
+            if (javaField.getAnnotation(ATHcessible.class) != null || extension.fieldAccessible(object.getClass(), field, javaField, object, true)) {
+                javaField.set(object, value);
+                return;
+            }
+        } catch (NoSuchFieldException ignored) {
+            // Fall through.
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Expected @ATHcessible field " + object.getClass() + "." + field + " to be accessible!");
+        }
+        extension.fieldPut(object, field, this, value);
     }
 
     public Object invoke(Object procedure, Object[] arguments) {
