@@ -3,21 +3,23 @@ package skaianet.die.instructions;
 import skaianet.die.back.EnergyPacket;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.back.LoopContext;
+import skaianet.die.front.Color;
 
 import java.io.PrintStream;
 
-public class ExitLoopInstruction implements Instruction {
+public class ExitLoopInstruction extends Instruction {
     private final int context, parentEnergy;
     private final Integer loopTop;
 
-    public ExitLoopInstruction(int context, int parentEnergy, int loopTop) {
+    public ExitLoopInstruction(Color thread, int context, int parentEnergy, int loopTop) {
+        super(thread);
         this.context = context;
         this.parentEnergy = parentEnergy;
         this.loopTop = loopTop;
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         out.println("EXIT " + context + " -> " + loopTop);
     }
 

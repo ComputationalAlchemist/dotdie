@@ -1,22 +1,25 @@
 package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
+import skaianet.die.front.Color;
+import skaianet.die.front.ColoredIdentifier;
 
 import java.io.PrintStream;
 
-public class ImportInstruction implements Instruction {
+public class ImportInstruction extends Instruction {
     private final int target;
-    private final String namespace;
-    private final String name;
+    private final ColoredIdentifier namespace;
+    private final ColoredIdentifier name;
 
-    public ImportInstruction(int target, String namespace, String name) {
+    public ImportInstruction(Color thread, int target, ColoredIdentifier namespace, ColoredIdentifier name) {
+        super(thread);
         this.target = target;
         this.namespace = namespace;
         this.name = name;
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         out.println("IMPORT " + namespace + "/" + name + " -> " + target);
     }
 

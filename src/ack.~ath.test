@@ -23,216 +23,218 @@ THIS.DIE();
 === Abstract Syntax Tree ===
 COMPOUND
 	UTILDEF
-		VARIABLE: ack
+		VARIABLE: @000000@ack
 		ARGLIST
-			VARIABLE: ack
-			VARIABLE: m
-			VARIABLE: n
+			VARIABLE: @000000@ack
+			VARIABLE: @000000@m
+			VARIABLE: @000000@n
 		COMPOUND_RETURN
 			ASSIGN
-				VARIABLE: out
+				VARIABLE: @000000@out
 				ADD
-					VARIABLE: n
+					VARIABLE: @000000@n
 					CONST_INTEGER: 1
 			IMPORT
-				VARIABLE: bit
-				VARIABLE: iloop
+				VARIABLE: @000000@bit
+				VARIABLE: @000000@iloop
 			EXPRESSION
 				INVOKE
 					FIELDREF
-						VARIABLE: iloop
-						VARIABLE: bind
+						VARIABLE: @000000@iloop
+						VARIABLE: @000000@bind
 					LAND
 						CMPGT
-							VARIABLE: m
+							VARIABLE: @000000@m
 							CONST_INTEGER: 0
 						CMPEQ
-							VARIABLE: n
+							VARIABLE: @000000@n
 							CONST_INTEGER: 0
 			ATHLOOP
-				VARIABLE: iloop
+				VARIABLE: @000000@iloop
 				COMPOUND
 					ASSIGN
-						VARIABLE: out
+						VARIABLE: @000000@out
 						INVOKE
-							VARIABLE: ack
-							VARIABLE: ack
+							VARIABLE: @000000@ack
+							VARIABLE: @000000@ack
 							SUBTRACT
-								VARIABLE: m
+								VARIABLE: @000000@m
 								CONST_INTEGER: 1
 							CONST_INTEGER: 1
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: iloop
-								VARIABLE: bind
+								VARIABLE: @000000@iloop
+								VARIABLE: @000000@bind
 							FALSE
 				EXPRESSION
 					NULL
 			EXPRESSION
 				INVOKE
 					FIELDREF
-						VARIABLE: iloop
-						VARIABLE: bind
+						VARIABLE: @000000@iloop
+						VARIABLE: @000000@bind
 					LAND
 						CMPGT
-							VARIABLE: m
+							VARIABLE: @000000@m
 							CONST_INTEGER: 0
 						CMPGT
-							VARIABLE: n
+							VARIABLE: @000000@n
 							CONST_INTEGER: 0
 			ATHLOOP
-				VARIABLE: iloop
+				VARIABLE: @000000@iloop
 				COMPOUND
 					ASSIGN
-						VARIABLE: out
+						VARIABLE: @000000@out
 						INVOKE
-							VARIABLE: ack
-							VARIABLE: ack
+							VARIABLE: @000000@ack
+							VARIABLE: @000000@ack
 							SUBTRACT
-								VARIABLE: m
+								VARIABLE: @000000@m
 								CONST_INTEGER: 1
 							INVOKE
-								VARIABLE: ack
-								VARIABLE: ack
-								VARIABLE: m
+								VARIABLE: @000000@ack
+								VARIABLE: @000000@ack
+								VARIABLE: @000000@m
 								SUBTRACT
-									VARIABLE: n
+									VARIABLE: @000000@n
 									CONST_INTEGER: 1
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: iloop
-								VARIABLE: bind
+								VARIABLE: @000000@iloop
+								VARIABLE: @000000@bind
 							FALSE
 				EXPRESSION
 					NULL
 			RETURN
-				VARIABLE: out
+				VARIABLE: @000000@out
 	IMPORT
-		VARIABLE: stream
-		VARIABLE: stdout
+		VARIABLE: @000000@stream
+		VARIABLE: @000000@stdout
 	EXPRESSION
 		INVOKE
 			FIELDREF
-				VARIABLE: stdout
-				VARIABLE: println
+				VARIABLE: @000000@stdout
+				VARIABLE: @000000@println
 			CONST_STRING: Ackermann: 
 	EXPRESSION
 		INVOKE
 			FIELDREF
-				VARIABLE: stdout
-				VARIABLE: println
+				VARIABLE: @000000@stdout
+				VARIABLE: @000000@println
 			INVOKE
-				VARIABLE: ack
-				VARIABLE: ack
+				VARIABLE: @000000@ack
+				VARIABLE: @000000@ack
 				CONST_INTEGER: 3
 				CONST_INTEGER: 5
 	EXPRESSION
 		INVOKE
 			FIELDREF
-				THIS
-				VARIABLE: DIE
+				THIS: @000000@
+				VARIABLE: @000000@DIE
 === Compiled Bytecode ===
 Procedure[0/8]: 17
 src\ack.~ath:1
-0	CONST PROCEDURE -> 1
+0	@000000@	CONST PROCEDURE -> 1
 	Procedure[3/15]: 63
 	src\ack.~ath:2
-	0		MOVE 3 -> 4
-	1		CONST #1 -> 5
-	2		MATH 5 ADD -> 4
-	3		IMPORT bit/iloop -> 5
+	0		@000000@	MOVE 3 -> 4
+	1		@000000@	CONST #1 -> 5
+	2		@000000@	MATH 5 ADD -> 4
+	3		@000000@	IMPORT @000000@bit/@000000@iloop -> 5
 	src\ack.~ath:4
-	4		MOVE 5 -> 6
-	5		FIELD 6.bind
-	6		MOVE 2 -> 7
-	7		CONST #0 -> 8
-	8		MATH 8 CMPGT -> 7
-	9		MOVE 3 -> 8
-	10		CONST #0 -> 9
-	11		MATH 9 CMPEQ -> 8
-	12		MATH 8 LAND -> 7
-	13		INVOKE 6(7) -> 6
+	4		@000000@	MOVE 5 -> 6
+	5		@000000@	FIELD 6.@000000@bind
+	6		@000000@	MOVE 2 -> 7
+	7		@000000@	CONST #0 -> 8
+	8		@000000@	MATH 8 CMPGT -> 7
+	9		@000000@	MOVE 3 -> 8
+	10		@000000@	CONST #0 -> 9
+	11		@000000@	MATH 9 CMPEQ -> 8
+	12		@000000@	MATH 8 LAND -> 7
+	13		@000000@	INVOKE 6(7) -> 6
 	src\ack.~ath:5
-	14		MOVE 5 -> 6
-	15		ENTER 6 -> 30
+	14		@000000@	MOVE 5 -> 6
+	15		@000000@	ENTER 6 -> 30
 	src\ack.~ath:6
-	16		MOVE 1 -> 7
-	17		MOVE 1 -> 8
-	18		MOVE 2 -> 9
-	19		CONST #1 -> 10
-	20		MATH 10 SUBTRACT -> 9
-	21		CONST #1 -> 10
-	22		INVOKE 7(8, 9, 10) -> 7
-	23		MOVE 7 -> 4
+	16		@000000@	MOVE 1 -> 7
+	17		@000000@	MOVE 1 -> 8
+	18		@000000@	MOVE 2 -> 9
+	19		@000000@	CONST #1 -> 10
+	20		@000000@	MATH 10 SUBTRACT -> 9
+	21		@000000@	CONST #1 -> 10
+	22		@000000@	INVOKE 7(8, 9, 10) -> 7
+	23		@000000@	MOVE 7 -> 4
 	src\ack.~ath:7
-	24		MOVE 5 -> 7
-	25		FIELD 7.bind
-	26		CONST false -> 8
-	27		INVOKE 7(8) -> 7
-	28		EXIT 6 -> 16
+	24		@000000@	MOVE 5 -> 7
+	25		@000000@	FIELD 7.@000000@bind
+	26		@000000@	CONST false -> 8
+	27		@000000@	INVOKE 7(8) -> 7
+	28		@000000@	EXIT 6 -> 16
 	src\ack.~ath:8
-	29		CONST NULL -> 7
+	29		@000000@	CONST NULL -> 7
 	src\ack.~ath:9
-	30		MOVE 5 -> 6
-	31		FIELD 6.bind
-	32		MOVE 2 -> 7
-	33		CONST #0 -> 8
-	34		MATH 8 CMPGT -> 7
-	35		MOVE 3 -> 8
-	36		CONST #0 -> 9
-	37		MATH 9 CMPGT -> 8
-	38		MATH 8 LAND -> 7
-	39		INVOKE 6(7) -> 6
+	30		@000000@	MOVE 5 -> 6
+	31		@000000@	FIELD 6.@000000@bind
+	32		@000000@	MOVE 2 -> 7
+	33		@000000@	CONST #0 -> 8
+	34		@000000@	MATH 8 CMPGT -> 7
+	35		@000000@	MOVE 3 -> 8
+	36		@000000@	CONST #0 -> 9
+	37		@000000@	MATH 9 CMPGT -> 8
+	38		@000000@	MATH 8 LAND -> 7
+	39		@000000@	INVOKE 6(7) -> 6
 	src\ack.~ath:10
-	40		MOVE 5 -> 6
-	41		ENTER 6 -> 62
+	40		@000000@	MOVE 5 -> 6
+	41		@000000@	ENTER 6 -> 62
 	src\ack.~ath:11
-	42		MOVE 1 -> 7
-	43		MOVE 1 -> 8
-	44		MOVE 2 -> 9
-	45		CONST #1 -> 10
-	46		MATH 10 SUBTRACT -> 9
-	47		MOVE 1 -> 10
-	48		MOVE 1 -> 11
-	49		MOVE 2 -> 12
-	50		MOVE 3 -> 13
-	51		CONST #1 -> 14
-	52		MATH 14 SUBTRACT -> 13
-	53		INVOKE 10(11, 12, 13) -> 10
-	54		INVOKE 7(8, 9, 10) -> 7
-	55		MOVE 7 -> 4
+	42		@000000@	MOVE 1 -> 7
+	43		@000000@	MOVE 1 -> 8
+	44		@000000@	MOVE 2 -> 9
+	45		@000000@	CONST #1 -> 10
+	46		@000000@	MATH 10 SUBTRACT -> 9
+	47		@000000@	MOVE 1 -> 10
+	48		@000000@	MOVE 1 -> 11
+	49		@000000@	MOVE 2 -> 12
+	50		@000000@	MOVE 3 -> 13
+	51		@000000@	CONST #1 -> 14
+	52		@000000@	MATH 14 SUBTRACT -> 13
+	53		@000000@	INVOKE 10(11, 12, 13) -> 10
+	54		@000000@	INVOKE 7(8, 9, 10) -> 7
+	55		@000000@	MOVE 7 -> 4
 	src\ack.~ath:12
-	56		MOVE 5 -> 7
-	57		FIELD 7.bind
-	58		CONST false -> 8
-	59		INVOKE 7(8) -> 7
-	60		EXIT 6 -> 42
+	56		@000000@	MOVE 5 -> 7
+	57		@000000@	FIELD 7.@000000@bind
+	58		@000000@	CONST false -> 8
+	59		@000000@	INVOKE 7(8) -> 7
+	60		@000000@	EXIT 6 -> 42
 	src\ack.~ath:13
-	61		CONST NULL -> 7
+	61		@000000@	CONST NULL -> 7
 	src\ack.~ath:14
-	62		MOVE 4 -> 6
+	62		@000000@	MOVE 4 -> 6
+	Return: 6
 src\ack.~ath:15
-1	IMPORT stream/stdout -> 2
+1	@000000@	IMPORT @000000@stream/@000000@stdout -> 2
 src\ack.~ath:17
-2	MOVE 2 -> 3
-3	FIELD 3.println
-4	CONST `Ackermann: ' -> 4
-5	INVOKE 3(4) -> 3
+2	@000000@	MOVE 2 -> 3
+3	@000000@	FIELD 3.@000000@println
+4	@000000@	CONST `Ackermann: ' -> 4
+5	@000000@	INVOKE 3(4) -> 3
 src\ack.~ath:18
-6	MOVE 2 -> 3
-7	FIELD 3.println
-8	MOVE 1 -> 4
-9	MOVE 1 -> 5
-10	CONST #3 -> 6
-11	CONST #5 -> 7
-12	INVOKE 4(5, 6, 7) -> 4
-13	INVOKE 3(4) -> 3
+6	@000000@	MOVE 2 -> 3
+7	@000000@	FIELD 3.@000000@println
+8	@000000@	MOVE 1 -> 4
+9	@000000@	MOVE 1 -> 5
+10	@000000@	CONST #3 -> 6
+11	@000000@	CONST #5 -> 7
+12	@000000@	INVOKE 4(5, 6, 7) -> 4
+13	@000000@	INVOKE 3(4) -> 3
 src\ack.~ath:20
-14	THIS -> 3
-15	FIELD 3.DIE
-16	INVOKE 3() -> 3
+14	@000000@	THIS @000000@ -> 3
+15	@000000@	FIELD 3.@000000@DIE
+16	@000000@	INVOKE 3() -> 3
+Return: null
 === Execution ===
 Ackermann: 
 253

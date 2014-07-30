@@ -1,9 +1,8 @@
 package skaianet.die.middle;
 
-import skaianet.die.ast.Expression;
-import skaianet.die.ast.GenericNode;
-import skaianet.die.ast.Statement;
-import skaianet.die.ast.StatementType;
+import skaianet.die.ast.*;
+import skaianet.die.front.Color;
+import skaianet.die.front.ColoredIdentifier;
 import skaianet.die.instructions.*;
 
 import java.util.ArrayList;
@@ -14,21 +13,23 @@ public class Compiler {
     private HashMap<Integer, String> debugging;
     private int nextFreeVar, maxVars;
 
-    public CompiledProcedure compile(Statement procedure, String[] arguments) throws CompilingException {
+    // TODO: Find all places where identifiers are assumed to be strings and replace with ColoredIdentifier.
+
+    public CompiledProcedure compile(Statement procedure, ColoredIdentifier[] arguments) throws CompilingException {
         if (!output.isEmpty()) {
             throw new CompilingException("Malformed state of Compiler!");
         }
         debugging = new HashMap<>();
         Scope outermost = new Scope(0);
         maxVars = nextFreeVar = 1; // First variable is always the root energy context.
-        for (String argument : arguments) {
+        for (ColoredIdentifier argument : arguments) {
             outermost.defineVar(argument, nextFreeVar++);
         }
         Integer returned;
         if (procedure.type == StatementType.RETURN || procedure.type == StatementType.COMPOUND_RETURN) {
-            returned = compileReturnStatement(procedure, outermost);
+            returned = compileReturnStatement(procedure, outermost, null);
         } else {
-            compileStatement(procedure, outermost);
+            compileStatement(procedure, outermost, null);
             returned = null;
         }
 
@@ -37,7 +38,7 @@ public class Compiler {
         return new CompiledProcedure(arguments.length, maxVars, instructions, debugging, returned);
     }
 
-    private void compileStatement(Statement statement, Scope scope) throws CompilingException {
+    private void compileStatement(Statement statement, Scope scope, Color executionThread) throws CompilingException {
         debugging.put(label(), statement.getTraceInfo());
         try {
             switch (statement.type) {
@@ -50,7 +51,7 @@ public class Compiler {
                     int prevDepth = nextFreeVar;
                     Scope inner = new Scope(scope);
                     for (GenericNode<?, ?> node : statement) {
-                        compileStatement((Statement) node, inner);
+                        compileStatement((Statement) node, inner, executionThread);
                     }
                     if (nextFreeVar < prevDepth) {
                         throw new CompilingException("Internal error: lost parent scope variables!");
@@ -59,20 +60,21 @@ public class Compiler {
                     break;
                 }
                 case EXPRESSION: {
-                    compileExpression((Expression) statement.get(), scope);
+                    compileExpression((Expression) statement.get(), scope, statement.getThread(executionThread));
                     freeVar();
                     break;
                 }
                 case ATHLOOP: {
+                    executionThread = statement.getThread(executionThread);
                     statement.checkSize(3);
                     int condition = nextFreeVar;
-                    compileExpression((Expression) statement.get(0), scope);
-                    EnterLoopInstruction enterInstruction = new EnterLoopInstruction(condition);
+                    compileExpression((Expression) statement.get(0), scope, executionThread);
+                    EnterLoopInstruction enterInstruction = new EnterLoopInstruction(executionThread, condition);
                     output.add(enterInstruction);
                     int loopTop = label();
-                    compileStatement((Statement) statement.get(1), scope);
-                    output.add(new ExitLoopInstruction(condition, scope.getEnergyRef(), loopTop));
-                    compileStatement((Statement) statement.get(2), new Scope(scope, condition));
+                    compileStatement((Statement) statement.get(1), scope, executionThread);
+                    output.add(new ExitLoopInstruction(executionThread, condition, scope.getEnergyRef(), loopTop));
+                    compileStatement((Statement) statement.get(2), new Scope(scope, condition), executionThread);
                     enterInstruction.bind(label());
                     freeVar(condition);
                     break;
@@ -80,35 +82,45 @@ public class Compiler {
                 case IMPORT: {
                     statement.checkSize(2);
                     int out = nextVar();
-                    output.add(new ImportInstruction(out, (String) statement.get(0).getAssoc(), (String) statement.get(1).getAssoc()));
-                    scope.defineVar((String) statement.get(1).getAssoc(), out);
+                    output.add(new ImportInstruction(statement.getThread(executionThread), out, (ColoredIdentifier) statement.get(0).getAssoc(), (ColoredIdentifier) statement.get(1).getAssoc()));
+                    scope.defineVar((ColoredIdentifier) statement.get(1).getAssoc(), out);
                     break;
                 }
                 case ASSIGN: {
                     statement.checkSize(2);
                     int temp = nextFreeVar;
-                    compileExpression((Expression) statement.get(1), scope);
-                    if (scope.isDefined((String) statement.get(0).getAssoc())) {
-                        setVar(temp, scope.get((String) statement.get(0).getAssoc()));
+                    compileExpression((Expression) statement.get(1), scope, statement.getThread(executionThread));
+                    if (scope.isDefined((ColoredIdentifier) statement.get(0).getAssoc())) {
+                        output.add(new MoveInstruction(statement.getThread(executionThread), temp, scope.get((ColoredIdentifier) statement.get(0).getAssoc())));
                         freeVar(temp);
                     } else {
-                        scope.defineVar((String) statement.get(0).getAssoc(), temp);
+                        scope.defineVar((ColoredIdentifier) statement.get(0).getAssoc(), temp);
                     }
                     break;
                 }
                 case UTILDEF: {
                     statement.checkSize(3);
-                    String name = (String) statement.get(0).getAssoc();
+                    ColoredIdentifier name = (ColoredIdentifier) statement.get(0).getAssoc();
                     Compiler compiler = new Compiler();
                     Expression children = (Expression) statement.get(1);
-                    String[] arguments = new String[children.size()];
+                    ColoredIdentifier[] arguments = new ColoredIdentifier[children.size()];
                     for (int i = 0; i < arguments.length; i++) {
-                        arguments[i] = (String) children.get(i).getAssoc();
+                        arguments[i] = (ColoredIdentifier) children.get(i).getAssoc();
                     }
                     CompiledProcedure procedure = compiler.compile((Statement) statement.get(2), arguments);
                     int out = nextVar();
-                    output.add(new ConstantInstruction(out, procedure));
+                    output.add(new ConstantInstruction(statement.getThread(executionThread), out, procedure));
                     scope.defineVar(name, out);
+                    break;
+                }
+                case BIFURCATE_THREAD: {
+                    statement.checkSize(2);
+                    Expression a = (Expression) statement.get(0), b = (Expression) statement.get(1);
+                    if (a.type != ExpressionType.THIS || b.type != ExpressionType.THIS) {
+                        throw new CompilingException("Unexpected non-THIS in BIFURCATE_THREAD children.");
+                    }
+                    Color colorA = (Color) a.getAssoc(), colorB = (Color) b.getAssoc();
+                    output.add(new ThreadBifurcationInstruction(statement.getThread(executionThread), colorA, colorB));
                     break;
                 }
                 default:
@@ -121,22 +133,23 @@ public class Compiler {
     }
 
     // Callers must throw away any extra variables!
-    private int compileReturnStatement(Statement statement, Scope scope) throws CompilingException {
+    private int compileReturnStatement(Statement statement, Scope scope, Color executionThread) throws CompilingException {
         debugging.put(label(), statement.getTraceInfo());
         try {
             switch (statement.type) {
                 case RETURN: {
                     statement.checkSize(1);
                     int out = nextFreeVar;
-                    compileExpression((Expression) statement.get(0), scope);
+                    compileExpression((Expression) statement.get(0), scope, statement.getThread(executionThread));
                     return out;
                 }
                 case COMPOUND_RETURN: {
+                    executionThread = statement.getThread(executionThread);
                     Scope inner = new Scope(scope);
                     for (int i = 0; i < statement.size() - 1; i++) {
-                        compileStatement((Statement) statement.get(i), inner);
+                        compileStatement((Statement) statement.get(i), inner, executionThread);
                     }
-                    return compileReturnStatement((Statement) statement.get(statement.size() - 1), inner);
+                    return compileReturnStatement((Statement) statement.get(statement.size() - 1), inner, executionThread);
                 }
                 default:
                     throw new CompilingException("Unhandled return statement: " + statement.type);
@@ -167,42 +180,42 @@ public class Compiler {
         return out;
     }
 
-    private void compileExpression(Expression expression, Scope scope) throws CompilingException {
+    private void compileExpression(Expression expression, Scope scope, Color executionThread) throws CompilingException {
         debugging.put(label(), expression.getTraceInfo());
         int varOut = nextVar();
         try {
             switch (expression.type) {
                 case VARIABLE:
-                    setVar(scope.get((String) expression.getAssoc()), varOut);
+                    output.add(new MoveInstruction(executionThread, scope.get((ColoredIdentifier) expression.getAssoc()), varOut));
                     return;
                 case CONST_INTEGER:
-                    output.add(new ConstantInstruction(varOut, (Integer) expression.getAssoc()));
+                    output.add(new ConstantInstruction(executionThread, varOut, (Integer) expression.getAssoc()));
                     return;
                 case CONST_STRING:
-                    output.add(new ConstantInstruction(varOut, (String) expression.getAssoc()));
+                    output.add(new ConstantInstruction(executionThread, varOut, (String) expression.getAssoc()));
                     return;
                 case INVOKE:
                     --nextFreeVar;
                     for (GenericNode<?, ?> exp : expression) {
-                        compileExpression((Expression) exp, scope);
+                        compileExpression((Expression) exp, scope, executionThread);
                     }
-                    output.add(new InvokeInstruction(varOut, nextFreeVar - varOut - 1, scope.getEnergyRef()));
+                    output.add(new InvokeInstruction(executionThread, varOut, nextFreeVar - varOut - 1, scope.getEnergyRef()));
                     nextFreeVar = varOut + 1;
                     return;
                 case FIELDREF:
                     expression.checkSize(2);
                     --nextFreeVar;
-                    compileExpression((Expression) expression.get(0), scope);
-                    output.add(new FieldFetchInstruction(varOut, (String) expression.get(1).getAssoc()));
+                    compileExpression((Expression) expression.get(0), scope, executionThread);
+                    output.add(new FieldFetchInstruction(executionThread, varOut, (ColoredIdentifier) expression.get(1).getAssoc()));
                     return;
                 case ARRAYREF:
                     expression.checkSize(2);
                     --nextFreeVar;
-                    compileExpression((Expression) expression.get(0), scope);
+                    compileExpression((Expression) expression.get(0), scope, executionThread);
                     int index = nextFreeVar;
-                    compileExpression((Expression) expression.get(1), scope);
+                    compileExpression((Expression) expression.get(1), scope, executionThread);
                     --nextFreeVar;
-                    output.add(new ArrayFetchInstruction(varOut, index));
+                    output.add(new ArrayFetchInstruction(executionThread, varOut, index));
                     return;
                 case ADD:
                 case SUBTRACT:
@@ -222,37 +235,39 @@ public class Compiler {
                 case CMPNE:
                 case CMPEQ:
                 case CMPGE:
-                case CMPGT:
+                case CMPGT: // Binary operators
                     expression.checkSize(2);
                     --nextFreeVar;
-                    compileExpression((Expression) expression.get(0), scope);
+                    compileExpression((Expression) expression.get(0), scope, executionThread);
                     int param = nextFreeVar;
-                    compileExpression((Expression) expression.get(1), scope);
+                    compileExpression((Expression) expression.get(1), scope, executionThread);
                     --nextFreeVar;
-                    output.add(new MathInstruction(varOut, param, expression.type.getMathOp()));
+                    output.add(new MathInstruction(executionThread, varOut, param, expression.type.getMathOp()));
+                    return;
+                case NOT: // Unary operators
+                    expression.checkSize(1);
+                    --nextFreeVar;
+                    compileExpression((Expression) expression.get(0), scope, executionThread);
+                    output.add(new MathInstruction(executionThread, varOut, -1, expression.type.getMathOp()));
                     return;
                 case NULL:
-                    output.add(new ConstantInstruction(varOut, ConstantInstruction.Type.NULL, null));
+                    output.add(new ConstantInstruction(executionThread, varOut, ConstantInstruction.Type.NULL, null));
                     return;
                 case TRUE:
-                    output.add(new ConstantInstruction(varOut, true));
+                    output.add(new ConstantInstruction(executionThread, varOut, true));
                     return;
                 case FALSE:
-                    output.add(new ConstantInstruction(varOut, false));
+                    output.add(new ConstantInstruction(executionThread, varOut, false));
                     return;
                 case THIS:
-                    output.add(new ThisRefInstruction(varOut));
+                    output.add(new ThisRefInstruction(executionThread, varOut, (Color) expression.getAssoc()));
                     return;
                 default:
-                    throw new CompilingException("Unsupported expression: " + expression);
+                    throw new CompilingException("Unsupported expression: " + expression.type);
             }
         } catch (CompilingException ex) {
             ex.addTrace(expression.getTraceInfo());
             throw ex;
         }
-    }
-
-    private void setVar(int in, int out) {
-        output.add(new MoveInstruction(in, out));
     }
 }

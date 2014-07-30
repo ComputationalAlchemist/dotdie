@@ -1,24 +1,30 @@
 package skaianet.die.back;
 
+import skaianet.die.front.ColoredIdentifier;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 class JavaMethodContext {
     private final Object object;
-    private final String method;
+    private final ColoredIdentifier method;
     private final ExecutionContext context;
 
-    public JavaMethodContext(Object object, String method, ExecutionContext context) {
+    public JavaMethodContext(Object object, ColoredIdentifier method, ExecutionContext context) {
         this.object = object;
         this.method = method;
         this.context = context;
     }
 
+    public String toString() {
+        return "Method[" + object + "]." + method;
+    }
+
     public Object invoke(Object... arguments) {
         outer:
         for (Method m : object.getClass().getMethods()) {
-            if (!m.getName().equals(method) || (m.getAnnotation(ATHcessible.class) == null && !context.extension.methodAccessible(object.getClass(), method, m, object))) {
+            if (!m.getName().equals(method.name) || (m.getAnnotation(ATHcessible.class) == null && !context.extension.methodAccessible(object.getClass(), method, m, object))) {
                 continue;
             }
             Class<?>[] parameterTypes = m.getParameterTypes();

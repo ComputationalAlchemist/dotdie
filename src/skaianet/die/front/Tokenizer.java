@@ -10,6 +10,7 @@ class Tokenizer {
     private final String filename, code;
     private int index = 0;
     private Object associated;
+    private Color currentColor = Color.NO_THREAD;
 
     public Tokenizer(String filename, String code) {
         this.filename = filename;
@@ -43,9 +44,16 @@ class Tokenizer {
         }
         associated = null;
         char c = nextChar();
-        while (c == '/' && accept('/')) { // Comment!
+        if (c == '@') {
+            this.currentColor = Color.parse(nextChar(), nextChar(), nextChar());
+            if (nextChar() != '@') {
+                throw new ParsingException("Bad color descriptor!");
+            }
+            return next();
+        }
+        if (c == '/' && accept('/')) { // Comment!
             while (nextChar() != '\n') ;
-            c = nextChar();
+            return next();
         }
         switch (c) {
             case '{':
@@ -87,7 +95,7 @@ class Tokenizer {
             case '>':
                 return accept('>') ? (accept('>') ? (accept('=') ? SETRLSHIFT : RLSHIFT) : (accept('=') ? SETRASHIFT : RASHIFT)) : accept('=') ? CMPGE : CMPGT;
             case '!':
-                return accept('=') ? CMPNE : LINV; // TODO: Use LINV
+                return accept('=') ? CMPNE : NOT;
             case '=':
                 return accept('=') ? CMPEQ : SET;
             case '\\':
@@ -118,7 +126,7 @@ class Tokenizer {
             StringBuilder ibuf = new StringBuilder();
             boolean isInt = true;
             while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
-                    || c == '~' || c == '@' || c == '_' || c == '#' || c == '$') {
+                    || c == '~' || c == '_' || c == '#' || c == '$') {
                 isInt &= (c >= '0' && c <= '9');
                 ibuf.append(c);
                 if (isEOF()) {
@@ -128,6 +136,9 @@ class Tokenizer {
                 c = nextChar();
             }
             index--; // Push back the last character.
+            if (ibuf.length() == 0) {
+                throw new ParsingException("Unhandled character: " + nextChar());
+            }
             String stringValue = ibuf.toString();
             if (isInt) {
                 associated = Integer.parseInt(stringValue);
@@ -146,6 +157,10 @@ class Tokenizer {
 
     public Object getAssociated() {
         return associated;
+    }
+
+    public Color getAssocColor() {
+        return currentColor;
     }
 
     public String traceInfo() {

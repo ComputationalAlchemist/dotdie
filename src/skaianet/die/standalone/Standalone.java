@@ -2,7 +2,8 @@ package skaianet.die.standalone;
 
 import skaianet.die.ast.Statement;
 import skaianet.die.back.EnergyPacket;
-import skaianet.die.back.ExecutionContext;
+import skaianet.die.back.ExecutionWrapper;
+import skaianet.die.front.ColoredIdentifier;
 import skaianet.die.front.Parser;
 import skaianet.die.front.ParsingException;
 import skaianet.die.middle.CompiledProcedure;
@@ -20,8 +21,12 @@ public class Standalone {
     public static InputStream standaloneInput;
 
     public static void main(String[] args) throws IOException, ParsingException, CompilingException {
-        String filename = "src/ack.~ath";
-        execute(filename, true, System.out, System.in);
+        String filename = "src/threading.~ath";
+        try {
+            execute(filename, true, System.out, System.in);
+        } finally {
+            System.out.flush();
+        }
     }
 
     public static void execute(String filename, boolean useTiming, PrintStream out, InputStream in) throws IOException, ParsingException, CompilingException {
@@ -34,16 +39,14 @@ public class Standalone {
         out.println("=== Abstract Syntax Tree ===");
         stmt.print(out);
         Compiler compiler = new Compiler();
-        CompiledProcedure procedure = compiler.compile(stmt, new String[0]);
+        CompiledProcedure procedure = compiler.compile(stmt, new ColoredIdentifier[0]);
         out.println("=== Compiled Bytecode ===");
         procedure.print(0, out);
-        ExecutionContext context = new ExecutionContext(new StandaloneExtension());
-        context.init(procedure, new EnergyPacket(0, null));
+        ExecutionWrapper wrapper = new ExecutionWrapper(new StandaloneExtension(), procedure, new EnergyPacket(0, null));
         out.println("=== Execution ===");
         long begin = useTiming ? System.currentTimeMillis() : 0;
-        while (context.runSweep()) ;
-        if (!context.isTerminatedNormally()) {
-            throw new RuntimeException("Abnormal termination - did not call THIS.DIE()!");
+        while (wrapper.continueExecution()) {
+            //wrapper.report(System.out);
         }
         if (useTiming) {
             long end = System.currentTimeMillis();

@@ -1,11 +1,13 @@
 package skaianet.die.middle;
 
+import skaianet.die.front.ColoredIdentifier;
+
 import java.util.HashMap;
 
 class Scope {
     private final Scope parent;
     private final int energyRef;
-    private final HashMap<String, Integer> variables = new HashMap<>();
+    private final HashMap<ColoredIdentifier, Integer> variables = new HashMap<>();
 
     public Scope(int energyRef) {
         this.parent = null;
@@ -22,14 +24,14 @@ class Scope {
         this.energyRef = energyRef;
     }
 
-    public void defineVar(String var, int id) throws CompilingException {
+    public void defineVar(ColoredIdentifier var, int id) throws CompilingException {
         if (variables.containsKey(var)) {
             throw new CompilingException("Variable already defined: " + var);
         }
         variables.put(var, id);
     }
 
-    public int get(String var) throws CompilingException {
+    public int get(ColoredIdentifier var) throws CompilingException {
         if (variables.containsKey(var)) {
             return variables.get(var);
         } else if (parent != null) {
@@ -39,7 +41,7 @@ class Scope {
         }
     }
 
-    public boolean isDefined(String var) {
+    public boolean isDefined(ColoredIdentifier var) {
         return variables.containsKey(var) || (parent != null && parent.isDefined(var));
     }
 

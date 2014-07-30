@@ -1,0 +1,18 @@
+import stream stdout;
+
+bifurcate THIS[@F00@THIS@000@, @00F@THIS@000@];
+
+count @F00@=@000@ 6;
+count @00F@=@000@ 10;
+
+import bit done;
+
+~ATH(!done) {
+    @F00@(@000@stdout.println(`A')@F00@);@000@
+    @00F@(@000@stdout.println(`B')@F00@);@000@
+    count -= 1;
+    done.bind(count <= 0);
+} EXECUTE(NULL);
+
+@F00@THIS@000@.DIE();
+@00F@THIS@000@.DIE();

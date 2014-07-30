@@ -1,20 +1,22 @@
 package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
+import skaianet.die.front.Color;
 
 import java.io.PrintStream;
 
-public class ArrayFetchInstruction implements Instruction {
+public class ArrayFetchInstruction extends Instruction {
     private final int target;
     private final int indexRef;
 
-    public ArrayFetchInstruction(int target, int indexRef) {
+    public ArrayFetchInstruction(Color thread, int target, int indexRef) {
+        super(thread);
         this.target = target;
         this.indexRef = indexRef;
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         out.println("INDEX " + target + "[" + indexRef + "]");
     }
 

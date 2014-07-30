@@ -1,5 +1,7 @@
 package skaianet.die.back;
 
+import skaianet.die.front.Color;
+import skaianet.die.instructions.Instruction;
 import skaianet.die.instructions.InvokeInstruction;
 import skaianet.die.middle.CompiledProcedure;
 
@@ -7,11 +9,16 @@ import java.io.PrintStream;
 import java.util.Arrays;
 
 class Frame {
-    private final CompiledProcedure procedure;
-    private final Object[] variables;
+    public final CompiledProcedure procedure;
+    public final Color thread;
+    final Object[] variables;
     private int codePointer = 0;
 
-    public Frame(CompiledProcedure procedure, Object[] variables) {
+    Frame(Color thread, CompiledProcedure procedure, Object[] variables) {
+        if (thread == null) {
+            throw new NullPointerException();
+        }
+        this.thread = thread;
         this.procedure = procedure;
         this.variables = variables;
     }
@@ -29,7 +36,12 @@ class Frame {
     }
 
     public void execute(ExecutionContext executionContext) {
-        procedure.instructions[codePointer++].execute(executionContext);
+        if (codePointer == -1) { // We forked up. (Into two different threads, so we need to pretend that we're returning now.)
+            codePointer = procedure.instructions.length;
+            return;
+        }
+        int ptr = codePointer++;
+        procedure.instructions[ptr].execute(thread, executionContext);
     }
 
     public void jump(int label) {
@@ -45,7 +57,18 @@ class Frame {
     }
 
     public void report(PrintStream out) {
-        out.println(procedure + "+" + codePointer + " " + Arrays.toString(variables));
+        out.println("VARS " + Arrays.toString(variables));
+        out.print(" " + procedure + "+" + codePointer + ": ");
+        if (codePointer < 0 || codePointer >= procedure.instructions.length) {
+            out.println("????");
+        } else {
+            Instruction instruction = procedure.instructions[codePointer];
+            if (instruction.thread == null || instruction.thread.equals(thread)) {
+                instruction.printInternal(0, out);
+            } else {
+                out.println("(no exec)");
+            }
+        }
     }
 
     public void returnValue(ExecutionContext exc, Object value) {
@@ -54,5 +77,13 @@ class Frame {
 
     public void repeatInstruction() {
         codePointer--;
+    }
+
+    public void pauseForThreadRejoin() {
+        codePointer = -1;
+    }
+
+    public int offset() {
+        return codePointer;
     }
 }

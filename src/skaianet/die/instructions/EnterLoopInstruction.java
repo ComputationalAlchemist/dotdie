@@ -2,14 +2,16 @@ package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.back.LoopContext;
+import skaianet.die.front.Color;
 
 import java.io.PrintStream;
 
-public class EnterLoopInstruction implements Instruction {
+public class EnterLoopInstruction extends Instruction {
     private final int object;
     private Integer label = null;
 
-    public EnterLoopInstruction(int object) {
+    public EnterLoopInstruction(Color thread, int object) {
+        super(thread);
         this.object = object;
     }
 
@@ -21,7 +23,7 @@ public class EnterLoopInstruction implements Instruction {
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         out.println("ENTER " + object + " -> " + label);
     }
 

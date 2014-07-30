@@ -1,5 +1,7 @@
 package skaianet.die.back;
 
+import skaianet.die.front.ColoredIdentifier;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -10,17 +12,17 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
-    public boolean fieldAccessible(Class<?> class_, String field, Field javaField, Object object) {
+    public boolean fieldAccessible(Class<?> class_, ColoredIdentifier field, Field javaField, Object object) {
         return false;
     }
 
     @Override
-    public Object fieldRef(Object object, String field) {
+    public Object fieldRef(Object object, ColoredIdentifier field) {
         throw new IllegalArgumentException("No such field " + field + " on " + object);
     }
 
     @Override
-    public boolean methodAccessible(Class<?> class_, String method, Method javaMethod, Object object) {
+    public boolean methodAccessible(Class<?> class_, ColoredIdentifier method, Method javaMethod, Object object) {
         return false;
     }
 
@@ -35,7 +37,7 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
-    public Object calcImport(String namespace, String name) {
+    public Object calcImport(ColoredIdentifier namespace, ColoredIdentifier name) {
         throw new IllegalArgumentException("No such namespace " + namespace);
     }
 

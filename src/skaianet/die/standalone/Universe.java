@@ -2,12 +2,13 @@ package skaianet.die.standalone;
 
 import skaianet.die.back.ATHAlive;
 import skaianet.die.back.ATHcessible;
+import skaianet.die.front.ColoredIdentifier;
 
 public class Universe implements ATHAlive {
     @ATHcessible
-    private final String name;
+    private final ColoredIdentifier name;
 
-    public Universe(String name) {
+    public Universe(ColoredIdentifier name) {
         this.name = name;
     }
 

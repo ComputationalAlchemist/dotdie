@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class CompiledProcedure {
+    public static boolean consistentPrintouts = false;
     public final int argumentCount;
     public final int maxVars;
     public final Instruction[] instructions;
@@ -29,7 +30,7 @@ public class CompiledProcedure {
 
     public void print(int indent, PrintStream out) {
         indent(indent, out);
-        out.println("Procedure[" + argumentCount + "/" + maxVars + "]: " + instructions.length);
+        out.println((consistentPrintouts ? "Procedure" : this) + "[" + argumentCount + "/" + maxVars + "]: " + instructions.length);
         int i = 0;
         String prev = null;
         for (Instruction instruction : instructions) {
@@ -44,5 +45,11 @@ public class CompiledProcedure {
             indent(indent, out);
             instruction.print(indent, out);
         }
+        indent(indent, out);
+        out.println("Return: " + toReturn);
+    }
+
+    public String toString() {
+        return "*" + Integer.toHexString(this.hashCode()) + "*";
     }
 }

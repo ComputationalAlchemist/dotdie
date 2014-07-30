@@ -1,20 +1,23 @@
 package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
+import skaianet.die.front.Color;
+import skaianet.die.front.ColoredIdentifier;
 
 import java.io.PrintStream;
 
-public class FieldFetchInstruction implements Instruction {
+public class FieldFetchInstruction extends Instruction {
     private final int target;
-    private final String field;
+    private final ColoredIdentifier field;
 
-    public FieldFetchInstruction(int target, String field) {
+    public FieldFetchInstruction(Color thread, int target, ColoredIdentifier field) {
+        super(thread);
         this.target = target;
         this.field = field;
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         out.println("FIELD " + target + "." + field);
     }
 

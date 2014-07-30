@@ -1,33 +1,45 @@
 package skaianet.die.back;
 
+import skaianet.die.front.Color;
+import skaianet.die.front.ColoredIdentifier;
 import skaianet.die.middle.CompiledProcedure;
 
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Stack;
 
 public class ExecutionContext {
     public final ExecutionExtension extension;
+    public final ExecutionWrapper executionWrapper;
+    public final ExecutionContext parent;
     private final Stack<Frame> stack = new Stack<>();
     private Object outerReturnValue;
     private boolean isTerminated = false;
 
-    public ExecutionContext(ExecutionExtension extension) {
+    public ExecutionContext(ExecutionExtension extension, ExecutionWrapper executionWrapper, ExecutionContext parent) {
         this.extension = extension;
+        this.executionWrapper = executionWrapper;
+        this.parent = parent;
     }
 
     public void init(CompiledProcedure procedure, EnergyPacket packet, Object... arguments) {
-        isTerminated = false;
-        outerReturnValue = null;
         if (arguments.length != procedure.argumentCount) {
             throw new IllegalArgumentException("Bad number of arguments!");
         }
         Object[] variables = new Object[procedure.maxVars];
         variables[0] = packet;
         System.arraycopy(arguments, 0, variables, 1, arguments.length);
-        stack.push(new Frame(procedure, variables));
+        stack.push(new Frame(Color.NO_THREAD, procedure, variables));
+    }
+
+    public void fromFork(ExecutionContext parent, Color thread) {
+        Frame oldFrame = parent.stack.peek();
+        Frame newFrame = new Frame(thread, oldFrame.procedure, Arrays.copyOf(oldFrame.variables, oldFrame.variables.length));
+        newFrame.jump(oldFrame.offset());
+        stack.push(newFrame);
     }
 
     public boolean runSweep() { // Return true if more sweeps are needed.
@@ -78,7 +90,7 @@ public class ExecutionContext {
         }
     }
 
-    public Object calcImport(String namespace, String name) {
+    public Object calcImport(ColoredIdentifier namespace, ColoredIdentifier name) {
         return extension.calcImport(namespace, name);
     }
 
@@ -90,9 +102,9 @@ public class ExecutionContext {
         }
     }
 
-    public Object fieldRef(Object object, String field) {
+    public Object fieldRef(Object object, ColoredIdentifier field) {
         try {
-            Field javaField = object.getClass().getField(field);
+            Field javaField = object.getClass().getField(field.name);
             if (javaField.getAnnotation(ATHcessible.class) != null || extension.fieldAccessible(object.getClass(), field, javaField, object)) {
                 return javaField.get(object);
             }
@@ -102,7 +114,7 @@ public class ExecutionContext {
             throw new RuntimeException("Expected @ATHcessible field " + object.getClass() + "." + field + " to be accessible!");
         }
         for (Method javaMethod : object.getClass().getMethods()) {
-            if (javaMethod.getName().equals(field) && (javaMethod.getAnnotation(ATHcessible.class) != null || extension.methodAccessible(object.getClass(), field, javaMethod, object))) {
+            if (javaMethod.getName().equals(field.name) && (javaMethod.getAnnotation(ATHcessible.class) != null || extension.methodAccessible(object.getClass(), field, javaMethod, object))) {
                 return new JavaMethodContext(object, field, this);
             }
         }
@@ -126,8 +138,12 @@ public class ExecutionContext {
         }
     }
 
-    public Object getATHThis() {
-        return new ThisObject(this);
+    public Object getATHThis(Color thisColor) {
+        if (this.isRootColor(thisColor)) {
+            return new ThisObject(this);
+        } else {
+            return executionWrapper.getThisObject(this.parent, thisColor);
+        }
     }
 
     public LoopContext loopContext(Object object) {
@@ -153,7 +169,7 @@ public class ExecutionContext {
     }
 
     public void report(PrintStream out) {
-        out.println("Stack Trace:");
+        out.println("Stack Trace (" + getRootColor() + "):");
         for (Frame frame : stack) {
             frame.report(out);
         }
@@ -170,5 +186,24 @@ public class ExecutionContext {
 
     public boolean isTerminatedNormally() {
         return isTerminated;
+    }
+
+    public void fork(Color a, Color b) {
+        ExecutionContext contextA = new ExecutionContext(extension, executionWrapper, this);
+        contextA.fromFork(this, a);
+        executionWrapper.add(contextA);
+        ExecutionContext contextB = new ExecutionContext(extension, executionWrapper, this);
+        contextB.fromFork(this, b);
+        executionWrapper.add(contextB);
+        stack.peek().pauseForThreadRejoin();
+        isTerminated = true;
+    }
+
+    public boolean isRootColor(Color thisColor) {
+        return getRootColor().equals(thisColor);
+    }
+
+    public Color getRootColor() {
+        return stack.isEmpty() ? null : stack.get(0).thread;
     }
 }

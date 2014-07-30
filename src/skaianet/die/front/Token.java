@@ -4,13 +4,13 @@ import skaianet.die.ast.ExpressionType;
 
 public enum Token {
     NONE, OPEN_CURLY, CLOSE_CURLY, SEMICOLON, INTEGER, STRING, IDENTIFIER, OPEN_PAREN, CLOSE_PAREN,
-    EXECUTE, DOT, OPEN_SQUARE, CLOSE_SQUARE, ATH, COMMA, IMPORT, THIS, UTILDEF, RETURN,
+    EXECUTE, DOT, OPEN_SQUARE, CLOSE_SQUARE, ATH, COMMA, IMPORT, THIS, UTILDEF, RETURN, BIFURCATE,
     // Arithmetic/logical infix operators!
     MULTIPLY(ExpressionType.MULTIPLY), DIVIDE(ExpressionType.DIVIDE), REMAINDER(ExpressionType.REMAINDER),
     SUBTRACT(ExpressionType.SUBTRACT), ADD(ExpressionType.ADD),
     BIAND(ExpressionType.BIAND), BIXOR(ExpressionType.BIXOR), BIOR(ExpressionType.BIOR),
     LSHIFT(ExpressionType.LSHIFT), RLSHIFT(ExpressionType.RLSHIFT), RASHIFT(ExpressionType.RASHIFT),
-    LAND(ExpressionType.LAND), LOR(ExpressionType.LOR), LINV,
+    LAND(ExpressionType.LAND), LOR(ExpressionType.LOR), NOT(ExpressionType.NOT),
     // Comparison infix operators!
     CMPLT(ExpressionType.CMPLT), CMPGT(ExpressionType.CMPGT),
     CMPLE(ExpressionType.CMPLE), CMPGE(ExpressionType.CMPGE),
@@ -51,6 +51,8 @@ public enum Token {
                 return UTILDEF;
             case "RETURN":
                 return RETURN;
+            case "BIFURCATE":
+                return BIFURCATE;
             default:
                 return null;
         }

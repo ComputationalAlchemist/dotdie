@@ -36,299 +36,300 @@ THIS.DIE();
 === Abstract Syntax Tree ===
 COMPOUND
 	IMPORT
-		VARIABLE: stream
-		VARIABLE: stdout
+		VARIABLE: @000000@stream
+		VARIABLE: @000000@stdout
 	ASSIGN
-		VARIABLE: index
+		VARIABLE: @000000@index
 		CONST_INTEGER: 3
 	ASSIGN
-		VARIABLE: prev
+		VARIABLE: @000000@prev
 		CONST_INTEGER: 0
 	IMPORT
-		VARIABLE: bit
-		VARIABLE: looping
+		VARIABLE: @000000@bit
+		VARIABLE: @000000@looping
 	EXPRESSION
 		INVOKE
 			FIELDREF
-				VARIABLE: looping
-				VARIABLE: bind
+				VARIABLE: @000000@looping
+				VARIABLE: @000000@bind
 			TRUE
 	EXPRESSION
 		INVOKE
 			FIELDREF
-				VARIABLE: stdout
-				VARIABLE: print
+				VARIABLE: @000000@stdout
+				VARIABLE: @000000@print
 			CONST_STRING: . 2
 	ATHLOOP
-		VARIABLE: looping
+		VARIABLE: @000000@looping
 		COMPOUND
 			ASSIGN
-				VARIABLE: cur
+				VARIABLE: @000000@cur
 				CONST_INTEGER: 2
 			IMPORT
-				VARIABLE: bit
-				VARIABLE: sublooping
+				VARIABLE: @000000@bit
+				VARIABLE: @000000@sublooping
 			EXPRESSION
 				INVOKE
 					FIELDREF
-						VARIABLE: sublooping
-						VARIABLE: bind
+						VARIABLE: @000000@sublooping
+						VARIABLE: @000000@bind
 					TRUE
 			ASSIGN
-				VARIABLE: isprime
+				VARIABLE: @000000@isprime
 				TRUE
 			ATHLOOP
-				VARIABLE: sublooping
+				VARIABLE: @000000@sublooping
 				COMPOUND
 					ASSIGN
-						VARIABLE: isprime
+						VARIABLE: @000000@isprime
 						LAND
-							VARIABLE: isprime
+							VARIABLE: @000000@isprime
 							CMPNE
 								REMAINDER
-									VARIABLE: index
-									VARIABLE: cur
+									VARIABLE: @000000@index
+									VARIABLE: @000000@cur
 								CONST_INTEGER: 0
 					ASSIGN
-						VARIABLE: cur
+						VARIABLE: @000000@cur
 						ADD
-							VARIABLE: cur
+							VARIABLE: @000000@cur
 							CONST_INTEGER: 1
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: sublooping
-								VARIABLE: bind
+								VARIABLE: @000000@sublooping
+								VARIABLE: @000000@bind
 							CMPLT
-								VARIABLE: cur
-								VARIABLE: index
+								VARIABLE: @000000@cur
+								VARIABLE: @000000@index
 				EXPRESSION
 					INVOKE
 						FIELDREF
-							VARIABLE: sublooping
-							VARIABLE: bind
-						VARIABLE: isprime
+							VARIABLE: @000000@sublooping
+							VARIABLE: @000000@bind
+						VARIABLE: @000000@isprime
 			ATHLOOP
-				VARIABLE: sublooping
+				VARIABLE: @000000@sublooping
 				COMPOUND
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: stdout
-								VARIABLE: print
+								VARIABLE: @000000@stdout
+								VARIABLE: @000000@print
 							CONST_STRING:  
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: stdout
-								VARIABLE: print
-							VARIABLE: cur
+								VARIABLE: @000000@stdout
+								VARIABLE: @000000@print
+							VARIABLE: @000000@cur
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: sublooping
-								VARIABLE: bind
+								VARIABLE: @000000@sublooping
+								VARIABLE: @000000@bind
 							FALSE
 				EXPRESSION
 					INVOKE
 						FIELDREF
-							VARIABLE: sublooping
-							VARIABLE: bind
+							VARIABLE: @000000@sublooping
+							VARIABLE: @000000@bind
 						CMPNE
 							DIVIDE
-								VARIABLE: index
+								VARIABLE: @000000@index
 								CONST_INTEGER: 100
-							VARIABLE: prev
+							VARIABLE: @000000@prev
 			ATHLOOP
-				VARIABLE: sublooping
+				VARIABLE: @000000@sublooping
 				COMPOUND
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: stdout
-								VARIABLE: println
+								VARIABLE: @000000@stdout
+								VARIABLE: @000000@println
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: stdout
-								VARIABLE: print
+								VARIABLE: @000000@stdout
+								VARIABLE: @000000@print
 							CONST_STRING: .
 					ASSIGN
-						VARIABLE: prev
+						VARIABLE: @000000@prev
 						DIVIDE
-							VARIABLE: index
+							VARIABLE: @000000@index
 							CONST_INTEGER: 100
 					EXPRESSION
 						INVOKE
 							FIELDREF
-								VARIABLE: sublooping
-								VARIABLE: bind
+								VARIABLE: @000000@sublooping
+								VARIABLE: @000000@bind
 							FALSE
 				EXPRESSION
 					NULL
 			ASSIGN
-				VARIABLE: index
+				VARIABLE: @000000@index
 				ADD
-					VARIABLE: index
+					VARIABLE: @000000@index
 					CONST_INTEGER: 1
 			EXPRESSION
 				INVOKE
 					FIELDREF
-						VARIABLE: looping
-						VARIABLE: bind
+						VARIABLE: @000000@looping
+						VARIABLE: @000000@bind
 					CMPLT
-						VARIABLE: index
+						VARIABLE: @000000@index
 						CONST_INTEGER: 150
 		EXPRESSION
 			NULL
 	EXPRESSION
 		INVOKE
 			FIELDREF
-				VARIABLE: stdout
-				VARIABLE: println
+				VARIABLE: @000000@stdout
+				VARIABLE: @000000@println
 	EXPRESSION
 		INVOKE
 			FIELDREF
-				THIS
-				VARIABLE: DIE
+				THIS: @000000@
+				VARIABLE: @000000@DIE
 === Compiled Bytecode ===
 Procedure[0/13]: 106
 src\prime.~ath:1
-0	IMPORT stream/stdout -> 1
+0	@000000@	IMPORT @000000@stream/@000000@stdout -> 1
 src\prime.~ath:2
-1	CONST #3 -> 2
+1	@000000@	CONST #3 -> 2
 src\prime.~ath:3
-2	CONST #0 -> 3
-3	IMPORT bit/looping -> 4
+2	@000000@	CONST #0 -> 3
+3	@000000@	IMPORT @000000@bit/@000000@looping -> 4
 src\prime.~ath:5
-4	MOVE 4 -> 5
-5	FIELD 5.bind
-6	CONST true -> 6
-7	INVOKE 5(6) -> 5
+4	@000000@	MOVE 4 -> 5
+5	@000000@	FIELD 5.@000000@bind
+6	@000000@	CONST true -> 6
+7	@000000@	INVOKE 5(6) -> 5
 src\prime.~ath:6
-8	MOVE 1 -> 5
-9	FIELD 5.print
-10	CONST `. 2' -> 6
-11	INVOKE 5(6) -> 5
+8	@000000@	MOVE 1 -> 5
+9	@000000@	FIELD 5.@000000@print
+10	@000000@	CONST `. 2' -> 6
+11	@000000@	INVOKE 5(6) -> 5
 src\prime.~ath:7
-12	MOVE 4 -> 5
-13	ENTER 5 -> 100
+12	@000000@	MOVE 4 -> 5
+13	@000000@	ENTER 5 -> 100
 src\prime.~ath:8
-14	CONST #2 -> 6
-15	IMPORT bit/sublooping -> 7
+14	@000000@	CONST #2 -> 6
+15	@000000@	IMPORT @000000@bit/@000000@sublooping -> 7
 src\prime.~ath:10
-16	MOVE 7 -> 8
-17	FIELD 8.bind
-18	CONST true -> 9
-19	INVOKE 8(9) -> 8
+16	@000000@	MOVE 7 -> 8
+17	@000000@	FIELD 8.@000000@bind
+18	@000000@	CONST true -> 9
+19	@000000@	INVOKE 8(9) -> 8
 src\prime.~ath:11
-20	CONST true -> 8
+20	@000000@	CONST true -> 8
 src\prime.~ath:12
-21	MOVE 7 -> 9
-22	ENTER 9 -> 46
+21	@000000@	MOVE 7 -> 9
+22	@000000@	ENTER 9 -> 46
 src\prime.~ath:13
-23	MOVE 8 -> 10
-24	MOVE 2 -> 11
-25	MOVE 6 -> 12
-26	MATH 12 REMAINDER -> 11
-27	CONST #0 -> 12
-28	MATH 12 CMPNE -> 11
-29	MATH 11 LAND -> 10
-30	MOVE 10 -> 8
+23	@000000@	MOVE 8 -> 10
+24	@000000@	MOVE 2 -> 11
+25	@000000@	MOVE 6 -> 12
+26	@000000@	MATH 12 REMAINDER -> 11
+27	@000000@	CONST #0 -> 12
+28	@000000@	MATH 12 CMPNE -> 11
+29	@000000@	MATH 11 LAND -> 10
+30	@000000@	MOVE 10 -> 8
 src\prime.~ath:14
-31	MOVE 6 -> 10
-32	CONST #1 -> 11
-33	MATH 11 ADD -> 10
-34	MOVE 10 -> 6
+31	@000000@	MOVE 6 -> 10
+32	@000000@	CONST #1 -> 11
+33	@000000@	MATH 11 ADD -> 10
+34	@000000@	MOVE 10 -> 6
 src\prime.~ath:15
-35	MOVE 7 -> 10
-36	FIELD 10.bind
-37	MOVE 6 -> 11
-38	MOVE 2 -> 12
-39	MATH 12 CMPLT -> 11
-40	INVOKE 10(11) -> 10
-41	EXIT 9 -> 23
+35	@000000@	MOVE 7 -> 10
+36	@000000@	FIELD 10.@000000@bind
+37	@000000@	MOVE 6 -> 11
+38	@000000@	MOVE 2 -> 12
+39	@000000@	MATH 12 CMPLT -> 11
+40	@000000@	INVOKE 10(11) -> 10
+41	@000000@	EXIT 9 -> 23
 src\prime.~ath:16
-42	MOVE 7 -> 10
-43	FIELD 10.bind
-44	MOVE 8 -> 11
-45	INVOKE 10(11) -> 10
+42	@000000@	MOVE 7 -> 10
+43	@000000@	FIELD 10.@000000@bind
+44	@000000@	MOVE 8 -> 11
+45	@000000@	INVOKE 10(11) -> 10
 src\prime.~ath:17
-46	MOVE 7 -> 9
-47	ENTER 9 -> 69
+46	@000000@	MOVE 7 -> 9
+47	@000000@	ENTER 9 -> 69
 src\prime.~ath:18
-48	MOVE 1 -> 10
-49	FIELD 10.print
-50	CONST ` ' -> 11
-51	INVOKE 10(11) -> 10
+48	@000000@	MOVE 1 -> 10
+49	@000000@	FIELD 10.@000000@print
+50	@000000@	CONST ` ' -> 11
+51	@000000@	INVOKE 10(11) -> 10
 src\prime.~ath:19
-52	MOVE 1 -> 10
-53	FIELD 10.print
-54	MOVE 6 -> 11
-55	INVOKE 10(11) -> 10
+52	@000000@	MOVE 1 -> 10
+53	@000000@	FIELD 10.@000000@print
+54	@000000@	MOVE 6 -> 11
+55	@000000@	INVOKE 10(11) -> 10
 src\prime.~ath:20
-56	MOVE 7 -> 10
-57	FIELD 10.bind
-58	CONST false -> 11
-59	INVOKE 10(11) -> 10
-60	EXIT 9 -> 48
+56	@000000@	MOVE 7 -> 10
+57	@000000@	FIELD 10.@000000@bind
+58	@000000@	CONST false -> 11
+59	@000000@	INVOKE 10(11) -> 10
+60	@000000@	EXIT 9 -> 48
 src\prime.~ath:21
-61	MOVE 7 -> 10
-62	FIELD 10.bind
-63	MOVE 2 -> 11
-64	CONST #100 -> 12
-65	MATH 12 DIVIDE -> 11
-66	MOVE 3 -> 12
-67	MATH 12 CMPNE -> 11
-68	INVOKE 10(11) -> 10
+61	@000000@	MOVE 7 -> 10
+62	@000000@	FIELD 10.@000000@bind
+63	@000000@	MOVE 2 -> 11
+64	@000000@	CONST #100 -> 12
+65	@000000@	MATH 12 DIVIDE -> 11
+66	@000000@	MOVE 3 -> 12
+67	@000000@	MATH 12 CMPNE -> 11
+68	@000000@	INVOKE 10(11) -> 10
 src\prime.~ath:22
-69	MOVE 7 -> 9
-70	ENTER 9 -> 88
+69	@000000@	MOVE 7 -> 9
+70	@000000@	ENTER 9 -> 88
 src\prime.~ath:23
-71	MOVE 1 -> 10
-72	FIELD 10.println
-73	INVOKE 10() -> 10
+71	@000000@	MOVE 1 -> 10
+72	@000000@	FIELD 10.@000000@println
+73	@000000@	INVOKE 10() -> 10
 src\prime.~ath:24
-74	MOVE 1 -> 10
-75	FIELD 10.print
-76	CONST `.' -> 11
-77	INVOKE 10(11) -> 10
+74	@000000@	MOVE 1 -> 10
+75	@000000@	FIELD 10.@000000@print
+76	@000000@	CONST `.' -> 11
+77	@000000@	INVOKE 10(11) -> 10
 src\prime.~ath:25
-78	MOVE 2 -> 10
-79	CONST #100 -> 11
-80	MATH 11 DIVIDE -> 10
-81	MOVE 10 -> 3
+78	@000000@	MOVE 2 -> 10
+79	@000000@	CONST #100 -> 11
+80	@000000@	MATH 11 DIVIDE -> 10
+81	@000000@	MOVE 10 -> 3
 src\prime.~ath:26
-82	MOVE 7 -> 10
-83	FIELD 10.bind
-84	CONST false -> 11
-85	INVOKE 10(11) -> 10
-86	EXIT 9 -> 71
+82	@000000@	MOVE 7 -> 10
+83	@000000@	FIELD 10.@000000@bind
+84	@000000@	CONST false -> 11
+85	@000000@	INVOKE 10(11) -> 10
+86	@000000@	EXIT 9 -> 71
 src\prime.~ath:27
-87	CONST NULL -> 10
+87	@000000@	CONST NULL -> 10
 src\prime.~ath:28
-88	MOVE 2 -> 9
-89	CONST #1 -> 10
-90	MATH 10 ADD -> 9
-91	MOVE 9 -> 2
+88	@000000@	MOVE 2 -> 9
+89	@000000@	CONST #1 -> 10
+90	@000000@	MATH 10 ADD -> 9
+91	@000000@	MOVE 9 -> 2
 src\prime.~ath:29
-92	MOVE 4 -> 9
-93	FIELD 9.bind
-94	MOVE 2 -> 10
-95	CONST #150 -> 11
-96	MATH 11 CMPLT -> 10
-97	INVOKE 9(10) -> 9
-98	EXIT 5 -> 14
+92	@000000@	MOVE 4 -> 9
+93	@000000@	FIELD 9.@000000@bind
+94	@000000@	MOVE 2 -> 10
+95	@000000@	CONST #150 -> 11
+96	@000000@	MATH 11 CMPLT -> 10
+97	@000000@	INVOKE 9(10) -> 9
+98	@000000@	EXIT 5 -> 14
 src\prime.~ath:30
-99	CONST NULL -> 6
+99	@000000@	CONST NULL -> 6
 src\prime.~ath:31
-100	MOVE 1 -> 5
-101	FIELD 5.println
-102	INVOKE 5() -> 5
+100	@000000@	MOVE 1 -> 5
+101	@000000@	FIELD 5.@000000@println
+102	@000000@	INVOKE 5() -> 5
 src\prime.~ath:33
-103	THIS -> 5
-104	FIELD 5.DIE
-105	INVOKE 5() -> 5
+103	@000000@	THIS @000000@ -> 5
+104	@000000@	FIELD 5.@000000@DIE
+105	@000000@	INVOKE 5() -> 5
+Return: null
 === Execution ===
 . 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101
 . 103 107 109 113 127 131 137 139 149

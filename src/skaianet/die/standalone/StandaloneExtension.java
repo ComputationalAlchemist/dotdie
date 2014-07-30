@@ -1,25 +1,26 @@
 package skaianet.die.standalone;
 
 import skaianet.die.back.EmptyExtension;
+import skaianet.die.front.ColoredIdentifier;
 
 import java.lang.reflect.Array;
 
 public class StandaloneExtension extends EmptyExtension {
     @Override
-    public Object calcImport(String namespace, String name) {
-        switch (namespace) {
+    public Object calcImport(ColoredIdentifier namespace, ColoredIdentifier name) {
+        switch (namespace.name) {
             case "universe":
                 return new Universe(name);
             case "author":
                 return new Author(name);
             case "stream":
-                switch (name) {
+                switch (name.name) {
                     case "stdin":
-                        return new StreamIn(Standalone.standaloneInput, name);
+                        return new StreamIn(Standalone.standaloneInput, name.name);
                     case "stdout":
-                        return new StreamOut(Standalone.standaloneOutput, name);
+                        return new StreamOut(Standalone.standaloneOutput, name.name);
                     case "stderr":
-                        return new StreamOut(System.err, name);
+                        return new StreamOut(System.err, name.name);
                     default:
                         throw new IllegalArgumentException("No such stream " + name);
                 }
@@ -35,11 +36,13 @@ public class StandaloneExtension extends EmptyExtension {
     }
 
     @Override
-    public Object fieldRef(Object object, String field) {
-        if (object instanceof String && field.equals("length")) {
-            return ((String) object).length();
-        } else if (object != null && object.getClass().isArray()) {
-            return Array.getLength(object);
+    public Object fieldRef(Object object, ColoredIdentifier field) {
+        if (field.name.equals("length")) {
+            if (object instanceof String) {
+                return ((String) object).length();
+            } else if (object != null && object.getClass().isArray()) {
+                return Array.getLength(object);
+            }
         }
         return super.fieldRef(object, field);
     }

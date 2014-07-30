@@ -2,12 +2,13 @@ package skaianet.die.standalone;
 
 import skaianet.die.back.ATHAlive;
 import skaianet.die.back.ATHcessible;
+import skaianet.die.front.ColoredIdentifier;
 
 public class Author implements ATHAlive {
     @ATHcessible
-    private final String name;
+    private final ColoredIdentifier name;
 
-    public Author(String name) {
+    public Author(ColoredIdentifier name) {
         this.name = name;
     }
 

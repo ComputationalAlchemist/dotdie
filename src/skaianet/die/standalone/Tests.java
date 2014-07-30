@@ -1,6 +1,7 @@
 package skaianet.die.standalone;
 
 import skaianet.die.front.ParsingException;
+import skaianet.die.middle.CompiledProcedure;
 import skaianet.die.middle.CompilingException;
 
 import java.io.*;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 
 public class Tests {
     public static void main(String[] args) throws ParsingException, CompilingException, IOException {
+        CompiledProcedure.consistentPrintouts = true;
         for (File test : new File("src").listFiles()) {
             if (test.getName().toLowerCase().endsWith(".~ath")) {
                 File inputFile = new File(test.getPath() + ".test.input");
@@ -51,8 +53,16 @@ public class Tests {
         @Override
         public void write(int i) throws IOException {
             int next = stream.read();
+            while (next == '\r' && i != next) {
+                next = stream.read(); // Don't care that much if there's an extra '\r'.
+            }
             if (next != i) {
-                throw new RuntimeException("Unexpected character: " + ((char) i) + " instead of " + ((char) next) + ".");
+                if (next == -1) {
+                    throw new RuntimeException("Unexpected character: " + ((char) i) + " instead of EOF.");
+                }
+                byte[] nextFew = new byte[20];
+                int count = stream.read(nextFew);
+                throw new RuntimeException("Unexpected character: " + (i == '\n' ? "<newline>" : (char) i) + " instead of " + ((char) next) + " and then '" + new String(nextFew, 0, count) + "'.");
             }
         }
 

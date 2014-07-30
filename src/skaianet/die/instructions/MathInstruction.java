@@ -1,28 +1,35 @@
 package skaianet.die.instructions;
 
+import skaianet.die.back.ATHAlive;
 import skaianet.die.back.ExecutionContext;
+import skaianet.die.front.Color;
 
 import java.io.PrintStream;
 
-public class MathInstruction implements Instruction {
+public class MathInstruction extends Instruction {
     private final int target;
     private final int paramRef;
     private final Operation mathOp;
 
-    public MathInstruction(int target, int paramRef, Operation mathOp) {
+    public MathInstruction(Color thread, int target, int paramRef, Operation mathOp) {
+        super(thread);
         this.target = target;
         this.paramRef = paramRef;
         this.mathOp = mathOp;
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         out.println("MATH " + paramRef + " " + mathOp + " -> " + target);
     }
 
     @Override
     public void execute(ExecutionContext executionContext) {
-        executionContext.put(target, mathOp.apply(executionContext.get(target), executionContext.get(paramRef), executionContext));
+        if (paramRef == -1) {
+            executionContext.put(target, mathOp.applyUnary(executionContext.get(target), executionContext));
+        } else {
+            executionContext.put(target, mathOp.apply(executionContext.get(target), executionContext.get(paramRef), executionContext));
+        }
     }
 
     public static enum Operation {
@@ -121,6 +128,37 @@ public class MathInstruction implements Instruction {
             public Object apply(Object left, Object right, ExecutionContext context) {
                 return ((Comparable<Object>) left).compareTo(right) <= 0;
             }
+        }, NOT { // UNARY OPERATION
+
+            @Override
+            public Object apply(Object left, Object right, ExecutionContext context) {
+                throw new IllegalArgumentException("Not a binary operator: " + this);
+            }
+
+            public Object applyUnary(Object param, ExecutionContext context) {
+                if (param == null) {
+                    return true;
+                } else if (param instanceof Boolean) {
+                    return !((Boolean) param).booleanValue();
+                } else if (param instanceof Number) {
+                    return ((Number) param).doubleValue() == 0;
+                } else if (param instanceof ATHAlive) {
+                    final ATHAlive outer = (ATHAlive) param;
+                    return new ATHAlive() {
+                        @Override
+                        public boolean isAlive() {
+                            return !outer.isAlive();
+                        }
+
+                        @Override
+                        public double getEnergy() {
+                            return 0; // No energy available through this abstraction. Should this be different?
+                        }
+                    };
+                } else {
+                    throw new IllegalArgumentException("Unsupported: ! on " + param);
+                }
+            }
         };
 
         public Object apply(Object left, Object right, ExecutionContext context) {
@@ -145,6 +183,10 @@ public class MathInstruction implements Instruction {
 
         int applyInteger(int left, int right) {
             throw new IllegalArgumentException("Unsupported: " + this + " on integers");
+        }
+
+        public Object applyUnary(Object param, ExecutionContext context) {
+            throw new IllegalArgumentException("Not an unary operator: " + this);
         }
     }
 }

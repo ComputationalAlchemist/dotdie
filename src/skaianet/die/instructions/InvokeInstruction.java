@@ -2,23 +2,25 @@ package skaianet.die.instructions;
 
 import skaianet.die.back.EnergyPacket;
 import skaianet.die.back.ExecutionContext;
+import skaianet.die.front.Color;
 import skaianet.die.middle.CompiledProcedure;
 
 import java.io.PrintStream;
 
-public class InvokeInstruction implements Instruction {
+public class InvokeInstruction extends Instruction {
     private final int target;
     private final int argumentCount;
     private final int energyRef;
 
-    public InvokeInstruction(int target, int argumentCount, int energyRef) {
+    public InvokeInstruction(Color thread, int target, int argumentCount, int energyRef) {
+        super(thread);
         this.target = target;
         this.argumentCount = argumentCount;
         this.energyRef = energyRef;
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         out.print("INVOKE " + target + "(");
         if (argumentCount != 0) {
             out.print(target + 1);

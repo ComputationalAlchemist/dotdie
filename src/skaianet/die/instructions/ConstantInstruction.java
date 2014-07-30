@@ -1,39 +1,41 @@
 package skaianet.die.instructions;
 
 import skaianet.die.back.ExecutionContext;
+import skaianet.die.front.Color;
 import skaianet.die.middle.CompiledProcedure;
 
 import java.io.PrintStream;
 
-public class ConstantInstruction implements Instruction {
+public class ConstantInstruction extends Instruction {
     private final int target;
     private final Type type;
     private final Object value;
 
-    public ConstantInstruction(int target, boolean constant) {
-        this(target, Type.BOOLEAN, constant);
+    public ConstantInstruction(Color thread, int target, boolean constant) {
+        this(thread, target, Type.BOOLEAN, constant);
     }
 
-    public ConstantInstruction(int target, String constant) {
-        this(target, Type.STRING, constant);
+    public ConstantInstruction(Color thread, int target, String constant) {
+        this(thread, target, Type.STRING, constant);
     }
 
-    public ConstantInstruction(int target, int constant) {
-        this(target, Type.INTEGER, constant);
+    public ConstantInstruction(Color thread, int target, int constant) {
+        this(thread, target, Type.INTEGER, constant);
     }
 
-    public ConstantInstruction(int target, CompiledProcedure constant) {
-        this(target, Type.PROCEDURE, constant);
+    public ConstantInstruction(Color thread, int target, CompiledProcedure constant) {
+        this(thread, target, Type.PROCEDURE, constant);
     }
 
-    public ConstantInstruction(int target, Type type, Object value) {
+    public ConstantInstruction(Color thread, int target, Type type, Object value) {
+        super(thread);
         this.target = target;
         this.type = type;
         this.value = value;
     }
 
     @Override
-    public void print(int indent, PrintStream out) {
+    public void printInternal(int indent, PrintStream out) {
         switch (type) {
             case NULL:
                 out.println("CONST NULL -> " + target);

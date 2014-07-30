@@ -1,6 +1,7 @@
 package skaianet.die.front;
 
 import skaianet.die.ast.Expression;
+import skaianet.die.ast.GenericNode;
 import skaianet.die.ast.Statement;
 
 import java.io.PrintStream;
@@ -11,8 +12,10 @@ import static skaianet.die.ast.StatementType.*;
 
 public class Parser {
 
+    private static final int UNARY_INDEX = 1;
     private static final Token[][] operators = new Token[][]{
-            {Token.OPEN_PAREN, Token.OPEN_SQUARE, Token.DOT}, // TODO: Unary expressions
+            {Token.OPEN_PAREN, Token.OPEN_SQUARE, Token.DOT},
+            {Token.NOT}, // This index must be in UNARY_INDEX above.
             {Token.MULTIPLY, Token.DIVIDE, Token.REMAINDER},
             {Token.ADD, Token.SUBTRACT},
             {Token.BIAND},
@@ -27,6 +30,7 @@ public class Parser {
     private final Tokenizer tokenizer;
     private Token active;
     private Object assoc;
+    private Color color;
 
     public Parser(String filename, String code) {
         tokenizer = new Tokenizer(filename, code);
@@ -40,14 +44,16 @@ public class Parser {
 
     private Statement parseStatement(boolean nullable, boolean canBeReturn, boolean needsSemicolon) throws ParsingException {
         String traceInfo = tokenizer.traceInfo();
-        switch (accept(Token.OPEN_CURLY, Token.SEMICOLON, Token.ATH, Token.IMPORT, Token.UTILDEF, Token.RETURN)) {
+        pull();
+        Color thread = color;
+        switch (accept(Token.OPEN_CURLY, Token.SEMICOLON, Token.ATH, Token.IMPORT, Token.UTILDEF, Token.RETURN, Token.BIFURCATE)) {
             case OPEN_CURLY: {
                 Statement out = parseBlock(canBeReturn);
                 expect(Token.CLOSE_CURLY);
                 return out;
             }
             case SEMICOLON:
-                return EMPTY.make(traceInfo);
+                return EMPTY.make(traceInfo, thread);
             case ATH: {
                 expect(Token.OPEN_PAREN);
                 Expression condition = parseExpression(false);
@@ -62,31 +68,31 @@ public class Parser {
                 } else {
                     accept(Token.SEMICOLON);
                 }
-                return ATHLOOP.make(traceInfo, condition, stmt, exec);
+                return ATHLOOP.make(traceInfo, thread, condition, stmt, exec);
             }
             case IMPORT: {
                 expect(Token.IDENTIFIER);
-                Expression identifier = VARIABLE.make(traceInfo, assoc);
+                Expression identifier = VARIABLE.make(traceInfo, new ColoredIdentifier((String) assoc, color));
                 expect(Token.IDENTIFIER);
-                Expression spec = VARIABLE.make(traceInfo, assoc);
+                Expression spec = VARIABLE.make(traceInfo, new ColoredIdentifier((String) assoc, color));
                 if (needsSemicolon) {
                     expect(Token.SEMICOLON);
                 } else {
                     accept(Token.SEMICOLON);
                 }
-                return IMPORT.make(traceInfo, identifier, spec);
+                return IMPORT.make(traceInfo, thread, identifier, spec);
             }
             case UTILDEF: {
                 expect(Token.IDENTIFIER);
-                Expression name = VARIABLE.make(traceInfo, assoc);
+                Expression name = VARIABLE.make(traceInfo, new ColoredIdentifier((String) assoc, color));
                 expect(Token.OPEN_PAREN);
                 Expression[] args;
                 if (accept(Token.IDENTIFIER)) {
                     ArrayList<Expression> arguments = new ArrayList<>();
-                    arguments.add(VARIABLE.make(traceInfo, assoc));
+                    arguments.add(VARIABLE.make(traceInfo, new ColoredIdentifier((String) assoc, color)));
                     while (accept(Token.COMMA)) {
                         expect(Token.IDENTIFIER);
-                        arguments.add(VARIABLE.make(traceInfo, assoc));
+                        arguments.add(VARIABLE.make(traceInfo, new ColoredIdentifier((String) assoc, color)));
                     }
                     args = arguments.toArray(new Expression[arguments.size()]);
                 } else {
@@ -94,7 +100,7 @@ public class Parser {
                 }
                 expect(Token.CLOSE_PAREN);
                 Statement stmt = parseStatement(false, true, true);
-                return UTILDEF.make(traceInfo, name, ARGLIST.make(traceInfo, args), stmt);
+                return UTILDEF.make(traceInfo, thread, name, ARGLIST.make(traceInfo, args), stmt);
             }
             case RETURN: {
                 if (!canBeReturn) {
@@ -106,7 +112,23 @@ public class Parser {
                 } else {
                     accept(Token.SEMICOLON);
                 }
-                return RETURN.make(traceInfo, expression);
+                return RETURN.make(traceInfo, thread, expression);
+            }
+            case BIFURCATE: {
+                expect(Token.THIS); // TODO: Allow for variable bifurcation.
+                Color orig = color;
+                if (!orig.equals(thread)) {
+                    throw new ParsingException("Cannot bifurcate a different thread!");
+                }
+                expect(Token.OPEN_SQUARE);
+                expect(Token.THIS);
+                Color a = color;
+                expect(Token.COMMA);
+                expect(Token.THIS);
+                Color b = color;
+                expect(Token.CLOSE_SQUARE);
+                expect(Token.SEMICOLON);
+                return BIFURCATE_THREAD.make(traceInfo, thread, THIS.make(traceInfo, a), THIS.make(traceInfo, b));
             }
             default: {
                 Expression expression = parseExpression(nullable);
@@ -114,6 +136,8 @@ public class Parser {
                     return null;
                 }
                 if (expression.type == VARIABLE) {
+                    pull();
+                    thread = color; // Use color from the assignment operator.
                     Token t = accept(Token.SET, Token.SETADD, Token.SETSUBTRACT, Token.SETMULTIPLY, Token.SETDIVIDE, Token.SETREMAINDER,
                             Token.SETLSHIFT, Token.SETRLSHIFT, Token.SETRASHIFT, Token.SETAND, Token.SETOR, Token.SETXOR);
                     if (t != Token.NONE) {
@@ -126,7 +150,7 @@ public class Parser {
                         if (t != Token.SET) {
                             param = t.getExpressionType().make(traceInfo, expression, param);
                         }
-                        return ASSIGN.make(traceInfo, expression, param);
+                        return ASSIGN.make(traceInfo, thread, expression, param);
                     }
                 }
                 if (needsSemicolon) {
@@ -134,7 +158,7 @@ public class Parser {
                 } else {
                     accept(Token.SEMICOLON);
                 }
-                return EXPRESSION.make(traceInfo, expression);
+                return EXPRESSION.make(traceInfo, thread, expression);
             }
         }
     }
@@ -154,7 +178,7 @@ public class Parser {
                 case STRING:
                     return CONST_STRING.make(traceInfo, assoc);
                 case IDENTIFIER:
-                    return VARIABLE.make(traceInfo, assoc);
+                    return VARIABLE.make(traceInfo, new ColoredIdentifier((String) assoc, color));
                 case OPEN_PAREN:
                     Expression out = parseExpression(false);
                     expect(Token.CLOSE_PAREN);
@@ -166,7 +190,7 @@ public class Parser {
                 case FALSE:
                     return FALSE.make(traceInfo);
                 case THIS:
-                    return THIS.make(traceInfo);
+                    return THIS.make(traceInfo, color);
                 default:
                     if (nullable) {
                         return null;
@@ -174,6 +198,18 @@ public class Parser {
                         throw new ParsingException("Bad expression token: " + active);
                     }
             }
+        } else if (level == UNARY_INDEX + 1) {
+            // Unary operation.
+            Token operator;
+            ArrayList<Token> unaries = new ArrayList<>();
+            while ((operator = accept(operators[UNARY_INDEX])) != Token.NONE) {
+                unaries.add(operator);
+            }
+            Expression expression = parseExpression(level - 1, nullable && unaries.isEmpty());
+            for (int i = unaries.size() - 1; i >= 0; i--) {
+                expression = unaries.get(i).getExpressionType().make(traceInfo, new GenericNode<?, ?>[]{expression});
+            }
+            return expression;
         } else {
             Expression left = parseExpression(level - 1, nullable);
             if (left == null) {
@@ -198,7 +234,7 @@ public class Parser {
                     total = INVOKE.make(traceInfo, out);
                 } else if (operator == Token.DOT) { // Field fetches
                     expect(Token.IDENTIFIER);
-                    total = FIELDREF.make(traceInfo, total, VARIABLE.make(traceInfo, assoc));
+                    total = FIELDREF.make(traceInfo, total, VARIABLE.make(traceInfo, new ColoredIdentifier((String) assoc, color)));
                 } else if (operator == Token.OPEN_SQUARE) { // Array fetches
                     total = ARRAYREF.make(traceInfo, total, parseExpression(false));
                     expect(Token.CLOSE_SQUARE);
@@ -216,11 +252,11 @@ public class Parser {
         while (true) {
             Statement next = parseStatement(true, canBeReturn, true);
             if (next == null) {
-                return COMPOUND.make(traceInfo, statements);
+                return COMPOUND.make(traceInfo, null, statements);
             }
             statements.add(next);
             if (next.type == RETURN || next.type == COMPOUND_RETURN) {
-                return COMPOUND_RETURN.make(traceInfo, statements);
+                return COMPOUND_RETURN.make(traceInfo, null, statements);
             }
         }
     }
@@ -229,6 +265,7 @@ public class Parser {
         if (active == null) {
             active = tokenizer.next();
             assoc = tokenizer.getAssociated();
+            color = tokenizer.getAssocColor();
         }
     }
 
@@ -261,7 +298,7 @@ public class Parser {
         if (token == active) {
             consume();
         } else {
-            throw new ParsingException("Found token " + active + " but expected: " + token);
+            throw new ParsingException("Found token " + active + " with " + assoc + " but expected: " + token);
         }
     }
 

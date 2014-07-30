@@ -24,4 +24,8 @@ public class LoopContext {
         baseEnergy = newEnergy;
         return new EnergyPacket(newEnergy - oldEnergy, parent);
     }
+
+    public String toString() {
+        return "~ATH(" + object + "/" + baseEnergy + ")";
+    }
 }
