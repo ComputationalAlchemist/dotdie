@@ -35,7 +35,11 @@ public class LineCount {
     }
 
     public void collect(String module) {
-        System.out.println("\tTotal for " + module + ":" + repeat(' ', 19 - module.length()) + "\t" + totalLines + " lines\t" + totalChars + " chars\t" + (10 * totalChars / totalLines) / 10.0 + " density.");
+        if (totalLines == 0 && totalChars == 0) {
+            System.out.println("\t" + module + " is empty.");
+        } else {
+            System.out.println("\tTotal for " + module + ":" + repeat(' ', 19 - module.length()) + "\t" + totalLines + " lines\t" + totalChars + " chars\t" + (10 * totalChars / totalLines) / 10.0 + " density.");
+        }
     }
 
     public void walk(File file, String suffix) throws IOException {
