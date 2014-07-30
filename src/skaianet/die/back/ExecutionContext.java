@@ -118,14 +118,14 @@ public class ExecutionContext {
                 return new JavaMethodContext(object, field, this);
             }
         }
-        return extension.fieldRef(object, field);
+        return extension.fieldRef(object, field, this);
     }
 
     public Object invoke(Object procedure, Object[] arguments) {
         if (procedure instanceof JavaMethodContext) {
             return ((JavaMethodContext) procedure).invoke(arguments);
         }
-        return extension.invoke(procedure, arguments);
+        return extension.invoke(procedure, this, arguments);
     }
 
     public boolean is(Object object) {

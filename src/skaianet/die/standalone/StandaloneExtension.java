@@ -1,6 +1,7 @@
 package skaianet.die.standalone;
 
 import skaianet.die.back.EmptyExtension;
+import skaianet.die.back.ExecutionContext;
 import skaianet.die.front.ColoredIdentifier;
 
 import java.lang.reflect.Array;
@@ -36,15 +37,33 @@ public class StandaloneExtension extends EmptyExtension {
     }
 
     @Override
-    public Object fieldRef(Object object, ColoredIdentifier field) {
+    public Object fieldRef(Object object, ColoredIdentifier field, ExecutionContext context) {
         if (field.name.equals("length")) {
             if (object instanceof String) {
                 return ((String) object).length();
             } else if (object != null && object.getClass().isArray()) {
                 return Array.getLength(object);
             }
+        } else if (object instanceof Object[]) {
+            Object[] out = new Object[((Object[]) object).length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = context.fieldRef(((Object[]) object)[i], field);
+            }
+            return out;
         }
-        return super.fieldRef(object, field);
+        return super.fieldRef(object, field, context);
+    }
+
+    @Override
+    public Object invoke(Object procedure, ExecutionContext context, Object... arguments) {
+        if (procedure instanceof Object[]) {
+            Object[] out = new Object[((Object[]) procedure).length];
+            for (int i = 0; i < out.length; i++) {
+                out[i] = context.invoke(((Object[]) procedure)[i], arguments);
+            }
+            return out;
+        }
+        return super.invoke(procedure, context, arguments);
     }
 
     @Override

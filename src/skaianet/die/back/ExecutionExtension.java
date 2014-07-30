@@ -10,11 +10,11 @@ public interface ExecutionExtension {
 
     boolean fieldAccessible(Class<?> class_, ColoredIdentifier field, Field javaField, Object object);
 
-    Object fieldRef(Object object, ColoredIdentifier field);
+    Object fieldRef(Object object, ColoredIdentifier field, ExecutionContext context);
 
     boolean methodAccessible(Class<?> class_, ColoredIdentifier method, Method javaMethod, Object object);
 
-    Object invoke(Object procedure, Object... arguments);
+    Object invoke(Object procedure, ExecutionContext context, Object... arguments);
 
     boolean toBoolean(Object object);
 

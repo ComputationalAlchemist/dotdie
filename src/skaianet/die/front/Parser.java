@@ -172,7 +172,7 @@ public class Parser {
         if (level < 0) {
             throw new IllegalArgumentException("Bad precedence level: " + level);
         } else if (level == 0) {
-            switch (accept(Token.INTEGER, Token.STRING, Token.IDENTIFIER, Token.OPEN_PAREN, Token.NULL, Token.TRUE, Token.FALSE, Token.THIS)) {
+            switch (accept(Token.INTEGER, Token.STRING, Token.IDENTIFIER, Token.OPEN_PAREN, Token.OPEN_SQUARE, Token.NULL, Token.TRUE, Token.FALSE, Token.THIS)) {
                 case INTEGER:
                     return CONST_INTEGER.make(traceInfo, assoc);
                 case STRING:
@@ -183,6 +183,17 @@ public class Parser {
                     Expression out = parseExpression(false);
                     expect(Token.CLOSE_PAREN);
                     return out;
+                case OPEN_SQUARE:
+                    ArrayList<Expression> listing = new ArrayList<>();
+                    Expression initial = parseExpression(true);
+                    if (initial != null) {
+                        listing.add(initial);
+                        while (accept(Token.COMMA)) {
+                            listing.add(parseExpression(false));
+                        }
+                    }
+                    expect(Token.CLOSE_SQUARE);
+                    return ARRAYCONST.make(traceInfo, listing);
                 case NULL:
                     return NULL.make(traceInfo);
                 case TRUE:

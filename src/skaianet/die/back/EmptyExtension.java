@@ -17,7 +17,7 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
-    public Object fieldRef(Object object, ColoredIdentifier field) {
+    public Object fieldRef(Object object, ColoredIdentifier field, ExecutionContext context) {
         throw new IllegalArgumentException("No such field " + field + " on " + object);
     }
 
@@ -27,7 +27,7 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
-    public Object invoke(Object procedure, Object... arguments) {
+    public Object invoke(Object procedure, ExecutionContext context, Object... arguments) {
         throw new IllegalArgumentException("Not invokable: " + procedure);
     }
 

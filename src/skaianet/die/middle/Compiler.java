@@ -215,6 +215,14 @@ public class Compiler {
                     --nextFreeVar;
                     output.add(new ArrayFetchInstruction(executionThread, varOut, index));
                     return;
+                case ARRAYCONST:
+                    --nextFreeVar;
+                    for (GenericNode<?, ?> node : expression) {
+                        compileExpression((Expression) node, scope, executionThread);
+                    }
+                    output.add(new ArrayConstantInstruction(executionThread, varOut, expression.size()));
+                    nextFreeVar = varOut + 1;
+                    return;
                 case ADD:
                 case SUBTRACT:
                 case MULTIPLY:
