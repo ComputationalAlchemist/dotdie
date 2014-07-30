@@ -17,7 +17,11 @@ public class ArrayConstantInstruction extends Instruction {
 
     @Override
     public void printInternal(int indent, PrintStream out) {
-        out.println("ARRAY " + target + "..." + count + " -> " + target);
+        if (count == 0) {
+            out.println("ARRAY (empty) -> " + target);
+        } else {
+            out.println("ARRAY " + target + "..." + (count + target - 1) + " -> " + target);
+        }
     }
 
     @Override

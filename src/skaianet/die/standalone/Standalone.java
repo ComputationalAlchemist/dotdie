@@ -21,7 +21,7 @@ public class Standalone {
     public static InputStream standaloneInput;
 
     public static void main(String[] args) throws IOException, ParsingException, CompilingException {
-        String filename = "src/threading.~ath";
+        String filename = "src/skaianet/die/tests/mobius.~ath";
         try {
             execute(filename, true, System.out, System.in);
         } finally {

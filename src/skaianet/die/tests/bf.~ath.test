@@ -547,33 +547,33 @@ COMPOUND
 				VARIABLE: @000000@DIE
 === Compiled Bytecode ===
 Procedure[0/18]: 315
-src\bf.~ath:1
+src\skaianet\die\tests\bf.~ath:1
 0	@000000@	IMPORT @000000@stream/@000000@stdin -> 1
 1	@000000@	IMPORT @000000@stream/@000000@stdout -> 2
-src\bf.~ath:4
+src\skaianet\die\tests\bf.~ath:4
 2	@000000@	MOVE 1 -> 3
 3	@000000@	FIELD 3.@000000@readLine
 4	@000000@	INVOKE 3() -> 3
-src\bf.~ath:6
+src\skaianet\die\tests\bf.~ath:6
 5	@000000@	CONST #0 -> 4
 6	@000000@	IMPORT @000000@turingtape/@000000@tape -> 5
-src\bf.~ath:8
+src\skaianet\die\tests\bf.~ath:8
 7	@000000@	IMPORT @000000@turingtapehead/@000000@head -> 6
-src\bf.~ath:10
+src\skaianet\die\tests\bf.~ath:10
 8	@000000@	MOVE 6 -> 7
 9	@000000@	FIELD 7.@000000@insert
 10	@000000@	MOVE 5 -> 8
 11	@000000@	INVOKE 7(8) -> 7
 12	@000000@	IMPORT @000000@bit/@000000@running -> 7
-src\bf.~ath:14
+src\skaianet\die\tests\bf.~ath:14
 13	@000000@	MOVE 7 -> 8
 14	@000000@	FIELD 8.@000000@bind
 15	@000000@	CONST true -> 9
 16	@000000@	INVOKE 8(9) -> 8
-src\bf.~ath:16
+src\skaianet\die\tests\bf.~ath:16
 17	@000000@	MOVE 7 -> 8
 18	@000000@	ENTER 8 -> 312
-src\bf.~ath:17
+src\skaianet\die\tests\bf.~ath:17
 19	@000000@	MOVE 7 -> 9
 20	@000000@	FIELD 9.@000000@bind
 21	@000000@	MOVE 4 -> 10
@@ -585,33 +585,33 @@ src\bf.~ath:17
 27	@000000@	MATH 12 CMPLT -> 11
 28	@000000@	MATH 11 LAND -> 10
 29	@000000@	INVOKE 9(10) -> 9
-src\bf.~ath:18
+src\skaianet\die\tests\bf.~ath:18
 30	@000000@	MOVE 7 -> 9
 31	@000000@	ENTER 9 -> 310
-src\bf.~ath:19
+src\skaianet\die\tests\bf.~ath:19
 32	@000000@	MOVE 3 -> 10
 33	@000000@	MOVE 4 -> 11
 34	@000000@	INDEX 10[11]
-src\bf.~ath:21
+src\skaianet\die\tests\bf.~ath:21
 35	@000000@	MOVE 6 -> 11
 36	@000000@	FIELD 11.@000000@read
 37	@000000@	INVOKE 11() -> 11
 38	@000000@	IMPORT @000000@bit/@000000@option -> 12
-src\bf.~ath:25
+src\skaianet\die\tests\bf.~ath:25
 39	@000000@	MOVE 12 -> 13
 40	@000000@	FIELD 13.@000000@bind
 41	@000000@	MOVE 10 -> 14
 42	@000000@	CONST #43 -> 15
 43	@000000@	MATH 15 CMPEQ -> 14
 44	@000000@	INVOKE 13(14) -> 13
-src\bf.~ath:26
+src\skaianet\die\tests\bf.~ath:26
 45	@000000@	MOVE 12 -> 13
 46	@000000@	ENTER 13 -> 64
-src\bf.~ath:27
+src\skaianet\die\tests\bf.~ath:27
 47	@000000@	MOVE 6 -> 14
 48	@000000@	FIELD 14.@000000@erase
 49	@000000@	INVOKE 14() -> 14
-src\bf.~ath:28
+src\skaianet\die\tests\bf.~ath:28
 50	@000000@	MOVE 6 -> 14
 51	@000000@	FIELD 14.@000000@write
 52	@000000@	MOVE 11 -> 15
@@ -620,29 +620,29 @@ src\bf.~ath:28
 55	@000000@	CONST #255 -> 16
 56	@000000@	MATH 16 BIAND -> 15
 57	@000000@	INVOKE 14(15) -> 14
-src\bf.~ath:29
+src\skaianet\die\tests\bf.~ath:29
 58	@000000@	MOVE 12 -> 14
 59	@000000@	FIELD 14.@000000@bind
 60	@000000@	CONST false -> 15
 61	@000000@	INVOKE 14(15) -> 14
 62	@000000@	EXIT 13 -> 47
-src\bf.~ath:30
+src\skaianet\die\tests\bf.~ath:30
 63	@000000@	CONST NULL -> 14
-src\bf.~ath:32
+src\skaianet\die\tests\bf.~ath:32
 64	@000000@	MOVE 12 -> 13
 65	@000000@	FIELD 13.@000000@bind
 66	@000000@	MOVE 10 -> 14
 67	@000000@	CONST #45 -> 15
 68	@000000@	MATH 15 CMPEQ -> 14
 69	@000000@	INVOKE 13(14) -> 13
-src\bf.~ath:33
+src\skaianet\die\tests\bf.~ath:33
 70	@000000@	MOVE 12 -> 13
 71	@000000@	ENTER 13 -> 89
-src\bf.~ath:34
+src\skaianet\die\tests\bf.~ath:34
 72	@000000@	MOVE 6 -> 14
 73	@000000@	FIELD 14.@000000@erase
 74	@000000@	INVOKE 14() -> 14
-src\bf.~ath:35
+src\skaianet\die\tests\bf.~ath:35
 75	@000000@	MOVE 6 -> 14
 76	@000000@	FIELD 14.@000000@write
 77	@000000@	MOVE 11 -> 15
@@ -651,113 +651,113 @@ src\bf.~ath:35
 80	@000000@	CONST #255 -> 16
 81	@000000@	MATH 16 BIAND -> 15
 82	@000000@	INVOKE 14(15) -> 14
-src\bf.~ath:36
+src\skaianet\die\tests\bf.~ath:36
 83	@000000@	MOVE 12 -> 14
 84	@000000@	FIELD 14.@000000@bind
 85	@000000@	CONST false -> 15
 86	@000000@	INVOKE 14(15) -> 14
 87	@000000@	EXIT 13 -> 72
-src\bf.~ath:37
+src\skaianet\die\tests\bf.~ath:37
 88	@000000@	CONST NULL -> 14
-src\bf.~ath:39
+src\skaianet\die\tests\bf.~ath:39
 89	@000000@	MOVE 12 -> 13
 90	@000000@	FIELD 13.@000000@bind
 91	@000000@	MOVE 10 -> 14
 92	@000000@	CONST #60 -> 15
 93	@000000@	MATH 15 CMPEQ -> 14
 94	@000000@	INVOKE 13(14) -> 13
-src\bf.~ath:40
+src\skaianet\die\tests\bf.~ath:40
 95	@000000@	MOVE 12 -> 13
 96	@000000@	ENTER 13 -> 107
-src\bf.~ath:41
+src\skaianet\die\tests\bf.~ath:41
 97	@000000@	MOVE 6 -> 14
 98	@000000@	FIELD 14.@000000@rewind
 99	@000000@	CONST #1 -> 15
 100	@000000@	INVOKE 14(15) -> 14
-src\bf.~ath:42
+src\skaianet\die\tests\bf.~ath:42
 101	@000000@	MOVE 12 -> 14
 102	@000000@	FIELD 14.@000000@bind
 103	@000000@	CONST false -> 15
 104	@000000@	INVOKE 14(15) -> 14
 105	@000000@	EXIT 13 -> 97
-src\bf.~ath:43
+src\skaianet\die\tests\bf.~ath:43
 106	@000000@	CONST NULL -> 14
-src\bf.~ath:45
+src\skaianet\die\tests\bf.~ath:45
 107	@000000@	MOVE 12 -> 13
 108	@000000@	FIELD 13.@000000@bind
 109	@000000@	MOVE 10 -> 14
 110	@000000@	CONST #62 -> 15
 111	@000000@	MATH 15 CMPEQ -> 14
 112	@000000@	INVOKE 13(14) -> 13
-src\bf.~ath:46
+src\skaianet\die\tests\bf.~ath:46
 113	@000000@	MOVE 12 -> 13
 114	@000000@	ENTER 13 -> 125
-src\bf.~ath:47
+src\skaianet\die\tests\bf.~ath:47
 115	@000000@	MOVE 6 -> 14
 116	@000000@	FIELD 14.@000000@play
 117	@000000@	CONST #1 -> 15
 118	@000000@	INVOKE 14(15) -> 14
-src\bf.~ath:48
+src\skaianet\die\tests\bf.~ath:48
 119	@000000@	MOVE 12 -> 14
 120	@000000@	FIELD 14.@000000@bind
 121	@000000@	CONST false -> 15
 122	@000000@	INVOKE 14(15) -> 14
 123	@000000@	EXIT 13 -> 115
-src\bf.~ath:49
+src\skaianet\die\tests\bf.~ath:49
 124	@000000@	CONST NULL -> 14
-src\bf.~ath:51
+src\skaianet\die\tests\bf.~ath:51
 125	@000000@	MOVE 12 -> 13
 126	@000000@	FIELD 13.@000000@bind
 127	@000000@	MOVE 10 -> 14
 128	@000000@	CONST #44 -> 15
 129	@000000@	MATH 15 CMPEQ -> 14
 130	@000000@	INVOKE 13(14) -> 13
-src\bf.~ath:52
+src\skaianet\die\tests\bf.~ath:52
 131	@000000@	MOVE 12 -> 13
 132	@000000@	ENTER 13 -> 148
-src\bf.~ath:53
+src\skaianet\die\tests\bf.~ath:53
 133	@000000@	MOVE 6 -> 14
 134	@000000@	FIELD 14.@000000@erase
 135	@000000@	INVOKE 14() -> 14
-src\bf.~ath:54
+src\skaianet\die\tests\bf.~ath:54
 136	@000000@	MOVE 6 -> 14
 137	@000000@	FIELD 14.@000000@write
 138	@000000@	MOVE 1 -> 15
 139	@000000@	FIELD 15.@000000@read
 140	@000000@	INVOKE 15() -> 15
 141	@000000@	INVOKE 14(15) -> 14
-src\bf.~ath:55
+src\skaianet\die\tests\bf.~ath:55
 142	@000000@	MOVE 12 -> 14
 143	@000000@	FIELD 14.@000000@bind
 144	@000000@	CONST false -> 15
 145	@000000@	INVOKE 14(15) -> 14
 146	@000000@	EXIT 13 -> 133
-src\bf.~ath:56
+src\skaianet\die\tests\bf.~ath:56
 147	@000000@	CONST NULL -> 14
-src\bf.~ath:58
+src\skaianet\die\tests\bf.~ath:58
 148	@000000@	MOVE 12 -> 13
 149	@000000@	FIELD 13.@000000@bind
 150	@000000@	MOVE 10 -> 14
 151	@000000@	CONST #46 -> 15
 152	@000000@	MATH 15 CMPEQ -> 14
 153	@000000@	INVOKE 13(14) -> 13
-src\bf.~ath:59
+src\skaianet\die\tests\bf.~ath:59
 154	@000000@	MOVE 12 -> 13
 155	@000000@	ENTER 13 -> 166
-src\bf.~ath:60
+src\skaianet\die\tests\bf.~ath:60
 156	@000000@	MOVE 2 -> 14
 157	@000000@	FIELD 14.@000000@write
 158	@000000@	MOVE 11 -> 15
 159	@000000@	INVOKE 14(15) -> 14
-src\bf.~ath:61
+src\skaianet\die\tests\bf.~ath:61
 160	@000000@	MOVE 12 -> 14
 161	@000000@	FIELD 14.@000000@bind
 162	@000000@	CONST false -> 15
 163	@000000@	INVOKE 14(15) -> 14
 164	@000000@	EXIT 13 -> 156
-src\bf.~ath:62
+src\skaianet\die\tests\bf.~ath:62
 165	@000000@	CONST NULL -> 14
-src\bf.~ath:64
+src\skaianet\die\tests\bf.~ath:64
 166	@000000@	MOVE 12 -> 13
 167	@000000@	FIELD 13.@000000@bind
 168	@000000@	MOVE 10 -> 14
@@ -768,17 +768,17 @@ src\bf.~ath:64
 173	@000000@	MATH 16 CMPEQ -> 15
 174	@000000@	MATH 15 LAND -> 14
 175	@000000@	INVOKE 13(14) -> 13
-src\bf.~ath:65
+src\skaianet\die\tests\bf.~ath:65
 176	@000000@	CONST #1 -> 13
-src\bf.~ath:66
+src\skaianet\die\tests\bf.~ath:66
 177	@000000@	MOVE 12 -> 14
 178	@000000@	ENTER 14 -> 231
-src\bf.~ath:67
+src\skaianet\die\tests\bf.~ath:67
 179	@000000@	MOVE 4 -> 15
 180	@000000@	CONST #1 -> 16
 181	@000000@	MATH 16 ADD -> 15
 182	@000000@	MOVE 15 -> 4
-src\bf.~ath:68
+src\skaianet\die\tests\bf.~ath:68
 183	@000000@	MOVE 12 -> 15
 184	@000000@	FIELD 15.@000000@bind
 185	@000000@	MOVE 3 -> 16
@@ -787,23 +787,23 @@ src\bf.~ath:68
 188	@000000@	CONST #91 -> 17
 189	@000000@	MATH 17 CMPEQ -> 16
 190	@000000@	INVOKE 15(16) -> 15
-src\bf.~ath:69
+src\skaianet\die\tests\bf.~ath:69
 191	@000000@	MOVE 12 -> 15
 192	@000000@	ENTER 15 -> 203
-src\bf.~ath:70
+src\skaianet\die\tests\bf.~ath:70
 193	@000000@	MOVE 13 -> 16
 194	@000000@	CONST #1 -> 17
 195	@000000@	MATH 17 ADD -> 16
 196	@000000@	MOVE 16 -> 13
-src\bf.~ath:71
+src\skaianet\die\tests\bf.~ath:71
 197	@000000@	MOVE 12 -> 16
 198	@000000@	FIELD 16.@000000@bind
 199	@000000@	CONST false -> 17
 200	@000000@	INVOKE 16(17) -> 16
 201	@000000@	EXIT 15 -> 193
-src\bf.~ath:72
+src\skaianet\die\tests\bf.~ath:72
 202	@000000@	CONST NULL -> 16
-src\bf.~ath:73
+src\skaianet\die\tests\bf.~ath:73
 203	@000000@	MOVE 12 -> 15
 204	@000000@	FIELD 15.@000000@bind
 205	@000000@	MOVE 3 -> 16
@@ -812,23 +812,23 @@ src\bf.~ath:73
 208	@000000@	CONST #93 -> 17
 209	@000000@	MATH 17 CMPEQ -> 16
 210	@000000@	INVOKE 15(16) -> 15
-src\bf.~ath:74
+src\skaianet\die\tests\bf.~ath:74
 211	@000000@	MOVE 12 -> 15
 212	@000000@	ENTER 15 -> 223
-src\bf.~ath:75
+src\skaianet\die\tests\bf.~ath:75
 213	@000000@	MOVE 13 -> 16
 214	@000000@	CONST #1 -> 17
 215	@000000@	MATH 17 SUBTRACT -> 16
 216	@000000@	MOVE 16 -> 13
-src\bf.~ath:76
+src\skaianet\die\tests\bf.~ath:76
 217	@000000@	MOVE 12 -> 16
 218	@000000@	FIELD 16.@000000@bind
 219	@000000@	CONST false -> 17
 220	@000000@	INVOKE 16(17) -> 16
 221	@000000@	EXIT 15 -> 213
-src\bf.~ath:77
+src\skaianet\die\tests\bf.~ath:77
 222	@000000@	CONST NULL -> 16
-src\bf.~ath:78
+src\skaianet\die\tests\bf.~ath:78
 223	@000000@	MOVE 12 -> 15
 224	@000000@	FIELD 15.@000000@bind
 225	@000000@	MOVE 13 -> 16
@@ -836,9 +836,9 @@ src\bf.~ath:78
 227	@000000@	MATH 17 CMPGT -> 16
 228	@000000@	INVOKE 15(16) -> 15
 229	@000000@	EXIT 14 -> 179
-src\bf.~ath:79
+src\skaianet\die\tests\bf.~ath:79
 230	@000000@	CONST NULL -> 15
-src\bf.~ath:81
+src\skaianet\die\tests\bf.~ath:81
 231	@000000@	MOVE 12 -> 14
 232	@000000@	FIELD 14.@000000@bind
 233	@000000@	MOVE 10 -> 15
@@ -849,18 +849,18 @@ src\bf.~ath:81
 238	@000000@	MATH 17 CMPNE -> 16
 239	@000000@	MATH 16 LAND -> 15
 240	@000000@	INVOKE 14(15) -> 14
-src\bf.~ath:82
+src\skaianet\die\tests\bf.~ath:82
 241	@000000@	CONST #1 -> 14
 242	@000000@	MOVE 14 -> 13
-src\bf.~ath:83
+src\skaianet\die\tests\bf.~ath:83
 243	@000000@	MOVE 12 -> 14
 244	@000000@	ENTER 14 -> 297
-src\bf.~ath:84
+src\skaianet\die\tests\bf.~ath:84
 245	@000000@	MOVE 4 -> 15
 246	@000000@	CONST #1 -> 16
 247	@000000@	MATH 16 SUBTRACT -> 15
 248	@000000@	MOVE 15 -> 4
-src\bf.~ath:85
+src\skaianet\die\tests\bf.~ath:85
 249	@000000@	MOVE 12 -> 15
 250	@000000@	FIELD 15.@000000@bind
 251	@000000@	MOVE 3 -> 16
@@ -869,23 +869,23 @@ src\bf.~ath:85
 254	@000000@	CONST #93 -> 17
 255	@000000@	MATH 17 CMPEQ -> 16
 256	@000000@	INVOKE 15(16) -> 15
-src\bf.~ath:86
+src\skaianet\die\tests\bf.~ath:86
 257	@000000@	MOVE 12 -> 15
 258	@000000@	ENTER 15 -> 269
-src\bf.~ath:87
+src\skaianet\die\tests\bf.~ath:87
 259	@000000@	MOVE 13 -> 16
 260	@000000@	CONST #1 -> 17
 261	@000000@	MATH 17 ADD -> 16
 262	@000000@	MOVE 16 -> 13
-src\bf.~ath:88
+src\skaianet\die\tests\bf.~ath:88
 263	@000000@	MOVE 12 -> 16
 264	@000000@	FIELD 16.@000000@bind
 265	@000000@	CONST false -> 17
 266	@000000@	INVOKE 16(17) -> 16
 267	@000000@	EXIT 15 -> 259
-src\bf.~ath:89
+src\skaianet\die\tests\bf.~ath:89
 268	@000000@	CONST NULL -> 16
-src\bf.~ath:90
+src\skaianet\die\tests\bf.~ath:90
 269	@000000@	MOVE 12 -> 15
 270	@000000@	FIELD 15.@000000@bind
 271	@000000@	MOVE 3 -> 16
@@ -894,23 +894,23 @@ src\bf.~ath:90
 274	@000000@	CONST #91 -> 17
 275	@000000@	MATH 17 CMPEQ -> 16
 276	@000000@	INVOKE 15(16) -> 15
-src\bf.~ath:91
+src\skaianet\die\tests\bf.~ath:91
 277	@000000@	MOVE 12 -> 15
 278	@000000@	ENTER 15 -> 289
-src\bf.~ath:92
+src\skaianet\die\tests\bf.~ath:92
 279	@000000@	MOVE 13 -> 16
 280	@000000@	CONST #1 -> 17
 281	@000000@	MATH 17 SUBTRACT -> 16
 282	@000000@	MOVE 16 -> 13
-src\bf.~ath:93
+src\skaianet\die\tests\bf.~ath:93
 283	@000000@	MOVE 12 -> 16
 284	@000000@	FIELD 16.@000000@bind
 285	@000000@	CONST false -> 17
 286	@000000@	INVOKE 16(17) -> 16
 287	@000000@	EXIT 15 -> 279
-src\bf.~ath:94
+src\skaianet\die\tests\bf.~ath:94
 288	@000000@	CONST NULL -> 16
-src\bf.~ath:95
+src\skaianet\die\tests\bf.~ath:95
 289	@000000@	MOVE 12 -> 15
 290	@000000@	FIELD 15.@000000@bind
 291	@000000@	MOVE 13 -> 16
@@ -918,28 +918,28 @@ src\bf.~ath:95
 293	@000000@	MATH 17 CMPGT -> 16
 294	@000000@	INVOKE 15(16) -> 15
 295	@000000@	EXIT 14 -> 245
-src\bf.~ath:96
+src\skaianet\die\tests\bf.~ath:96
 296	@000000@	CONST NULL -> 15
-src\bf.~ath:98
+src\skaianet\die\tests\bf.~ath:98
 297	@000000@	MOVE 4 -> 14
 298	@000000@	CONST #1 -> 15
 299	@000000@	MATH 15 ADD -> 14
 300	@000000@	MOVE 14 -> 4
-src\bf.~ath:99
+src\skaianet\die\tests\bf.~ath:99
 301	@000000@	MOVE 7 -> 14
 302	@000000@	FIELD 14.@000000@bind
 303	@000000@	CONST false -> 15
 304	@000000@	INVOKE 14(15) -> 14
 305	@000000@	EXIT 9 -> 32
-src\bf.~ath:100
+src\skaianet\die\tests\bf.~ath:100
 306	@000000@	MOVE 7 -> 10
 307	@000000@	FIELD 10.@000000@bind
 308	@000000@	CONST true -> 11
 309	@000000@	INVOKE 10(11) -> 10
 310	@000000@	EXIT 8 -> 19
-src\bf.~ath:101
+src\skaianet\die\tests\bf.~ath:101
 311	@000000@	CONST NULL -> 9
-src\bf.~ath:103
+src\skaianet\die\tests\bf.~ath:103
 312	@000000@	THIS @000000@ -> 8
 313	@000000@	FIELD 8.@000000@DIE
 314	@000000@	INVOKE 8() -> 8

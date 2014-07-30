@@ -78,35 +78,35 @@ COMPOUND
 				VARIABLE: @000000@DIE
 === Compiled Bytecode ===
 Procedure[0/8]: 35
-src\threading.~ath:1
+src\skaianet\die\tests\threading.~ath:1
 0	@000000@	IMPORT @000000@stream/@000000@stdout -> 1
 1	@000000@	BIFURCATE THREAD -> @FF0000@ @0000FF@
-src\threading.~ath:5
+src\skaianet\die\tests\threading.~ath:5
 2	@FF0000@	CONST #6 -> 2
-src\threading.~ath:6
+src\skaianet\die\tests\threading.~ath:6
 3	@0000FF@	CONST #10 -> 3
 4	@0000FF@	MOVE 3 -> 2
 5	@000000@	IMPORT @000000@bit/@000000@done -> 3
-src\threading.~ath:10
+src\skaianet\die\tests\threading.~ath:10
 6	@000000@	MOVE 3 -> 4
-7	@000000@	MATH -1 NOT -> 4
+7	@000000@	MATH UNARY NOT -> 4
 8	@000000@	ENTER 4 -> 29
-src\threading.~ath:11
+src\skaianet\die\tests\threading.~ath:11
 9	@FF0000@	MOVE 1 -> 5
 10	@FF0000@	FIELD 5.@000000@println
 11	@FF0000@	CONST `A' -> 6
 12	@FF0000@	INVOKE 5(6) -> 5
-src\threading.~ath:12
+src\skaianet\die\tests\threading.~ath:12
 13	@0000FF@	MOVE 1 -> 5
 14	@0000FF@	FIELD 5.@000000@println
 15	@0000FF@	CONST `B' -> 6
 16	@0000FF@	INVOKE 5(6) -> 5
-src\threading.~ath:13
+src\skaianet\die\tests\threading.~ath:13
 17	@000000@	MOVE 2 -> 5
 18	@000000@	CONST #1 -> 6
 19	@000000@	MATH 6 SUBTRACT -> 5
 20	@000000@	MOVE 5 -> 2
-src\threading.~ath:14
+src\skaianet\die\tests\threading.~ath:14
 21	@000000@	MOVE 3 -> 5
 22	@000000@	FIELD 5.@000000@bind
 23	@000000@	MOVE 2 -> 6
@@ -114,13 +114,13 @@ src\threading.~ath:14
 25	@000000@	MATH 7 CMPLE -> 6
 26	@000000@	INVOKE 5(6) -> 5
 27	@000000@	EXIT 4 -> 9
-src\threading.~ath:15
+src\skaianet\die\tests\threading.~ath:15
 28	@000000@	CONST NULL -> 5
-src\threading.~ath:17
+src\skaianet\die\tests\threading.~ath:17
 29	@FF0000@	THIS @FF0000@ -> 4
 30	@FF0000@	FIELD 4.@000000@DIE
 31	@FF0000@	INVOKE 4() -> 4
-src\threading.~ath:18
+src\skaianet\die\tests\threading.~ath:18
 32	@0000FF@	THIS @0000FF@ -> 4
 33	@0000FF@	FIELD 4.@000000@DIE
 34	@0000FF@	INVOKE 4() -> 4

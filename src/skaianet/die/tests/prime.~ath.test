@@ -193,40 +193,40 @@ COMPOUND
 				VARIABLE: @000000@DIE
 === Compiled Bytecode ===
 Procedure[0/13]: 106
-src\prime.~ath:1
+src\skaianet\die\tests\prime.~ath:1
 0	@000000@	IMPORT @000000@stream/@000000@stdout -> 1
-src\prime.~ath:2
+src\skaianet\die\tests\prime.~ath:2
 1	@000000@	CONST #3 -> 2
-src\prime.~ath:3
+src\skaianet\die\tests\prime.~ath:3
 2	@000000@	CONST #0 -> 3
 3	@000000@	IMPORT @000000@bit/@000000@looping -> 4
-src\prime.~ath:5
+src\skaianet\die\tests\prime.~ath:5
 4	@000000@	MOVE 4 -> 5
 5	@000000@	FIELD 5.@000000@bind
 6	@000000@	CONST true -> 6
 7	@000000@	INVOKE 5(6) -> 5
-src\prime.~ath:6
+src\skaianet\die\tests\prime.~ath:6
 8	@000000@	MOVE 1 -> 5
 9	@000000@	FIELD 5.@000000@print
 10	@000000@	CONST `. 2' -> 6
 11	@000000@	INVOKE 5(6) -> 5
-src\prime.~ath:7
+src\skaianet\die\tests\prime.~ath:7
 12	@000000@	MOVE 4 -> 5
 13	@000000@	ENTER 5 -> 100
-src\prime.~ath:8
+src\skaianet\die\tests\prime.~ath:8
 14	@000000@	CONST #2 -> 6
 15	@000000@	IMPORT @000000@bit/@000000@sublooping -> 7
-src\prime.~ath:10
+src\skaianet\die\tests\prime.~ath:10
 16	@000000@	MOVE 7 -> 8
 17	@000000@	FIELD 8.@000000@bind
 18	@000000@	CONST true -> 9
 19	@000000@	INVOKE 8(9) -> 8
-src\prime.~ath:11
+src\skaianet\die\tests\prime.~ath:11
 20	@000000@	CONST true -> 8
-src\prime.~ath:12
+src\skaianet\die\tests\prime.~ath:12
 21	@000000@	MOVE 7 -> 9
 22	@000000@	ENTER 9 -> 46
-src\prime.~ath:13
+src\skaianet\die\tests\prime.~ath:13
 23	@000000@	MOVE 8 -> 10
 24	@000000@	MOVE 2 -> 11
 25	@000000@	MOVE 6 -> 12
@@ -235,12 +235,12 @@ src\prime.~ath:13
 28	@000000@	MATH 12 CMPNE -> 11
 29	@000000@	MATH 11 LAND -> 10
 30	@000000@	MOVE 10 -> 8
-src\prime.~ath:14
+src\skaianet\die\tests\prime.~ath:14
 31	@000000@	MOVE 6 -> 10
 32	@000000@	CONST #1 -> 11
 33	@000000@	MATH 11 ADD -> 10
 34	@000000@	MOVE 10 -> 6
-src\prime.~ath:15
+src\skaianet\die\tests\prime.~ath:15
 35	@000000@	MOVE 7 -> 10
 36	@000000@	FIELD 10.@000000@bind
 37	@000000@	MOVE 6 -> 11
@@ -248,31 +248,31 @@ src\prime.~ath:15
 39	@000000@	MATH 12 CMPLT -> 11
 40	@000000@	INVOKE 10(11) -> 10
 41	@000000@	EXIT 9 -> 23
-src\prime.~ath:16
+src\skaianet\die\tests\prime.~ath:16
 42	@000000@	MOVE 7 -> 10
 43	@000000@	FIELD 10.@000000@bind
 44	@000000@	MOVE 8 -> 11
 45	@000000@	INVOKE 10(11) -> 10
-src\prime.~ath:17
+src\skaianet\die\tests\prime.~ath:17
 46	@000000@	MOVE 7 -> 9
 47	@000000@	ENTER 9 -> 69
-src\prime.~ath:18
+src\skaianet\die\tests\prime.~ath:18
 48	@000000@	MOVE 1 -> 10
 49	@000000@	FIELD 10.@000000@print
 50	@000000@	CONST ` ' -> 11
 51	@000000@	INVOKE 10(11) -> 10
-src\prime.~ath:19
+src\skaianet\die\tests\prime.~ath:19
 52	@000000@	MOVE 1 -> 10
 53	@000000@	FIELD 10.@000000@print
 54	@000000@	MOVE 6 -> 11
 55	@000000@	INVOKE 10(11) -> 10
-src\prime.~ath:20
+src\skaianet\die\tests\prime.~ath:20
 56	@000000@	MOVE 7 -> 10
 57	@000000@	FIELD 10.@000000@bind
 58	@000000@	CONST false -> 11
 59	@000000@	INVOKE 10(11) -> 10
 60	@000000@	EXIT 9 -> 48
-src\prime.~ath:21
+src\skaianet\die\tests\prime.~ath:21
 61	@000000@	MOVE 7 -> 10
 62	@000000@	FIELD 10.@000000@bind
 63	@000000@	MOVE 2 -> 11
@@ -281,37 +281,37 @@ src\prime.~ath:21
 66	@000000@	MOVE 3 -> 12
 67	@000000@	MATH 12 CMPNE -> 11
 68	@000000@	INVOKE 10(11) -> 10
-src\prime.~ath:22
+src\skaianet\die\tests\prime.~ath:22
 69	@000000@	MOVE 7 -> 9
 70	@000000@	ENTER 9 -> 88
-src\prime.~ath:23
+src\skaianet\die\tests\prime.~ath:23
 71	@000000@	MOVE 1 -> 10
 72	@000000@	FIELD 10.@000000@println
 73	@000000@	INVOKE 10() -> 10
-src\prime.~ath:24
+src\skaianet\die\tests\prime.~ath:24
 74	@000000@	MOVE 1 -> 10
 75	@000000@	FIELD 10.@000000@print
 76	@000000@	CONST `.' -> 11
 77	@000000@	INVOKE 10(11) -> 10
-src\prime.~ath:25
+src\skaianet\die\tests\prime.~ath:25
 78	@000000@	MOVE 2 -> 10
 79	@000000@	CONST #100 -> 11
 80	@000000@	MATH 11 DIVIDE -> 10
 81	@000000@	MOVE 10 -> 3
-src\prime.~ath:26
+src\skaianet\die\tests\prime.~ath:26
 82	@000000@	MOVE 7 -> 10
 83	@000000@	FIELD 10.@000000@bind
 84	@000000@	CONST false -> 11
 85	@000000@	INVOKE 10(11) -> 10
 86	@000000@	EXIT 9 -> 71
-src\prime.~ath:27
+src\skaianet\die\tests\prime.~ath:27
 87	@000000@	CONST NULL -> 10
-src\prime.~ath:28
+src\skaianet\die\tests\prime.~ath:28
 88	@000000@	MOVE 2 -> 9
 89	@000000@	CONST #1 -> 10
 90	@000000@	MATH 10 ADD -> 9
 91	@000000@	MOVE 9 -> 2
-src\prime.~ath:29
+src\skaianet\die\tests\prime.~ath:29
 92	@000000@	MOVE 4 -> 9
 93	@000000@	FIELD 9.@000000@bind
 94	@000000@	MOVE 2 -> 10
@@ -319,13 +319,13 @@ src\prime.~ath:29
 96	@000000@	MATH 11 CMPLT -> 10
 97	@000000@	INVOKE 9(10) -> 9
 98	@000000@	EXIT 5 -> 14
-src\prime.~ath:30
+src\skaianet\die\tests\prime.~ath:30
 99	@000000@	CONST NULL -> 6
-src\prime.~ath:31
+src\skaianet\die\tests\prime.~ath:31
 100	@000000@	MOVE 1 -> 5
 101	@000000@	FIELD 5.@000000@println
 102	@000000@	INVOKE 5() -> 5
-src\prime.~ath:33
+src\skaianet\die\tests\prime.~ath:33
 103	@000000@	THIS @000000@ -> 5
 104	@000000@	FIELD 5.@000000@DIE
 105	@000000@	INVOKE 5() -> 5

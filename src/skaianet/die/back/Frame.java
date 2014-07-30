@@ -57,13 +57,17 @@ class Frame {
     }
 
     public void report(PrintStream out) {
+        if (codePointer == -1) {
+            out.println("FORKED " + procedure);
+            return;
+        }
         out.println("VARS " + Arrays.toString(variables));
         out.print(" " + procedure + "+" + codePointer + ": ");
         if (codePointer < 0 || codePointer >= procedure.instructions.length) {
             out.println("????");
         } else {
             Instruction instruction = procedure.instructions[codePointer];
-            if (instruction.thread.equals(thread)) {
+            if (instruction.shouldExecute(thread)) {
                 instruction.printInternal(0, out);
             } else {
                 out.println("(no exec)");

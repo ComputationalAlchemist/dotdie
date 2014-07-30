@@ -20,7 +20,11 @@ public class MathInstruction extends Instruction {
 
     @Override
     public void printInternal(int indent, PrintStream out) {
-        out.println("MATH " + paramRef + " " + mathOp + " -> " + target);
+        if (paramRef == -1) {
+            out.println("MATH UNARY " + mathOp + " -> " + target);
+        } else {
+            out.println("MATH " + paramRef + " " + mathOp + " -> " + target);
+        }
     }
 
     @Override
@@ -153,6 +157,11 @@ public class MathInstruction extends Instruction {
                         @Override
                         public double getEnergy() {
                             return 0; // No energy available through this abstraction. Should this be different?
+                        }
+
+                        @Override
+                        public String toString() {
+                            return "!" + outer;
                         }
                     };
                 } else {

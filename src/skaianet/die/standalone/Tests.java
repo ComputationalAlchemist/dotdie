@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Tests {
     public static void main(String[] args) throws ParsingException, CompilingException, IOException {
         CompiledProcedure.consistentPrintouts = true;
-        File[] files = new File("src").listFiles();
+        File[] files = new File("src/skaianet/die/tests").listFiles();
         if (files == null) {
             throw new IOException("Cannot list tests!");
         }

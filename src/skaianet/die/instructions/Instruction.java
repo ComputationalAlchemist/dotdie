@@ -24,9 +24,13 @@ public abstract class Instruction {
 
     public void execute(Color thread, ExecutionContext executionContext) {
         // Return true if backwards branch.
-        if (this.thread.equals(Color.NO_THREAD) || this.thread.equals(thread)) {
+        if (shouldExecute(thread)) {
             execute(executionContext);
         }
+    }
+
+    public boolean shouldExecute(Color thread) {
+        return this.thread.equals(Color.NO_THREAD) || this.thread.equals(thread);
     }
 
     protected abstract void execute(ExecutionContext executionContext); // Return true if backwards branch.

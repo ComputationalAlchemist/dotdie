@@ -1,0 +1,28 @@
+
+// As should be obvious if you run this program, it's nothing like Sollux's virus.
+
+// Why?
+
+// It's very difficult for a ~ATH interpreter to have that kind of result without having a bug, and most likely the
+// reason that it worked for Sollux was that it exploited some obscure interpreter or compiler bug, which caused the
+// computer to blow up.
+
+// The interlacing of the lines doesn't actually get handled by the compiler here, so the RED (F00) thread loops
+// infinitely around the outer loop (as the inner loop never starts due to the universe always existing), and the BLUE
+// (00F) thread can't run anything so it just goes to the end and then terminates both of the threads.
+
+// Boring. Oh well.
+
+bifurcate THIS[@F00@THIS@000@, @00F@THIS@000@];
+import @F00@universe U1;@000@
+import @00F@universe U2;@000@
+
+@F00@~ATH(U1) {
+
+    @00F@~ATH(!U2) {
+
+@F00@} EXECUTE(~ATH(@00F@THIS@F00@){}EXECUTE(NULL));
+ 
+    @00F@} EXECUTE(~ATH(@F00@THIS@00F@){}EXECUTE(NULL));
+
+@000@[@F00@THIS@000@, @00F@THIS@000@].DIE();
