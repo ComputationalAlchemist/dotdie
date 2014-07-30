@@ -13,8 +13,6 @@ public class Compiler {
     private HashMap<Integer, String> debugging;
     private int nextFreeVar, maxVars;
 
-    // TODO: Find all places where identifiers are assumed to be strings and replace with ColoredIdentifier.
-
     public CompiledProcedure compile(Statement procedure, ColoredIdentifier[] arguments) throws CompilingException {
         if (!output.isEmpty()) {
             throw new CompilingException("Malformed state of Compiler!");

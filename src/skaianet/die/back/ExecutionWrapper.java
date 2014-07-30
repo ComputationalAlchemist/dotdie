@@ -13,7 +13,6 @@ public class ExecutionWrapper {
     private final LinkedList<ExecutionContext> contexts = new LinkedList<>();
     private final LinkedList<ExecutionContext> queued = new LinkedList<>();
     private final HashSet<ExecutionContext> parents = new HashSet<>();
-    private boolean terminatedNormally;
 
     public ExecutionWrapper(ExecutionExtension extension, CompiledProcedure main, EnergyPacket packet) {
         ExecutionContext context = new ExecutionContext(extension, this, null);

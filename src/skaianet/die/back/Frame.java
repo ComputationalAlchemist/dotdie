@@ -63,7 +63,7 @@ class Frame {
             out.println("????");
         } else {
             Instruction instruction = procedure.instructions[codePointer];
-            if (instruction.thread == null || instruction.thread.equals(thread)) {
+            if (instruction.thread.equals(thread)) {
                 instruction.printInternal(0, out);
             } else {
                 out.println("(no exec)");

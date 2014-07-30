@@ -139,7 +139,7 @@ public class MathInstruction extends Instruction {
                 if (param == null) {
                     return true;
                 } else if (param instanceof Boolean) {
-                    return !((Boolean) param).booleanValue();
+                    return !(Boolean) param;
                 } else if (param instanceof Number) {
                     return ((Number) param).doubleValue() == 0;
                 } else if (param instanceof ATHAlive) {

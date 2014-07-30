@@ -10,7 +10,11 @@ import java.util.Scanner;
 public class Tests {
     public static void main(String[] args) throws ParsingException, CompilingException, IOException {
         CompiledProcedure.consistentPrintouts = true;
-        for (File test : new File("src").listFiles()) {
+        File[] files = new File("src").listFiles();
+        if (files == null) {
+            throw new IOException("Cannot list tests!");
+        }
+        for (File test : files) {
             if (test.getName().toLowerCase().endsWith(".~ath")) {
                 File inputFile = new File(test.getPath() + ".test.input");
                 try (InputStream testInputStream = inputFile.exists() ? new FileInputStream(inputFile) : new NullInputStream()) {
@@ -24,7 +28,9 @@ public class Tests {
                                     Standalone.execute(test.getPath(), false, outputStream, testInputStream);
                                 }
                             } catch (Throwable thr) {
-                                testFile.delete();
+                                if (!testFile.delete()) {
+                                    thr.addSuppressed(new IOException("Could not delete leftover test file!"));
+                                }
                                 throw thr;
                             }
                             continue;
