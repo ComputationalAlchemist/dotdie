@@ -1,0 +1,101 @@
+=== Source Code ===
+
+// As should be obvious if you run this program, it's nothing like Sollux's virus.
+
+// Why?
+
+// It's very difficult for a ~ATH interpreter to have that kind of result without having a bug, and most likely the
+// reason that it worked for Sollux was that it exploited some obscure interpreter or compiler bug, which caused the
+// computer to blow up.
+
+// The interlacing of the lines doesn't actually get handled by the compiler here, so the RED (F00) thread loops
+// infinitely around the outer loop (as the inner loop never starts due to the universe always existing), and the BLUE
+// (00F) thread can't run anything so it just goes to the end and then terminates both of the threads.
+
+// Boring. Oh well.
+
+bifurcate THIS[@F00@THIS@000@, @00F@THIS@000@];
+import @F00@universe U1;@000@
+import @00F@universe U2;@000@
+
+@F00@~ATH(U1) {
+
+    @00F@~ATH(!U2) {
+
+@F00@} EXECUTE(~ATH(@00F@THIS@F00@){}EXECUTE(NULL));
+ 
+    @00F@} EXECUTE(~ATH(@F00@THIS@00F@){}EXECUTE(NULL));
+
+@000@[@F00@THIS@000@, @00F@THIS@000@].DIE();
+
+=== Abstract Syntax Tree ===
+COMPOUND
+	BIFURCATE_THREAD
+		THIS: @FF0000@
+		THIS: @0000FF@
+	IMPORT
+		VARIABLE: @FF0000@universe
+		VARIABLE: @FF0000@U1
+	IMPORT
+		VARIABLE: @0000FF@universe
+		VARIABLE: @0000FF@U2
+	ATHLOOP
+		VARIABLE: @FF0000@U1
+		COMPOUND
+			ATHLOOP
+				NOT
+					VARIABLE: @0000FF@U2
+				COMPOUND
+				ATHLOOP
+					THIS: @0000FF@
+					COMPOUND
+					EXPRESSION
+						NULL
+		ATHLOOP
+			THIS: @FF0000@
+			COMPOUND
+			EXPRESSION
+				NULL
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				ARRAYCONST
+					THIS: @FF0000@
+					THIS: @0000FF@
+				VARIABLE: @000000@DIE
+=== Compiled Bytecode ===
+Procedure[0/7]: 23
+src\skaianet\die\tests\mobius.~ath:1
+0	@000000@	BIFURCATE THREAD -> @FF0000@ @0000FF@
+src\skaianet\die\tests\mobius.~ath:16
+1	@000000@	IMPORT @FF0000@universe/@FF0000@U1 -> 1
+src\skaianet\die\tests\mobius.~ath:17
+2	@000000@	IMPORT @0000FF@universe/@0000FF@U2 -> 2
+src\skaianet\die\tests\mobius.~ath:20
+3	@FF0000@	MOVE 1 -> 3
+4	@FF0000@	ENTER 3 -> 18
+src\skaianet\die\tests\mobius.~ath:22
+5	@FF0000@	MOVE 2 -> 4
+6	@FF0000@	MATH UNARY NOT -> 4
+7	@FF0000@	ENTER 4 -> 13
+8	@FF0000@	EXIT 4 -> 8
+src\skaianet\die\tests\mobius.~ath:24
+9	@FF0000@	THIS @0000FF@ -> 5
+10	@FF0000@	ENTER 5 -> 13
+11	@FF0000@	EXIT 5 -> 11
+12	@FF0000@	CONST NULL -> 6
+13	@FF0000@	EXIT 3 -> 5
+src\skaianet\die\tests\mobius.~ath:26
+14	@FF0000@	THIS @FF0000@ -> 4
+15	@FF0000@	ENTER 4 -> 18
+16	@FF0000@	EXIT 4 -> 16
+17	@FF0000@	CONST NULL -> 5
+src\skaianet\die\tests\mobius.~ath:28
+18	@000000@	THIS @FF0000@ -> 3
+19	@000000@	THIS @0000FF@ -> 4
+20	@000000@	ARRAY 3...4 -> 3
+21	@000000@	FIELD 3.@000000@DIE
+22	@000000@	INVOKE 3() -> 3
+Return: null
+=== Execution ===
+=== Printout End ===
