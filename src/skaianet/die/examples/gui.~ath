@@ -2,6 +2,7 @@
 import uncolor bgcolor;
 import uncolor bdcolor;
 import uncolor fgcolor;
+import uncolor iscolor;
 
 bgcolor.red = 255;
 bgcolor.green = 181;
@@ -15,6 +16,10 @@ fgcolor.red = 255;
 fgcolor.green = 255;
 fgcolor.blue = 255;
 
+iscolor.red = 0;
+iscolor.green = 0;
+iscolor.blue = 0;
+
 import window TestWindow;
 
 TestWindow.width = 232;
@@ -26,21 +31,58 @@ TestWindow.borderWidth = 2;
 
 import label title;
 
-title.x = 4;
+title.x = 17;
+title.y = 1;
 title.scale = 2;
 title.color = fgcolor.get();
 title.text = `~ATHTERCHUM v1';
 TestWindow.add(title);
 
-import panel TitlePanel;
+import panel titlepanel;
 
-TitlePanel.x = 12;
-TitlePanel.y = 32;
-TitlePanel.width = 209;
-TitlePanel.height = 55;
-TitlePanel.border = bdcolor.get();
-TitlePanel.borderWidth = 2;
-TestWindow.add(TitlePanel);
+titlepanel.x = 12;
+titlepanel.y = 32;
+titlepanel.width = 209;
+titlepanel.height = 55;
+titlepanel.color = iscolor.get();
+titlepanel.border = bdcolor.get();
+titlepanel.borderWidth = 2;
+TestWindow.add(titlepanel);
+
+import icon heads;
+import png pesterheads;
+
+heads.x = 4;
+heads.y = 6;
+heads.image = pesterheads;
+titlepanel.add(heads);
+
+import label chatclient;
+
+chatclient.x = 101;
+chatclient.y = 21;
+chatclient.color = fgcolor.get();
+chatclient.text = `CHAT CLIENT';
+titlepanel.add(chatclient);
+
+import label chumroll;
+
+chumroll.x = 19;
+chumroll.y = 88;
+chumroll.color = iscolor.get();
+chumroll.text = `CHUMROLL:';
+TestWindow.add(chumroll);
+
+import panel chumpanel;
+
+chumpanel.x = 12;
+chumpanel.y = 104;
+chumpanel.width = 209;
+chumpanel.height = 82;
+chumpanel.color = iscolor.get();
+chumpanel.border = bdcolor.get();
+chumpanel.borderWidth = 2;
+TestWindow.add(chumpanel);
 
 TestWindow.start();
 

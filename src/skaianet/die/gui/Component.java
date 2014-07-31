@@ -4,12 +4,27 @@ import skaianet.die.back.ATHcessible;
 import skaianet.die.front.Color;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.Hashtable;
+import java.util.Map;
 
 public abstract class Component {
 
-    private static final Font defaultFont = new Font("Courier New", Font.BOLD, 14);
+    private static final Font defaultFont;
+
+    static {
+        Map<TextAttribute, Object> map =
+                new Hashtable<TextAttribute, Object>();
+        map.put(TextAttribute.KERNING,
+                TextAttribute.KERNING_ON);
+        defaultFont = new Font("Courier New", Font.BOLD, 14).deriveFont(map);
+    }
+
     @ATHcessible
     public int x = 0;
     @ATHcessible
@@ -42,6 +57,22 @@ public abstract class Component {
             this.renderInternal(virtG);
             virtG.setTransform(transform);
             g.drawImage(bimg, AffineTransform.getScaleInstance(scale, scale), null);
+        }
+    }
+
+    protected void renderText(Graphics2D g, String str, int x, int y) {
+        if (str.length() != 0) {
+            char[] chars = str.toCharArray();
+            FontRenderContext frc = g.getFontRenderContext();
+            GlyphVector vector = g.getFont().layoutGlyphVector(frc, chars, 0, chars.length, 0);
+
+            for (int i = 0; i < vector.getNumGlyphs(); i++) {
+                Point2D position = vector.getGlyphPosition(i);
+                position.setLocation(position.getX() - i, position.getY());
+                vector.setGlyphPosition(i, position);
+            }
+
+            g.drawGlyphVector(vector, x, y);
         }
     }
 

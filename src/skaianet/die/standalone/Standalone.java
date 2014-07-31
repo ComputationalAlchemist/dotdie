@@ -11,6 +11,7 @@ import skaianet.die.middle.Compiler;
 import skaianet.die.middle.CompilingException;
 import skaianet.die.utils.Utilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -19,9 +20,11 @@ public class Standalone {
 
     public static PrintStream standaloneOutput;
     public static InputStream standaloneInput;
+    public static File resourceDir = null;
 
     public static void main(String[] args) throws IOException, ParsingException, CompilingException {
         String filename = "src/skaianet/die/examples/gui.~ath";
+        resourceDir = new File(filename).getParentFile();
         try {
             try {
                 execute(filename, true, System.out, System.in);

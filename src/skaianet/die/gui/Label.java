@@ -14,6 +14,7 @@ public class Label extends Component {
 
     @Override
     protected void renderInternal(Graphics2D g) {
-        g.drawString(text, 0, g.getFontMetrics().getAscent());
+        renderText(g, text, 0, g.getFontMetrics().getAscent());
+        //g.drawString(text, 0, g.getFontMetrics().getAscent());
     }
 }

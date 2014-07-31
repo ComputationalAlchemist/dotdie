@@ -5,10 +5,14 @@ import skaianet.die.back.ATHcessible;
 import skaianet.die.back.EmptyExtension;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.front.ColoredIdentifier;
+import skaianet.die.gui.Icon;
 import skaianet.die.gui.Label;
 import skaianet.die.gui.Panel;
 import skaianet.die.gui.Window;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,6 +47,8 @@ public class StandaloneExtension extends EmptyExtension {
                 return new Label(name.name);
             case "panel":
                 return new Panel();
+            case "icon":
+                return new Icon();
             case "dream":
                 final int length = name.name.length();
                 return new ATHAlive() {
@@ -72,6 +78,16 @@ public class StandaloneExtension extends EmptyExtension {
                 return namespace.color;
             case "uncolor":
                 return new Uncolor(namespace.color);
+            case "png":
+                try {
+                    if (Standalone.resourceDir == null) {
+                        throw new RuntimeException("No such " + namespace.name + " " + name.name);
+                    } else {
+                        return ImageIO.read(new File(Standalone.resourceDir, name.name + "." + namespace.name));
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException("No such " + namespace.name + " " + name.name, e);
+                }
             default:
                 return super.calcImport(namespace, name);
         }
