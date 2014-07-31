@@ -21,8 +21,23 @@ public class Panel extends Component {
 
     @ATHcessible
     public void add(Component component) {
+        component.refreshMaster = this;
         if (!components.contains(component)) {
             components.add(component);
+        }
+    }
+
+    @Override
+    protected void pressInternal(int x, int y, int btn) {
+        for (Component comp : components) {
+            comp.press(x, y, btn);
+        }
+    }
+
+    @Override
+    protected void releaseInternal(int x, int y, int btn) {
+        for (Component comp : components) {
+            comp.release(x, y, btn);
         }
     }
 

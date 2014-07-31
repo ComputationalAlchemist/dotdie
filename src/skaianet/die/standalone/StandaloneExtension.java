@@ -5,10 +5,7 @@ import skaianet.die.back.ATHcessible;
 import skaianet.die.back.EmptyExtension;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.front.ColoredIdentifier;
-import skaianet.die.gui.Icon;
-import skaianet.die.gui.Label;
-import skaianet.die.gui.Panel;
-import skaianet.die.gui.Window;
+import skaianet.die.gui.*;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -49,6 +46,10 @@ public class StandaloneExtension extends EmptyExtension {
                 return new Panel();
             case "icon":
                 return new Icon();
+            case "button":
+                return new Button(name.name);
+            case "signalqueue":
+                return new SignalQueue();
             case "dream":
                 final int length = name.name.length();
                 return new ATHAlive() {

@@ -6,24 +6,13 @@ import skaianet.die.front.Color;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
-import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.Hashtable;
-import java.util.Map;
 
 public abstract class Component {
 
-    private static final Font defaultFont;
-
-    static {
-        Map<TextAttribute, Object> map =
-                new Hashtable<TextAttribute, Object>();
-        map.put(TextAttribute.KERNING,
-                TextAttribute.KERNING_ON);
-        defaultFont = new Font("Courier New", Font.BOLD, 14).deriveFont(map);
-    }
+    private static final Font defaultFont = new Font("Courier New", Font.BOLD, 14);
 
     @ATHcessible
     public int x = 0;
@@ -33,8 +22,31 @@ public abstract class Component {
     public Color color = new Color(0, 0, 0);
     @ATHcessible
     public double scale = 1;
+    @ATHcessible
+    public SignalQueue queue;
+    Component refreshMaster;
     private BufferedImage bimg;
     private Graphics2D virtG;
+
+    public void press(int x, int y, int btn) {
+        this.pressInternal(x - this.x, y - this.y, btn);
+    }
+
+    protected void pressInternal(int x, int y, int btn) {
+    }
+
+    public void release(int x, int y, int btn) {
+        this.releaseInternal(x - this.x, y - this.y, btn);
+    }
+
+    protected void releaseInternal(int x, int y, int btn) {
+    }
+
+    public void refresh() {
+        if (refreshMaster != null) {
+            refreshMaster.refresh();
+        }
+    }
 
     public void render(Graphics2D g, int width, int height) {
         if (scale == 1) {

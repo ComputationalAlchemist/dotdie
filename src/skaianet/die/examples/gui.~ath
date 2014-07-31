@@ -3,6 +3,7 @@ import uncolor bgcolor;
 import uncolor bdcolor;
 import uncolor fgcolor;
 import uncolor iscolor;
+import uncolor btcolor;
 
 bgcolor.red = 255;
 bgcolor.green = 181;
@@ -20,7 +21,12 @@ iscolor.red = 0;
 iscolor.green = 0;
 iscolor.blue = 0;
 
+btcolor.red = 196;
+btcolor.green = 138;
+btcolor.blue = 0;
+
 import window TestWindow;
+import signalqueue queue;
 
 TestWindow.width = 232;
 TestWindow.height = 346;
@@ -84,11 +90,41 @@ chumpanel.border = bdcolor.get();
 chumpanel.borderWidth = 2;
 TestWindow.add(chumpanel);
 
+import button pester;
+
+pester.x = 77;
+pester.y = 189;
+pester.width = 71;
+pester.shiftX = 1;
+pester.background = bdcolor.get();
+pester.color = iscolor.get();
+pester.border = btcolor.get();
+pester.backgroundPressed = btcolor.get();
+pester.colorPressed = bdcolor.get();
+pester.borderPressed = iscolor.get();
+pester.borderWidth = 2;
+pester.text = `PESTER!';
+pester.queue = queue;
+pester.signal = `pester';
+
+TestWindow.add(pester);
+
 TestWindow.start();
 
 import dream HalfLength;
 
+import bit qsel;
+import stream stdout;
+
 ~ATH(TestWindow) {
+    ~ATH(queue) {
+        t = queue.pull();
+        qsel.bind(t == `pester');
+        ~ATH(qsel) {
+            stdout.println(`Pestering!');
+            qsel.bind(FALSE);
+        } EXECUTE(NULL);
+    } EXECUTE(NULL);
     HalfLength.sleep();
 } EXECUTE(NULL);
 
