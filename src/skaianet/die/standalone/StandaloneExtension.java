@@ -1,7 +1,5 @@
 package skaianet.die.standalone;
 
-import skaianet.die.back.ATHAlive;
-import skaianet.die.back.ATHcessible;
 import skaianet.die.back.EmptyExtension;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.front.ColoredIdentifier;
@@ -11,7 +9,6 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class StandaloneExtension extends EmptyExtension {
     @Override
@@ -52,29 +49,7 @@ public class StandaloneExtension extends EmptyExtension {
                 return new SignalQueue();
             case "dream":
                 final int length = name.name.length();
-                return new ATHAlive() {
-                    private final AtomicInteger ctr = new AtomicInteger();
-
-                    @ATHcessible
-                    public void sleep() throws InterruptedException {
-                        ctr.incrementAndGet();
-                        try {
-                            Thread.sleep(length);
-                        } finally {
-                            ctr.decrementAndGet();
-                        }
-                    }
-
-                    @Override
-                    public boolean isAlive() {
-                        return ctr.get() > 0;
-                    }
-
-                    @Override
-                    public double getEnergy() {
-                        return 0;
-                    }
-                };
+                return new Dream(length);
             case "color":
                 return namespace.color;
             case "uncolor":
@@ -135,4 +110,5 @@ public class StandaloneExtension extends EmptyExtension {
         }
         return super.arrayRef(array, index);
     }
+
 }
