@@ -202,13 +202,13 @@ public class Compiler {
                     output.add(new MoveInstruction(executionThread, scope.get((ColoredIdentifier) expression.getAssoc()), varOut));
                     return;
                 case CONST_INTEGER:
-                    output.add(new ConstantInstruction(executionThread, varOut, (Integer) expression.getAssoc()));
+                    output.add(new ConstantInstruction(executionThread, varOut, expression.getAssoc()));
                     return;
                 case CONST_DOUBLE:
-                    output.add(new ConstantInstruction(executionThread, varOut, (Double) expression.getAssoc()));
+                    output.add(new ConstantInstruction(executionThread, varOut, expression.getAssoc()));
                     return;
                 case CONST_STRING:
-                    output.add(new ConstantInstruction(executionThread, varOut, (String) expression.getAssoc()));
+                    output.add(new ConstantInstruction(executionThread, varOut, expression.getAssoc()));
                     return;
                 case INVOKE:
                     --nextFreeVar;
@@ -275,7 +275,7 @@ public class Compiler {
                     output.add(new MathInstruction(executionThread, varOut, -1, expression.type.getMathOp()));
                     return;
                 case NULL:
-                    output.add(new ConstantInstruction(executionThread, varOut, ConstantInstruction.Type.NULL, null));
+                    output.add(new ConstantInstruction(executionThread, varOut, null));
                     return;
                 case TRUE:
                     output.add(new ConstantInstruction(executionThread, varOut, true));

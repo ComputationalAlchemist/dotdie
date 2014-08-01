@@ -140,17 +140,17 @@ src\skaianet\die\tests\ack.~ath:1
 	Procedure[3/15]: 63
 	src\skaianet\die\tests\ack.~ath:2
 	0		@000000@	MOVE 3 -> 4
-	1		@000000@	CONST #1 -> 5
+	1		@000000@	CONST class java.lang.Integer:1 -> 5
 	2		@000000@	MATH 5 ADD -> 4
 	3		@000000@	IMPORT @000000@bit/@000000@iloop -> 5
 	src\skaianet\die\tests\ack.~ath:4
 	4		@000000@	MOVE 5 -> 6
 	5		@000000@	FIELD 6.@000000@bind
 	6		@000000@	MOVE 2 -> 7
-	7		@000000@	CONST #0 -> 8
+	7		@000000@	CONST class java.lang.Integer:0 -> 8
 	8		@000000@	MATH 8 CMPGT -> 7
 	9		@000000@	MOVE 3 -> 8
-	10		@000000@	CONST #0 -> 9
+	10		@000000@	CONST class java.lang.Integer:0 -> 9
 	11		@000000@	MATH 9 CMPEQ -> 8
 	12		@000000@	MATH 8 LAND -> 7
 	13		@000000@	INVOKE 6(7) -> 6
@@ -161,15 +161,15 @@ src\skaianet\die\tests\ack.~ath:1
 	16		@000000@	MOVE 1 -> 7
 	17		@000000@	MOVE 1 -> 8
 	18		@000000@	MOVE 2 -> 9
-	19		@000000@	CONST #1 -> 10
+	19		@000000@	CONST class java.lang.Integer:1 -> 10
 	20		@000000@	MATH 10 SUBTRACT -> 9
-	21		@000000@	CONST #1 -> 10
+	21		@000000@	CONST class java.lang.Integer:1 -> 10
 	22		@000000@	INVOKE 7(8, 9, 10) -> 7
 	23		@000000@	MOVE 7 -> 4
 	src\skaianet\die\tests\ack.~ath:7
 	24		@000000@	MOVE 5 -> 7
 	25		@000000@	FIELD 7.@000000@bind
-	26		@000000@	CONST false -> 8
+	26		@000000@	CONST class java.lang.Boolean:false -> 8
 	27		@000000@	INVOKE 7(8) -> 7
 	28		@000000@	EXIT 6 -> 16
 	src\skaianet\die\tests\ack.~ath:8
@@ -178,10 +178,10 @@ src\skaianet\die\tests\ack.~ath:1
 	30		@000000@	MOVE 5 -> 6
 	31		@000000@	FIELD 6.@000000@bind
 	32		@000000@	MOVE 2 -> 7
-	33		@000000@	CONST #0 -> 8
+	33		@000000@	CONST class java.lang.Integer:0 -> 8
 	34		@000000@	MATH 8 CMPGT -> 7
 	35		@000000@	MOVE 3 -> 8
-	36		@000000@	CONST #0 -> 9
+	36		@000000@	CONST class java.lang.Integer:0 -> 9
 	37		@000000@	MATH 9 CMPGT -> 8
 	38		@000000@	MATH 8 LAND -> 7
 	39		@000000@	INVOKE 6(7) -> 6
@@ -192,13 +192,13 @@ src\skaianet\die\tests\ack.~ath:1
 	42		@000000@	MOVE 1 -> 7
 	43		@000000@	MOVE 1 -> 8
 	44		@000000@	MOVE 2 -> 9
-	45		@000000@	CONST #1 -> 10
+	45		@000000@	CONST class java.lang.Integer:1 -> 10
 	46		@000000@	MATH 10 SUBTRACT -> 9
 	47		@000000@	MOVE 1 -> 10
 	48		@000000@	MOVE 1 -> 11
 	49		@000000@	MOVE 2 -> 12
 	50		@000000@	MOVE 3 -> 13
-	51		@000000@	CONST #1 -> 14
+	51		@000000@	CONST class java.lang.Integer:1 -> 14
 	52		@000000@	MATH 14 SUBTRACT -> 13
 	53		@000000@	INVOKE 10(11, 12, 13) -> 10
 	54		@000000@	INVOKE 7(8, 9, 10) -> 7
@@ -206,7 +206,7 @@ src\skaianet\die\tests\ack.~ath:1
 	src\skaianet\die\tests\ack.~ath:12
 	56		@000000@	MOVE 5 -> 7
 	57		@000000@	FIELD 7.@000000@bind
-	58		@000000@	CONST false -> 8
+	58		@000000@	CONST class java.lang.Boolean:false -> 8
 	59		@000000@	INVOKE 7(8) -> 7
 	60		@000000@	EXIT 6 -> 42
 	src\skaianet\die\tests\ack.~ath:13
@@ -219,15 +219,15 @@ src\skaianet\die\tests\ack.~ath:15
 src\skaianet\die\tests\ack.~ath:17
 2	@000000@	MOVE 2 -> 3
 3	@000000@	FIELD 3.@000000@println
-4	@000000@	CONST `Ackermann: ' -> 4
+4	@000000@	CONST class java.lang.String:Ackermann:  -> 4
 5	@000000@	INVOKE 3(4) -> 3
 src\skaianet\die\tests\ack.~ath:18
 6	@000000@	MOVE 2 -> 3
 7	@000000@	FIELD 3.@000000@println
 8	@000000@	MOVE 1 -> 4
 9	@000000@	MOVE 1 -> 5
-10	@000000@	CONST #3 -> 6
-11	@000000@	CONST #5 -> 7
+10	@000000@	CONST class java.lang.Integer:3 -> 6
+11	@000000@	CONST class java.lang.Integer:5 -> 7
 12	@000000@	INVOKE 4(5, 6, 7) -> 4
 13	@000000@	INVOKE 3(4) -> 3
 src\skaianet\die\tests\ack.~ath:20
