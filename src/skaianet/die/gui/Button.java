@@ -30,8 +30,6 @@ public class Button extends Component {
     public int shiftY = 0;
     @ATHcessible
     public Object signal;
-    @ATHcessible
-    public Object signalPress;
     private boolean isPressed;
 
     public Button(String name) {
@@ -41,9 +39,6 @@ public class Button extends Component {
     @Override
     protected void pressInternal(int x, int y, int btn) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
-            if (signalPress != null) {
-                queue.post(signalPress);
-            }
             isPressed = true;
             refresh();
         }
