@@ -2,7 +2,7 @@ The SkaiaNet DotDie Engine is a safe implementation of ~ATH in Java, available t
 
 The well-known ~ATH reality-warping functionality is currently not available - contact a SkaiaNet representative for information and quotes on the plugins that provide these features.
 
-The name of the engine is based off of the `THIS.DIE();' command present in many ~ATH scripts.
+The name of the engine is based off of the `THIS.DIE();' command required to be present in ~ATH scripts.
 
 This project is written using IntelliJ IDEA, so you'll probably want to download the free version to work with this project. Nothing should require this but it's the easiest way to start using the code.
 
