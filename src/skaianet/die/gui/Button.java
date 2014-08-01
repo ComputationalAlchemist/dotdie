@@ -29,7 +29,11 @@ public class Button extends Component {
     @ATHcessible
     public int shiftY = 0;
     @ATHcessible
-    public Object signal;
+    public Object signal; // Clicked as opposed to pressed or released.
+    @ATHcessible
+    public Object signalPress;
+    @ATHcessible
+    public Object signalRelease;
     private boolean isPressed;
 
     public Button(String name) {
@@ -39,6 +43,9 @@ public class Button extends Component {
     @Override
     protected void pressInternal(int x, int y, int btn) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
+            if (queue != null) {
+                queue.post(signalPress);
+            }
             isPressed = true;
             refresh();
         }
@@ -46,11 +53,16 @@ public class Button extends Component {
 
     @Override
     protected void releaseInternal(int x, int y, int btn) {
-        if (x >= 0 && x < width && y >= 0 && y < height && isPressed && queue != null) {
-            queue.post(signal);
+        if (isPressed) {
+            if (queue != null) {
+                queue.post(signalRelease);
+                if (x >= 0 && x < width && y >= 0 && y < height) {
+                    queue.post(signal);
+                }
+            }
+            isPressed = false;
+            refresh();
         }
-        isPressed = false;
-        refresh();
     }
 
     @Override
