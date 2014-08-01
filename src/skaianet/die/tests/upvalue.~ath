@@ -1,0 +1,21 @@
+U~F square(x) {
+    return x * x;
+}
+
+U~F sumsquares(a, b) {
+    return square(a) + square(b);
+}
+
+const = 2;
+
+U~F sumsquares2(a, b) {
+    return square(a) + square(b) + const;
+}
+
+import stream stdout;
+
+stdout.println(sumsquares(17, 28));
+
+stdout.println(sumsquares2(80, 5));
+
+THIS.DIE();

@@ -1,0 +1,157 @@
+=== Source Code ===
+U~F square(x) {
+    return x * x;
+}
+
+U~F sumsquares(a, b) {
+    return square(a) + square(b);
+}
+
+const = 2;
+
+U~F sumsquares2(a, b) {
+    return square(a) + square(b) + const;
+}
+
+import stream stdout;
+
+stdout.println(sumsquares(17, 28));
+
+stdout.println(sumsquares2(80, 5));
+
+THIS.DIE();
+
+=== Abstract Syntax Tree ===
+COMPOUND
+	UTILDEF
+		VARIABLE: @000000@square
+		ARGLIST
+			VARIABLE: @000000@x
+		COMPOUND_RETURN
+			RETURN
+				MULTIPLY
+					VARIABLE: @000000@x
+					VARIABLE: @000000@x
+	UTILDEF
+		VARIABLE: @000000@sumsquares
+		ARGLIST
+			VARIABLE: @000000@a
+			VARIABLE: @000000@b
+		COMPOUND_RETURN
+			RETURN
+				ADD
+					INVOKE
+						VARIABLE: @000000@square
+						VARIABLE: @000000@a
+					INVOKE
+						VARIABLE: @000000@square
+						VARIABLE: @000000@b
+	ASSIGN
+		VARIABLE: @000000@const
+		CONST_INTEGER: 2
+	UTILDEF
+		VARIABLE: @000000@sumsquares2
+		ARGLIST
+			VARIABLE: @000000@a
+			VARIABLE: @000000@b
+		COMPOUND_RETURN
+			RETURN
+				ADD
+					ADD
+						INVOKE
+							VARIABLE: @000000@square
+							VARIABLE: @000000@a
+						INVOKE
+							VARIABLE: @000000@square
+							VARIABLE: @000000@b
+					VARIABLE: @000000@const
+	IMPORT
+		VARIABLE: @000000@stream
+		VARIABLE: @000000@stdout
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				VARIABLE: @000000@stdout
+				VARIABLE: @000000@println
+			INVOKE
+				VARIABLE: @000000@sumsquares
+				CONST_INTEGER: 17
+				CONST_INTEGER: 28
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				VARIABLE: @000000@stdout
+				VARIABLE: @000000@println
+			INVOKE
+				VARIABLE: @000000@sumsquares2
+				CONST_INTEGER: 80
+				CONST_INTEGER: 5
+	EXPRESSION
+		INVOKE
+			FIELDREF
+				THIS: @000000@
+				VARIABLE: @000000@DIE
+=== Compiled Bytecode ===
+Procedure[0/10]: 22
+src\skaianet\die\tests\upvalue.~ath:1
+0	@000000@	CONST PROCEDURE -> 1
+	Procedure[1/4]: 3
+	src\skaianet\die\tests\upvalue.~ath:2
+	0		@000000@	MOVE 1 -> 2
+	1		@000000@	MOVE 1 -> 3
+	2		@000000@	MATH 3 MULTIPLY -> 2
+	Return: 2
+src\skaianet\die\tests\upvalue.~ath:3
+1	@000000@	CLOSURE PROCEDURE -> 2 [1]
+	Procedure[2/6]: 7
+	src\skaianet\die\tests\upvalue.~ath:6
+	0		@000000@	UPVALUE 0 -> 3
+	1		@000000@	MOVE 1 -> 4
+	2		@000000@	INVOKE 3(4) -> 3
+	3		@000000@	UPVALUE 0 -> 4
+	4		@000000@	MOVE 2 -> 5
+	5		@000000@	INVOKE 4(5) -> 4
+	6		@000000@	MATH 4 ADD -> 3
+	Return: 3
+src\skaianet\die\tests\upvalue.~ath:9
+2	@000000@	CONST class java.lang.Integer:2 -> 3
+3	@000000@	CLOSURE PROCEDURE -> 4 [1, 3]
+	Procedure[2/6]: 9
+	src\skaianet\die\tests\upvalue.~ath:12
+	0		@000000@	UPVALUE 0 -> 3
+	1		@000000@	MOVE 1 -> 4
+	2		@000000@	INVOKE 3(4) -> 3
+	3		@000000@	UPVALUE 0 -> 4
+	4		@000000@	MOVE 2 -> 5
+	5		@000000@	INVOKE 4(5) -> 4
+	6		@000000@	MATH 4 ADD -> 3
+	7		@000000@	UPVALUE 1 -> 4
+	8		@000000@	MATH 4 ADD -> 3
+	Return: 3
+src\skaianet\die\tests\upvalue.~ath:13
+4	@000000@	IMPORT @000000@stream/@000000@stdout -> 5
+src\skaianet\die\tests\upvalue.~ath:17
+5	@000000@	MOVE 5 -> 6
+6	@000000@	FIELD 6.@000000@println
+7	@000000@	MOVE 2 -> 7
+8	@000000@	CONST class java.lang.Integer:17 -> 8
+9	@000000@	CONST class java.lang.Integer:28 -> 9
+10	@000000@	INVOKE 7(8, 9) -> 7
+11	@000000@	INVOKE 6(7) -> 6
+src\skaianet\die\tests\upvalue.~ath:19
+12	@000000@	MOVE 5 -> 6
+13	@000000@	FIELD 6.@000000@println
+14	@000000@	MOVE 4 -> 7
+15	@000000@	CONST class java.lang.Integer:80 -> 8
+16	@000000@	CONST class java.lang.Integer:5 -> 9
+17	@000000@	INVOKE 7(8, 9) -> 7
+18	@000000@	INVOKE 6(7) -> 6
+src\skaianet\die\tests\upvalue.~ath:21
+19	@000000@	THIS @000000@ -> 6
+20	@000000@	FIELD 6.@000000@DIE
+21	@000000@	INVOKE 6() -> 6
+Return: null
+=== Execution ===
+1073
+6427
+=== Printout End ===

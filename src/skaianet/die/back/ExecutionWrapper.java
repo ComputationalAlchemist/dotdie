@@ -17,7 +17,7 @@ public class ExecutionWrapper {
     public ExecutionWrapper(ExecutionExtension extension, CompiledProcedure main, EnergyPacket packet) {
         ExecutionContext context = new ExecutionContext(extension, this, null);
         contexts.add(context);
-        context.init(main, packet);
+        context.init(main, null, packet, new Object[0]);
     }
 
     public void add(ExecutionContext context) {

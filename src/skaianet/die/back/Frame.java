@@ -12,15 +12,17 @@ class Frame {
     public final CompiledProcedure procedure;
     public final Color thread;
     final Object[] variables;
+    final Object[] upvalues;
     private int codePointer = 0;
 
-    Frame(Color thread, CompiledProcedure procedure, Object[] variables) {
+    Frame(Color thread, CompiledProcedure procedure, Object[] variables, Object[] upvalues) {
         if (thread == null) {
             throw new NullPointerException();
         }
         this.thread = thread;
         this.procedure = procedure;
         this.variables = variables;
+        this.upvalues = upvalues;
     }
 
     public Object getReturnValue() {
@@ -50,6 +52,10 @@ class Frame {
 
     public Object get(int i) {
         return variables[i];
+    }
+
+    public Object getUpvalue(int upvalue) {
+        return upvalues[upvalue];
     }
 
     public void put(int i, Object o) {

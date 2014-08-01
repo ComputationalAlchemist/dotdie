@@ -25,19 +25,19 @@ public class ExecutionContext {
         this.parent = parent;
     }
 
-    public void init(CompiledProcedure procedure, EnergyPacket packet, Object... arguments) {
+    public void init(CompiledProcedure procedure, Object[] upvalues, EnergyPacket packet, Object[] arguments) {
         if (arguments.length != procedure.argumentCount) {
             throw new IllegalArgumentException("Bad number of arguments!");
         }
         Object[] variables = new Object[procedure.maxVars];
         variables[0] = packet;
         System.arraycopy(arguments, 0, variables, 1, arguments.length);
-        stack.push(new Frame(Color.NO_THREAD, procedure, variables));
+        stack.push(new Frame(Color.NO_THREAD, procedure, variables, upvalues));
     }
 
     public void fromFork(ExecutionContext parent, Color thread) {
         Frame oldFrame = parent.stack.peek();
-        Frame newFrame = new Frame(thread, oldFrame.procedure, Arrays.copyOf(oldFrame.variables, oldFrame.variables.length));
+        Frame newFrame = new Frame(thread, oldFrame.procedure, Arrays.copyOf(oldFrame.variables, oldFrame.variables.length), oldFrame.upvalues);
         newFrame.jump(oldFrame.offset());
         stack.push(newFrame);
     }
@@ -82,6 +82,10 @@ public class ExecutionContext {
 
     public Object get(int i) {
         return stack.peek().get(i);
+    }
+
+    public Object getUpvalue(int upvalue) {
+        return stack.peek().getUpvalue(upvalue);
     }
 
     public void put(int i, Object o) {

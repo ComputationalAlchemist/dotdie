@@ -48,7 +48,7 @@ public class Standalone {
         out.println("=== Abstract Syntax Tree ===");
         stmt.print(out);
         Compiler compiler = new Compiler();
-        CompiledProcedure procedure = compiler.compile(stmt, new ColoredIdentifier[0]);
+        CompiledProcedure procedure = compiler.compile(stmt, new ColoredIdentifier[0], null);
         out.println("=== Compiled Bytecode ===");
         procedure.print(0, out);
         ExecutionWrapper wrapper = new ExecutionWrapper(new StandaloneExtension(), procedure, new EnergyPacket(0, null));

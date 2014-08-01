@@ -12,11 +12,13 @@ public class Compiler {
     private final ArrayList<Instruction> output = new ArrayList<>();
     private HashMap<Integer, String> debugging;
     private int nextFreeVar, maxVars;
+    private ClosureScope closure;
 
-    public CompiledProcedure compile(Statement procedure, ColoredIdentifier[] arguments) throws CompilingException {
+    public CompiledProcedure compile(Statement procedure, ColoredIdentifier[] arguments, ClosureScope closure) throws CompilingException {
         if (!output.isEmpty()) {
             throw new CompilingException("Malformed state of Compiler!");
         }
+        this.closure = closure;
         debugging = new HashMap<>();
         Scope outermost = new Scope(0);
         maxVars = nextFreeVar = 1; // First variable is always the root energy context.
@@ -100,9 +102,14 @@ public class Compiler {
                     for (int i = 0; i < arguments.length; i++) {
                         arguments[i] = (ColoredIdentifier) children.get(i).getAssoc();
                     }
-                    CompiledProcedure procedure = compiler.compile((Statement) statement.get(2), arguments);
+                    ClosureScope closure = new ClosureScope(scope);
+                    CompiledProcedure procedure = compiler.compile((Statement) statement.get(2), arguments, closure);
                     int out = nextVar();
-                    output.add(new ConstantInstruction(statement.getThread(executionThread), out, procedure));
+                    if (closure.hasAny()) {
+                        output.add(new ClosureInstruction(statement.getThread(executionThread), out, procedure, closure.getMapping()));
+                    } else {
+                        output.add(new ConstantInstruction(statement.getThread(executionThread), out, procedure));
+                    }
                     scope.defineVar(name, out);
                     break;
                 }
@@ -199,7 +206,12 @@ public class Compiler {
         try {
             switch (expression.type) {
                 case VARIABLE:
-                    output.add(new MoveInstruction(executionThread, scope.get((ColoredIdentifier) expression.getAssoc()), varOut));
+                    ColoredIdentifier identifier = (ColoredIdentifier) expression.getAssoc();
+                    if (!scope.isDefined(identifier) && closure != null && closure.provides(identifier)) {
+                        output.add(new ClosureFetchInstruction(executionThread, closure.get(identifier), varOut));
+                    } else {
+                        output.add(new MoveInstruction(executionThread, scope.get(identifier), varOut));
+                    }
                     return;
                 case CONST_INTEGER:
                     output.add(new ConstantInstruction(executionThread, varOut, expression.getAssoc()));

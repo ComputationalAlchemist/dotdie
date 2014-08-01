@@ -1,5 +1,6 @@
 package skaianet.die.instructions;
 
+import skaianet.die.back.Closure;
 import skaianet.die.back.EnergyPacket;
 import skaianet.die.back.ExecutionContext;
 import skaianet.die.front.Color;
@@ -40,7 +41,10 @@ public class InvokeInstruction extends Instruction {
         Object procedure = executionContext.get(target);
         if (procedure instanceof CompiledProcedure) {
             executionContext.repeatInstruction();
-            executionContext.init((CompiledProcedure) procedure, (EnergyPacket) executionContext.get(energyRef), arguments);
+            executionContext.init((CompiledProcedure) procedure, null, (EnergyPacket) executionContext.get(energyRef), arguments);
+        } else if (procedure instanceof Closure) {
+            executionContext.repeatInstruction();
+            executionContext.init(((Closure) procedure).procedure, ((Closure) procedure).upvalues, (EnergyPacket) executionContext.get(energyRef), arguments);
         } else {
             executionContext.put(target, executionContext.invoke(procedure, arguments));
         }
