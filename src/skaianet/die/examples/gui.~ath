@@ -106,24 +106,72 @@ pester.borderWidth = 2;
 pester.text = `PESTER!';
 pester.queue = queue;
 pester.signal = `pester';
-
 TestWindow.add(pester);
+
+import label chumhandle;
+
+chumhandle.x = 18;
+chumhandle.y = 215;
+chumhandle.color = iscolor.get();
+chumhandle.text = `MYCHUMHANDLE:';
+TestWindow.add(chumhandle);
+
+import panel chumhandlepanel;
+
+chumhandlepanel.x = 12;
+chumhandlepanel.y = 231;
+chumhandlepanel.width = 209;
+chumhandlepanel.height = 24;
+chumhandlepanel.color = iscolor.get();
+chumhandlepanel.border = bdcolor.get();
+chumhandlepanel.borderWidth = 2;
+TestWindow.add(chumhandlepanel);
+
+import label moodlabel;
+
+moodlabel.x = 18;
+moodlabel.y = 259;
+moodlabel.color = iscolor.get();
+moodlabel.text = `MOOD:';
+TestWindow.add(moodlabel);
+
+moodholder = [`CHUMMY']
+
+U~F makemood(x, shx, y, moodname, isred, TestWindow, bdcolor, iscolor, btcolor, queue) {
+    import button btn;
+    btn.x = x;
+    btn.y = y;
+    btn.shiftX = shx;
+    btn.width = 104;
+    btn.background = bdcolor.get();
+    btn.color = iscolor.get();
+    btn.border = btcolor.get();
+    btn.backgroundPressed = btcolor.get();
+    btn.colorPressed = bdcolor.get();
+    btn.borderPressed = iscolor.get();
+    btn.borderWidth = 2;
+    btn.text = moodname;
+    btn.queue = queue;
+    btn.signal = `pester';
+    TestWindow.add(pester);
+}
+makemood(12, 275, 0, `CHUMMY', FALSE, TestWindow, bdcolor, iscolor, btcolor, queue);
+makemood(12, 295, 0, `PALSY', FALSE, TestWindow, bdcolor, iscolor, btcolor, queue);
+makemood(12, 315, 0, `CHIPPER', FALSE, TestWindow, bdcolor, iscolor, btcolor, queue);
+makemood(117, 275, 0, `BULLY', FALSE, TestWindow, bdcolor, iscolor, btcolor, queue);
+makemood(117, 295, 0, `PEPPY', FALSE, TestWindow, bdcolor, iscolor, btcolor, queue);
+makemood(117, 315, 0, `RANCOROUS', TRUE, TestWindow, bdcolor, iscolor, btcolor, queue);
 
 TestWindow.start();
 
 import dream HalfLength;
 
-import bit qsel;
 import stream stdout;
+import
 
 ~ATH(TestWindow) {
     ~ATH(queue) {
-        t = queue.pull();
-        qsel.bind(t == `pester');
-        ~ATH(qsel) {
-            stdout.println(`Pestering!');
-            qsel.bind(FALSE);
-        } EXECUTE(NULL);
+        queue.pull()(stdout, moodholder);
     } EXECUTE(NULL);
     HalfLength.sleep();
 } EXECUTE(NULL);
