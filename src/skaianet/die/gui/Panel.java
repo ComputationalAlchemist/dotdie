@@ -42,15 +42,22 @@ public class Panel extends Component {
     }
 
     @Override
-    protected void renderInternal(Graphics2D g) {
-        g.setColor(border.toAWTColor());
-        g.fillRect(0, 0, width, height);
+    protected void renderDispatch(Graphics2D g, boolean isTopPass) {
+        if (!isTopPass) {
+            g.setColor(border.toAWTColor());
+            g.fillRect(0, 0, width, height);
 
-        g.setColor(background.toAWTColor());
-        g.fillRect(borderWidth, borderWidth, width - borderWidth * 2, height - borderWidth * 2);
+            g.setColor(background.toAWTColor());
+            g.fillRect(borderWidth, borderWidth, width - borderWidth * 2, height - borderWidth * 2);
+        }
 
         for (Component component : components) {
-            component.render(g, width, height);
+            component.render(g, width, height, isTopPass);
         }
+    }
+
+    @Override
+    protected void renderInternal(Graphics2D g) {
+        throw new RuntimeException("Should not happen.");
     }
 }

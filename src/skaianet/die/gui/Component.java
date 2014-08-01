@@ -48,12 +48,12 @@ public abstract class Component {
         }
     }
 
-    public void render(Graphics2D g, int width, int height) {
+    public void render(Graphics2D g, int width, int height, boolean isTopPass) {
         if (scale == 1) {
             g.setColor(color.toAWTColor());
             g.translate(x, y);
             g.setFont(defaultFont);
-            this.renderInternal(g);
+            this.renderDispatch(g, isTopPass);
             g.translate(-x, -y);
         } else {
             if (this.bimg == null || this.bimg.getWidth() / scale != width || this.bimg.getHeight() / scale != height) {
@@ -66,9 +66,15 @@ public abstract class Component {
             virtG.setFont(defaultFont);
             AffineTransform transform = virtG.getTransform();
             virtG.translate(x / scale, y / scale);
-            this.renderInternal(virtG);
+            this.renderDispatch(virtG, isTopPass);
             virtG.setTransform(transform);
             g.drawImage(bimg, AffineTransform.getScaleInstance(scale, scale), null);
+        }
+    }
+
+    protected void renderDispatch(Graphics2D g, boolean isTopPass) {
+        if (!isTopPass) {
+            this.renderInternal(g);
         }
     }
 

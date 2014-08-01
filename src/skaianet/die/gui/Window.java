@@ -32,7 +32,8 @@ public class Window extends Panel implements ATHAlive {
             public void paintComponent(Graphics go) {
                 super.paintComponent(go);
 
-                renderInternal((Graphics2D) go);
+                renderDispatch((Graphics2D) go, false);
+                renderDispatch((Graphics2D) go, true);
             }
         });
         frame.setResizable(false);
