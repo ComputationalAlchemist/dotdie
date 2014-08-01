@@ -24,19 +24,21 @@ public class ExecutionWrapper {
         queued.add(context);
     }
 
-    private boolean continueExecution(boolean step) {
+    private long continueExecution(boolean step) { // returns -1 for done, 0 for ready immediately, anything else as a deadline for being ready at
         parents.clear();
         contexts.addAll(queued);
         queued.clear();
+        long now = System.currentTimeMillis();
         for (ExecutionContext ec : contexts) {
             if (ec.parent != null) {
                 parents.add(ec.parent);
             }
+            ec.checkSuspensionTimeout(now);
         }
         Iterator<ExecutionContext> iterator = contexts.iterator();
         while (iterator.hasNext()) {
             ExecutionContext ec = iterator.next();
-            if (!parents.contains(ec)) {
+            if (!parents.contains(ec) && ec.isRunnable()) {
                 if (!(step ? ec.runStep() : ec.runSweep())) {
                     if (!ec.isTerminatedNormally()) {
                         throw new RuntimeException("Thread failed to terminate normally!");
@@ -47,14 +49,31 @@ public class ExecutionWrapper {
         }
         contexts.addAll(queued);
         queued.clear();
-        return !contexts.isEmpty();
+        long nextRunnable = Long.MAX_VALUE;
+        for (ExecutionContext ec : contexts) {
+            if (ec.isRunnable()) {
+                return 0;
+            } else {
+                long at = ec.getRunnableAt();
+                if (at < nextRunnable) {
+                    nextRunnable = at;
+                }
+            }
+        }
+        if (contexts.isEmpty()) {
+            return -1;
+        } else if (nextRunnable == Long.MAX_VALUE) {
+            throw new RuntimeException("Internal error: nothing is runnable but contexts exist?");
+        } else {
+            return nextRunnable;
+        }
     }
 
-    public boolean continueExecution() {
+    public long continueExecution() {
         return continueExecution(false);
     }
 
-    public boolean stepExecution() {
+    public long stepExecution() {
         return continueExecution(true);
     }
 

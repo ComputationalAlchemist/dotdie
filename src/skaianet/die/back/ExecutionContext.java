@@ -17,7 +17,8 @@ public class ExecutionContext {
     public final ExecutionContext parent;
     private final Stack<Frame> stack = new Stack<>();
     private Object outerReturnValue;
-    private boolean isTerminated = false;
+    private boolean isTerminated = false, isSuspended = false;
+    private long suspendTimeoutAt = -1;
 
     public ExecutionContext(ExecutionExtension extension, ExecutionWrapper executionWrapper, ExecutionContext parent) {
         this.extension = extension;
@@ -57,7 +58,7 @@ public class ExecutionContext {
     }
 
     private boolean runSingle() { // Return false after each backwards branch instruction or end of procedure.
-        if (stack.isEmpty()) {
+        if (stack.isEmpty() || isSuspended) {
             return false;
         }
         Frame f = stack.peek();
@@ -127,7 +128,7 @@ public class ExecutionContext {
         }
         for (Method javaMethod : object.getClass().getMethods()) {
             if (javaMethod.getName().equals(field.name) && (javaMethod.getAnnotation(ATHcessible.class) != null || extension.methodAccessible(object.getClass(), field, javaMethod, object))) {
-                return new JavaMethodContext(object, field, this);
+                return new JavaMethodContext(object, field);
             }
         }
         return extension.fieldRef(object, field, this);
@@ -150,7 +151,7 @@ public class ExecutionContext {
 
     public Object invoke(Object procedure, Object[] arguments) {
         if (procedure instanceof JavaMethodContext) {
-            return ((JavaMethodContext) procedure).invoke(arguments);
+            return ((JavaMethodContext) procedure).invoke(this, arguments);
         }
         return extension.invoke(procedure, this, arguments);
     }
@@ -232,5 +233,24 @@ public class ExecutionContext {
 
     public Color getRootColor() {
         return stack.isEmpty() ? null : stack.get(0).thread;
+    }
+
+    public void suspend(int length) {
+        this.isSuspended = true;
+        this.suspendTimeoutAt = System.currentTimeMillis() + length;
+    }
+
+    public boolean isRunnable() {
+        return !isSuspended;
+    }
+
+    public long getRunnableAt() {
+        return suspendTimeoutAt;
+    }
+
+    public void checkSuspensionTimeout(long now) {
+        if (isSuspended && now >= suspendTimeoutAt) {
+            isSuspended = false;
+        }
     }
 }

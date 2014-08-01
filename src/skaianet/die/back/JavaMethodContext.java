@@ -9,25 +9,27 @@ import java.util.Arrays;
 class JavaMethodContext {
     private final Object object;
     private final ColoredIdentifier method;
-    private final ExecutionContext context;
 
-    public JavaMethodContext(Object object, ColoredIdentifier method, ExecutionContext context) {
+    public JavaMethodContext(Object object, ColoredIdentifier method) {
         this.object = object;
         this.method = method;
-        this.context = context;
     }
 
     public String toString() {
         return "Method[" + object + "]." + method;
     }
 
-    public Object invoke(Object... arguments) {
+    public Object invoke(ExecutionContext context, Object... arguments) {
         outer:
         for (Method m : object.getClass().getMethods()) {
             if (!m.getName().equals(method.name) || (m.getAnnotation(ATHcessible.class) == null && !context.extension.methodAccessible(object.getClass(), method, m, object))) {
                 continue;
             }
             Class<?>[] parameterTypes = m.getParameterTypes();
+            if (parameterTypes.length == arguments.length + 1 && parameterTypes[parameterTypes.length - 1] == ExecutionContext.class) {
+                arguments = Arrays.copyOf(arguments, arguments.length + 1);
+                arguments[arguments.length - 1] = context;
+            }
             if (parameterTypes.length != arguments.length) {
                 continue;
             }

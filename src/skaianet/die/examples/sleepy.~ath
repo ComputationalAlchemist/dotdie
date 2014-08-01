@@ -1,0 +1,13 @@
+import stream stdout;
+
+stdout.println(`Time: 0');
+
+import dream d;
+
+d.length = 1000;
+
+d.sleep();
+
+stdout.println(`Time: 1000');
+
+THIS.DIE();

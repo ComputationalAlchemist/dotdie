@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Tests {
-    public static void main(String[] args) throws ParsingException, CompilingException, IOException {
+    public static void main(String[] args) throws ParsingException, CompilingException, IOException, InterruptedException {
         CompiledProcedure.consistentPrintouts = true;
         File[] files = new File("src/skaianet/die/tests").listFiles();
         if (files == null) {

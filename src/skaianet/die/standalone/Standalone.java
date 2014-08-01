@@ -22,8 +22,8 @@ public class Standalone {
     public static InputStream standaloneInput;
     public static File resourceDir = null;
 
-    public static void main(String[] args) throws IOException, ParsingException, CompilingException {
-        String filename = "src/skaianet/die/examples/gui.~ath";
+    public static void main(String[] args) {
+        String filename = "src/skaianet/die/examples/sleepy.~ath";
         resourceDir = new File(filename).getParentFile();
         try {
             try {
@@ -38,7 +38,7 @@ public class Standalone {
         }
     }
 
-    public static void execute(String filename, boolean useTiming, PrintStream out, InputStream in) throws IOException, ParsingException, CompilingException {
+    public static void execute(String filename, boolean useTiming, PrintStream out, InputStream in) throws IOException, ParsingException, CompilingException, InterruptedException {
         standaloneOutput = out;
         standaloneInput = in;
         Parser parser = new Parser(filename, Utilities.readEntireFile(filename));
@@ -54,7 +54,18 @@ public class Standalone {
         ExecutionWrapper wrapper = new ExecutionWrapper(new StandaloneExtension(), procedure, new EnergyPacket(0, null));
         out.println("=== Execution ===");
         long begin = useTiming ? System.currentTimeMillis() : 0;
-        while (wrapper.continueExecution()) {
+        while (true) {
+            long deadline = wrapper.continueExecution();
+            if (deadline < 0) { // done
+                break;
+            } else if (deadline == 0) { // ready immediately
+                // fall through
+            } else {
+                long delay = deadline - System.currentTimeMillis();
+                if (delay > 0) {
+                    Thread.sleep(delay);
+                }
+            }
             //wrapper.report(System.out);
         }
         if (useTiming) {
