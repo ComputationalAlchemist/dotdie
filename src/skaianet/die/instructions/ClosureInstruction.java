@@ -30,7 +30,12 @@ public class ClosureInstruction extends Instruction {
     public void execute(ExecutionContext executionContext) {
         Object[] upvalues = new Object[mapping.length];
         for (int i = 0; i < mapping.length; i++) {
-            upvalues[i] = executionContext.get(mapping[i]);
+            int vi = mapping[i];
+            if (vi < 0) {
+                upvalues[i] = executionContext.getUpvalue(-vi - 1);
+            } else {
+                upvalues[i] = executionContext.get(vi);
+            }
         }
         executionContext.put(target, new Closure(procedure, upvalues));
     }

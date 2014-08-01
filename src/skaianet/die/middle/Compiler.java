@@ -102,7 +102,7 @@ public class Compiler {
                     for (int i = 0; i < arguments.length; i++) {
                         arguments[i] = (ColoredIdentifier) children.get(i).getAssoc();
                     }
-                    ClosureScope closure = new ClosureScope(scope);
+                    ClosureScope closure = new ClosureScope(scope, this.closure);
                     CompiledProcedure procedure = compiler.compile((Statement) statement.get(2), arguments, closure);
                     int out = nextVar();
                     if (closure.hasAny()) {
