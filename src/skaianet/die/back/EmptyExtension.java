@@ -12,6 +12,11 @@ public class EmptyExtension implements ExecutionExtension {
     }
 
     @Override
+    public void arrayPut(Object array, Object index, Object value) {
+        throw new IllegalArgumentException("Cannot index " + array);
+    }
+
+    @Override
     public boolean fieldAccessible(Class<?> class_, ColoredIdentifier field, Field javaField, Object object, boolean isWrite) {
         return false;
     }

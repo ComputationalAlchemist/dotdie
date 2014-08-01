@@ -164,7 +164,7 @@ public class Parser {
     }
 
     private boolean isAssignableValue(Expression expression) {
-        return expression.type == VARIABLE || expression.type == FIELDREF;
+        return expression.type == VARIABLE || expression.type == FIELDREF || expression.type == ARRAYREF;
     }
 
     private Expression parseExpression(boolean nullable) throws ParsingException {

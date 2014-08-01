@@ -104,8 +104,6 @@ public class StandaloneExtension extends EmptyExtension {
         if (index instanceof Integer) {
             if (array instanceof String) {
                 return (int) ((String) array).charAt((Integer) index);
-            } else if (array != null && array.getClass().isArray()) {
-                return Array.get(array, (Integer) index);
             }
         }
         return super.arrayRef(array, index);

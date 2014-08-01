@@ -106,6 +106,14 @@ public class ExecutionContext {
         }
     }
 
+    public void arrayPut(Object array, Object index, Object value) {
+        if (array != null && array.getClass().isArray() && index instanceof Integer) {
+            Array.set(array, (Integer) index, value);
+        } else {
+            extension.arrayPut(array, index, value);
+        }
+    }
+
     public Object fieldRef(Object object, ColoredIdentifier field) {
         try {
             Field javaField = object.getClass().getField(field.name);

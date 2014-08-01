@@ -133,22 +133,36 @@ public class Compiler {
     }
 
     private void assignToExpression(Expression target, Scope scope, Color thread, int source) throws CompilingException {
-        if (target.type == ExpressionType.VARIABLE) {
-            if (scope.isDefined((ColoredIdentifier) target.getAssoc())) {
-                output.add(new MoveInstruction(thread, source, scope.get((ColoredIdentifier) target.getAssoc())));
+        switch (target.type) {
+            case VARIABLE:
+                if (scope.isDefined((ColoredIdentifier) target.getAssoc())) {
+                    output.add(new MoveInstruction(thread, source, scope.get((ColoredIdentifier) target.getAssoc())));
+                    freeVar(source);
+                } else {
+                    scope.defineVar((ColoredIdentifier) target.getAssoc(), source);
+                }
+                break;
+            case FIELDREF:
+                target.checkSize(2);
+                int objectId = nextFreeVar;
+                compileExpression((Expression) target.get(0), scope, thread);
+                output.add(new FieldStoreInstruction(thread, objectId, (ColoredIdentifier) target.get(1).getAssoc(), source));
+                freeVar(objectId);
                 freeVar(source);
-            } else {
-                scope.defineVar((ColoredIdentifier) target.getAssoc(), source);
-            }
-        } else if (target.type == ExpressionType.FIELDREF) {
-            target.checkSize(2);
-            int objectId = nextFreeVar;
-            compileExpression((Expression) target.get(0), scope, thread);
-            output.add(new FieldStoreInstruction(thread, objectId, (ColoredIdentifier) target.get(1).getAssoc(), source));
-            freeVar(objectId);
-            freeVar(source);
-        } else {
-            throw new CompilingException("Unassignable expression type: " + target.type);
+                break;
+            case ARRAYREF:
+                target.checkSize(2);
+                int arrayId = nextFreeVar;
+                compileExpression((Expression) target.get(0), scope, thread);
+                int index = nextFreeVar;
+                compileExpression((Expression) target.get(1), scope, thread);
+                output.add(new ArrayStoreInstruction(thread, arrayId, index, source));
+                freeVar(index);
+                freeVar(arrayId);
+                freeVar(source);
+                break;
+            default:
+                throw new CompilingException("Unassignable expression type: " + target.type);
         }
     }
 
