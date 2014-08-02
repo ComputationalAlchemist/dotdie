@@ -1,10 +1,12 @@
 
-import signalqueue queue;
-import object shared;
-import entropy ent;
-
-shared.mood = `CHUMMY';
-shared.handle = `ANONYMOUS' .. ent.next();
+import png pesterheads;
+import png chummy;
+import png palsy;
+import png chipper;
+import png bully;
+import png peppy;
+import png rancorous;
+import png checkmark;
 
 U~F color(r, g, b) {
     import uncolor color;
@@ -33,6 +35,31 @@ btcolor = color(196, 138, 0);
 rncolor = color(246, 1, 0);
 rpcolor = color(186, 0, 0);
 
+import signalqueue queue;
+import object shared;
+import entropy ent;
+
+shared.mood = `CHUMMY';
+shared.handle = `anonymousChum' .. ent.next(1000);
+U~F nullprocedure() {}
+shared.onupdate = nullprocedure;
+U~F addupdate(proc) {
+    oldproc = shared.onupdate;
+    U~F virtproc() {
+        proc();
+        oldproc();
+    }
+    shared.onupdate = virtproc;
+}
+
+import dictionary moodmap;
+moodmap[`CHUMMY'] = chummy;
+moodmap[`PALSY'] = palsy;
+moodmap[`CHIPPER'] = chipper;
+moodmap[`BULLY'] = bully;
+moodmap[`PEPPY'] = peppy;
+moodmap[`RANCOROUS'] = rancorous;
+
 import window TestWindow;
 
 TestWindow.width = 232;
@@ -41,6 +68,7 @@ TestWindow.background = bgcolor;
 TestWindow.border = bdcolor;
 TestWindow.borderWidth = 2;
 // TestWindow.decorated = false;
+addupdate(TestWindow.refresh);
 
 import label title;
 
@@ -63,7 +91,6 @@ titlepanel.borderWidth = 2;
 TestWindow.add(titlepanel);
 
 import icon heads;
-import png pesterheads;
 
 heads.x = 4;
 heads.y = 6;
@@ -138,6 +165,19 @@ chumhandlepanel.border = bdcolor;
 chumhandlepanel.borderWidth = 2;
 TestWindow.add(chumhandlepanel);
 
+import label chumhandlebody;
+
+chumhandlebody.x = 26;
+chumhandlebody.y = 4;
+chumhandlebody.color = fgcolor;
+chumhandlebody.boldFont = FALSE;
+U~F updatetext() {
+    chumhandlebody.text = shared.handle;
+}
+addupdate(updatetext);
+
+chumhandlepanel.add(chumhandlebody);
+
 import label moodlabel;
 
 moodlabel.x = 18;
@@ -146,14 +186,8 @@ moodlabel.color = iscolor;
 moodlabel.text = `MOOD:';
 TestWindow.add(moodlabel);
 
-import png chummy;
-import png rancorous;
-import png checkmark;
-
 import icon activemood;
 
-activemood.x = 12 + 71;
-activemood.y = 275 + 8;
 activemood.image = checkmark;
 activemood.flipRenderPasses = true;
 TestWindow.add(activemood);
@@ -175,11 +209,19 @@ U~F makemood(x, y, shx, chx, moodname, isred) {
     btn.text = moodname;
     btn.queue = queue;
     btn.moveToTopWhenPressed = true;
+    U~F moodbtnupdate() {
+        import bit subloop;
+        subloop.bind(shared.mood == moodname);
+        ~ATH(subloop) {
+            activemood.x = x + chx;
+            activemood.y = y + 8;
+            subloop.bind(FALSE);
+        } EXECUTE(NULL);
+    }
+    addupdate(moodbtnupdate);
     U~F moodbtnevent() {
-        activemood.x = x + chx;
-        activemood.y = y + 8;
-        activemood.refresh();
-        shared.mood = btn.text;
+        shared.mood = moodname;
+        shared.onupdate();
     }
     btn.signal = moodbtnevent;
     TestWindow.add(btn);
@@ -198,6 +240,8 @@ makemood(12, 315, -4, 78, `CHIPPER', FALSE);
 makemood(117, 275, -11, 64, `BULLY', FALSE);
 makemood(117, 295, -11, 63, `PEPPY', FALSE);
 makemood(117, 315, 2, 90, `RANCOROUS', TRUE);
+
+shared.onupdate();
 
 TestWindow.start();
 
