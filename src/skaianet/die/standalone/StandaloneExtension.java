@@ -58,6 +58,8 @@ public class StandaloneExtension extends EmptyExtension {
                 return new Uncolor(namespace.color);
             case "entropy":
                 return new Entropy();
+            case "dictionary":
+                return new Dictionary();
             case "png":
                 try {
                     if (Standalone.resourceDir == null) {
@@ -123,7 +125,18 @@ public class StandaloneExtension extends EmptyExtension {
                 return (int) ((String) array).charAt((Integer) index);
             }
         }
+        if (array instanceof Dictionary) {
+            return ((Dictionary) array).get(index);
+        }
         return super.arrayRef(array, index);
     }
 
+    @Override
+    public void arrayPut(Object array, Object index, Object value) {
+        if (array instanceof Dictionary) {
+            ((Dictionary) array).put(index, value);
+            return;
+        }
+        super.arrayPut(array, index, value);
+    }
 }
