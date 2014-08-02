@@ -175,8 +175,16 @@ U~F updatetext() {
     chumhandlebody.text = shared.handle;
 }
 addupdate(updatetext);
-
 chumhandlepanel.add(chumhandlebody);
+
+import icon chumhandlemood;
+chumhandlemood.x = 6;
+chumhandlemood.y = 5;
+chumhandlepanel.add(chumhandlemood);
+U~F updatemoodicon() {
+    chumhandlemood.image = moodmap[shared.mood];
+}
+addupdate(updatemoodicon);
 
 import label moodlabel;
 
