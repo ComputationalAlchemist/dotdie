@@ -50,10 +50,14 @@ public class StandaloneExtension extends EmptyExtension {
             case "dream":
                 final int length = name.name.length();
                 return new Dream(length);
+            case "object":
+                return new GenericObject();
             case "color":
                 return namespace.color;
             case "uncolor":
                 return new Uncolor(namespace.color);
+            case "entropy":
+                return new Entropy();
             case "png":
                 try {
                     if (Standalone.resourceDir == null) {
@@ -77,14 +81,27 @@ public class StandaloneExtension extends EmptyExtension {
             } else if (object != null && object.getClass().isArray()) {
                 return Array.getLength(object);
             }
-        } else if (object instanceof Object[]) {
+        }
+        if (object instanceof Object[]) {
             Object[] out = new Object[((Object[]) object).length];
             for (int i = 0; i < out.length; i++) {
                 out[i] = context.fieldRef(((Object[]) object)[i], field);
             }
             return out;
         }
+        if (object instanceof GenericObject) {
+            return ((GenericObject) object).fields.get(field);
+        }
         return super.fieldRef(object, field, context);
+    }
+
+    @Override
+    public void fieldPut(Object object, ColoredIdentifier field, ExecutionContext context, Object value) {
+        if (object instanceof GenericObject) {
+            ((GenericObject) object).fields.put(field, value);
+            return;
+        }
+        super.fieldPut(object, field, context, value);
     }
 
     @Override

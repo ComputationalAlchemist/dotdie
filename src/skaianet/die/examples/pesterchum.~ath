@@ -1,4 +1,11 @@
 
+import signalqueue queue;
+import object shared;
+import entropy ent;
+
+shared.mood = `CHUMMY';
+shared.handle = `ANONYMOUS' .. ent.next();
+
 U~F color(r, g, b) {
     import uncolor color;
     color.red = r;
@@ -27,7 +34,6 @@ rncolor = color(246, 1, 0);
 rpcolor = color(186, 0, 0);
 
 import window TestWindow;
-import signalqueue queue;
 
 TestWindow.width = 232;
 TestWindow.height = 346;
@@ -140,16 +146,6 @@ moodlabel.color = iscolor;
 moodlabel.text = `MOOD:';
 TestWindow.add(moodlabel);
 
-moodholder = [`CHUMMY'];
-
-U~F setmood(mood) {
-    moodholder[0] = mood;
-}
-
-U~F getmood() {
-    return moodholder[0];
-}
-
 import png chummy;
 import png rancorous;
 import png checkmark;
@@ -183,7 +179,7 @@ U~F makemood(x, y, shx, chx, moodname, isred) {
         activemood.x = x + chx;
         activemood.y = y + 8;
         activemood.refresh();
-        setmood(btn.text);
+        shared.mood = btn.text;
     }
     btn.signal = moodbtnevent;
     TestWindow.add(btn);
