@@ -24,6 +24,8 @@ public abstract class Component {
     public double scale = 1;
     @ATHcessible
     public SignalQueue queue;
+    @ATHcessible
+    public boolean flipRenderPasses;
     Component refreshMaster;
     private BufferedImage bimg;
     private Graphics2D virtG;
@@ -42,6 +44,7 @@ public abstract class Component {
     protected void releaseInternal(int x, int y, int btn) {
     }
 
+    @ATHcessible
     public void refresh() {
         if (refreshMaster != null) {
             refreshMaster.refresh();
@@ -49,6 +52,7 @@ public abstract class Component {
     }
 
     public void render(Graphics2D g, int width, int height, boolean isTopPass) {
+        isTopPass ^= flipRenderPasses;
         if (scale == 1) {
             g.setColor(color.toAWTColor());
             g.translate(x, y);

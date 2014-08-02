@@ -69,6 +69,8 @@ public class Window extends Panel implements ATHAlive {
     private class MouseProcessor implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
+            mousePressed(mouseEvent);
+            mouseReleased(mouseEvent);
         }
 
         @Override
