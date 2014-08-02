@@ -1,37 +1,38 @@
 
-import uncolor bgcolor;
-import uncolor bdcolor;
-import uncolor fgcolor;
-import uncolor iscolor;
-import uncolor btcolor;
+U~F color(r, g, b) {
+    import uncolor color;
+    color.red = r;
+    color.green = g;
+    color.blue = b;
+    return color.get();
+}
 
-bgcolor.red = 255;
-bgcolor.green = 181;
-bgcolor.blue = 0;
+U~F ternary(c, t, f) {
+    import bit subloop;
+    subloop.bind(c);
+    out = f;
+    ~ATH(subloop) {
+        out = t;
+        subloop.bind(FALSE);
+    } EXECUTE(NULL);
+    return out;
+}
 
-bdcolor.red = 255;
-bdcolor.green = 247;
-bdcolor.blue = 0;
-
-fgcolor.red = 255;
-fgcolor.green = 255;
-fgcolor.blue = 255;
-
-iscolor.red = 0;
-iscolor.green = 0;
-iscolor.blue = 0;
-
-btcolor.red = 196;
-btcolor.green = 138;
-btcolor.blue = 0;
+bgcolor = color(255, 181, 0);
+bdcolor = color(255, 247, 0);
+fgcolor = color(255, 255, 255);
+iscolor = color(0, 0, 0);
+btcolor = color(196, 138, 0);
+rncolor = color(246, 1, 0);
+rpcolor = color(186, 0, 0);
 
 import window TestWindow;
 import signalqueue queue;
 
 TestWindow.width = 232;
 TestWindow.height = 346;
-TestWindow.background = bgcolor.get();
-TestWindow.border = bdcolor.get();
+TestWindow.background = bgcolor;
+TestWindow.border = bdcolor;
 TestWindow.borderWidth = 2;
 // TestWindow.decorated = false;
 
@@ -40,7 +41,7 @@ import label title;
 title.x = 17;
 title.y = 1;
 title.scale = 2;
-title.color = fgcolor.get();
+title.color = fgcolor;
 title.text = `~ATHTERCHUM v1';
 TestWindow.add(title);
 
@@ -50,8 +51,8 @@ titlepanel.x = 12;
 titlepanel.y = 32;
 titlepanel.width = 209;
 titlepanel.height = 55;
-titlepanel.color = iscolor.get();
-titlepanel.border = bdcolor.get();
+titlepanel.color = iscolor;
+titlepanel.border = bdcolor;
 titlepanel.borderWidth = 2;
 TestWindow.add(titlepanel);
 
@@ -67,7 +68,7 @@ import label chatclient;
 
 chatclient.x = 101;
 chatclient.y = 21;
-chatclient.color = fgcolor.get();
+chatclient.color = fgcolor;
 chatclient.text = `CHAT CLIENT';
 titlepanel.add(chatclient);
 
@@ -75,7 +76,7 @@ import label chumroll;
 
 chumroll.x = 19;
 chumroll.y = 88;
-chumroll.color = iscolor.get();
+chumroll.color = iscolor;
 chumroll.text = `CHUMROLL:';
 TestWindow.add(chumroll);
 
@@ -85,8 +86,8 @@ chumpanel.x = 12;
 chumpanel.y = 104;
 chumpanel.width = 209;
 chumpanel.height = 82;
-chumpanel.color = iscolor.get();
-chumpanel.border = bdcolor.get();
+chumpanel.color = iscolor;
+chumpanel.border = bdcolor;
 chumpanel.borderWidth = 2;
 TestWindow.add(chumpanel);
 
@@ -96,12 +97,12 @@ pester.x = 77;
 pester.y = 189;
 pester.width = 71;
 pester.shiftX = 1;
-pester.background = bdcolor.get();
-pester.color = iscolor.get();
-pester.border = btcolor.get();
-pester.backgroundPressed = btcolor.get();
-pester.colorPressed = bdcolor.get();
-pester.borderPressed = iscolor.get();
+pester.background = bdcolor;
+pester.color = iscolor;
+pester.border = btcolor;
+pester.backgroundPressed = btcolor;
+pester.colorPressed = bdcolor;
+pester.borderPressed = iscolor;
 pester.borderWidth = 2;
 pester.text = `PESTER!';
 pester.queue = queue;
@@ -116,7 +117,7 @@ import label chumhandle;
 
 chumhandle.x = 18;
 chumhandle.y = 215;
-chumhandle.color = iscolor.get();
+chumhandle.color = iscolor;
 chumhandle.text = `MYCHUMHANDLE:';
 TestWindow.add(chumhandle);
 
@@ -126,8 +127,8 @@ chumhandlepanel.x = 12;
 chumhandlepanel.y = 231;
 chumhandlepanel.width = 209;
 chumhandlepanel.height = 24;
-chumhandlepanel.color = iscolor.get();
-chumhandlepanel.border = bdcolor.get();
+chumhandlepanel.color = iscolor;
+chumhandlepanel.border = bdcolor;
 chumhandlepanel.borderWidth = 2;
 TestWindow.add(chumhandlepanel);
 
@@ -135,7 +136,7 @@ import label moodlabel;
 
 moodlabel.x = 18;
 moodlabel.y = 259;
-moodlabel.color = iscolor.get();
+moodlabel.color = iscolor;
 moodlabel.text = `MOOD:';
 TestWindow.add(moodlabel);
 
@@ -149,34 +150,58 @@ U~F getmood() {
     return moodholder[0];
 }
 
-U~F makemood(x, y, shx, moodname, isred) {
+import png chummy;
+import png rancorous;
+import png checkmark;
+
+import icon activemood;
+
+activemood.x = 12 + 71;
+activemood.y = 275 + 8;
+activemood.image = checkmark;
+activemood.flipRenderPasses = true;
+TestWindow.add(activemood);
+
+U~F makemood(x, y, shx, chx, moodname, isred) {
     import button btn;
     btn.x = x;
     btn.y = y;
     btn.shiftX = shx;
     btn.width = 104;
-    btn.background = bdcolor.get();
-    btn.color = iscolor.get();
-    btn.border = btcolor.get();
-    btn.backgroundPressed = btcolor.get();
-    btn.colorPressed = bdcolor.get();
-    btn.borderPressed = iscolor.get();
+
+    btn.background = ternary(isred, rncolor, bdcolor);
+    btn.color = iscolor;
+    btn.border = btcolor;
+    btn.backgroundPressed = ternary(isred, rpcolor, btcolor);
+    btn.colorPressed = ternary(isred, rncolor, bdcolor);
+    btn.borderPressed = iscolor;
     btn.borderWidth = 2;
     btn.text = moodname;
     btn.queue = queue;
     btn.moveToTopWhenPressed = true;
     U~F moodbtnevent() {
+        activemood.x = x + chx;
+        activemood.y = y + 8;
+        activemood.refresh();
         setmood(btn.text);
     }
     btn.signal = moodbtnevent;
     TestWindow.add(btn);
+
+    import icon head;
+
+    head.x = x + 7;
+    head.y = y + 4;
+    head.image = ternary(isred, rancorous, chummy);
+    head.flipRenderPasses = true;
+    TestWindow.add(head);
 }
-makemood(12, 275, 0, `CHUMMY', FALSE);
-makemood(12, 295, 0, `PALSY', FALSE);
-makemood(12, 315, 0, `CHIPPER', FALSE);
-makemood(117, 275, 0, `BULLY', FALSE);
-makemood(117, 295, 0, `PEPPY', FALSE);
-makemood(117, 315, 0, `RANCOROUS', TRUE);
+makemood(12, 275, -7, 71, `CHUMMY', FALSE);
+makemood(12, 295, -10, 64, `PALSY', FALSE);
+makemood(12, 315, -4, 78, `CHIPPER', FALSE);
+makemood(117, 275, -11, 64, `BULLY', FALSE);
+makemood(117, 295, -11, 63, `PEPPY', FALSE);
+makemood(117, 315, 2, 90, `RANCOROUS', TRUE);
 
 TestWindow.start();
 
