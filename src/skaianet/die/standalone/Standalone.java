@@ -23,7 +23,7 @@ public class Standalone {
     public static File resourceDir = null;
 
     public static void main(String[] args) {
-        String filename = "src/skaianet/die/examples/gui.~ath";
+        String filename = "src/skaianet/die/examples/pesterchum.~ath";
         resourceDir = new File(filename).getParentFile();
         try {
             try {
