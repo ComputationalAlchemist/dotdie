@@ -9,7 +9,7 @@ public enum ExpressionType {
     ADD(Operation.ADD), SUBTRACT(Operation.SUBTRACT), MULTIPLY(Operation.MULTIPLY), DIVIDE(Operation.DIVIDE), REMAINDER(Operation.REMAINDER),
     BIAND(Operation.BIAND), BIXOR(Operation.BIXOR), BIOR(Operation.BIOR), RASHIFT(Operation.RASHIFT), LOR(Operation.LOR),
     RLSHIFT(Operation.RLSHIFT), LSHIFT(Operation.LSHIFT), LAND(Operation.LAND), CMPLT(Operation.CMPLT), CMPLE(Operation.CMPLE),
-    CMPNE(Operation.CMPNE), CMPEQ(Operation.CMPEQ), CMPGE(Operation.CMPGE), CMPGT(Operation.CMPGT), NOT(Operation.NOT), ARRAYCONST, CONST_DOUBLE;
+    CMPNE(Operation.CMPNE), CMPEQ(Operation.CMPEQ), CMPGE(Operation.CMPGE), CMPGT(Operation.CMPGT), NOT(Operation.NOT), ARRAYCONST, CONST_DOUBLE, CONCAT(Operation.CONCATENATE);
     private final Operation mathOp;
 
     ExpressionType() {

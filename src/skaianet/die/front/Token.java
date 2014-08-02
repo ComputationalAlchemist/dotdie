@@ -10,7 +10,9 @@ public enum Token {
     SUBTRACT(ExpressionType.SUBTRACT), ADD(ExpressionType.ADD),
     BIAND(ExpressionType.BIAND), BIXOR(ExpressionType.BIXOR), BIOR(ExpressionType.BIOR),
     LSHIFT(ExpressionType.LSHIFT), RLSHIFT(ExpressionType.RLSHIFT), RASHIFT(ExpressionType.RASHIFT),
-    LAND(ExpressionType.LAND), LOR(ExpressionType.LOR), NOT(ExpressionType.NOT),
+    LAND(ExpressionType.LAND), LOR(ExpressionType.LOR),
+    // Miscellaneous operators
+    NOT(ExpressionType.NOT), CONCAT(ExpressionType.CONCAT),
     // Comparison infix operators!
     CMPLT(ExpressionType.CMPLT), CMPGT(ExpressionType.CMPGT),
     CMPLE(ExpressionType.CMPLE), CMPGE(ExpressionType.CMPGE),

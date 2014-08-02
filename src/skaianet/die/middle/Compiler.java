@@ -278,6 +278,7 @@ public class Compiler {
                 case RASHIFT:
                 case RLSHIFT:
                 case LSHIFT:
+                case CONCAT:
                 case LOR:
                 case LAND:
                 case CMPLT:

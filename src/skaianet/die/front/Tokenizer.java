@@ -67,7 +67,7 @@ class Tokenizer {
             case ')':
                 return CLOSE_PAREN;
             case '.':
-                return DOT;
+                return accept('.') ? CONCAT : DOT;
             case '[':
                 return OPEN_SQUARE;
             case ']':

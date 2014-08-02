@@ -22,6 +22,7 @@ public class Parser {
             {Token.BIXOR},
             {Token.BIOR},
             {Token.LSHIFT, Token.RLSHIFT, Token.RASHIFT},
+            {Token.CONCAT},
             {Token.CMPLT, Token.CMPGT, Token.CMPLE, Token.CMPGE},
             {Token.CMPEQ, Token.CMPNE},
             {Token.LAND},

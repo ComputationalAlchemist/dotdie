@@ -16,6 +16,9 @@ public class MathInstruction extends Instruction {
         this.target = target;
         this.paramRef = paramRef;
         this.mathOp = mathOp;
+        if (mathOp == null) {
+            throw new NullPointerException();
+        }
     }
 
     @Override
@@ -37,7 +40,11 @@ public class MathInstruction extends Instruction {
     }
 
     public static enum Operation {
-        ADD {
+        CONCATENATE {
+            public Object applyObject(Object left, Object right) {
+                return left.toString() + right.toString();
+            }
+        }, ADD {
             @Override
             protected int applyInteger(int left, int right) {
                 return left + right;
