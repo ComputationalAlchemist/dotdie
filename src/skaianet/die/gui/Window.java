@@ -39,6 +39,7 @@ public class Window extends Panel implements ATHAlive {
         frame.setResizable(false);
     }
 
+    @ATHcessible
     public void refresh() {
         super.refresh();
         frame.repaint();

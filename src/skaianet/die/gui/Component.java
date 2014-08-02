@@ -12,7 +12,8 @@ import java.awt.image.BufferedImage;
 
 public abstract class Component {
 
-    private static final Font defaultFont = new Font("Courier New", Font.BOLD, 14);
+    private static final Font defaultFontBold = new Font("Courier New", Font.BOLD, 14);
+    private static final Font defaultFontUnbold = new Font("Courier New", Font.PLAIN, 14);
 
     @ATHcessible
     public int x = 0;
@@ -26,6 +27,8 @@ public abstract class Component {
     public SignalQueue queue;
     @ATHcessible
     public boolean flipRenderPasses;
+    @ATHcessible
+    public boolean boldFont = true;
     Component refreshMaster;
     private BufferedImage bimg;
     private Graphics2D virtG;
@@ -56,7 +59,7 @@ public abstract class Component {
         if (scale == 1) {
             g.setColor(color.toAWTColor());
             g.translate(x, y);
-            g.setFont(defaultFont);
+            g.setFont(boldFont ? defaultFontBold : defaultFontUnbold);
             this.renderDispatch(g, isTopPass);
             g.translate(-x, -y);
         } else {
@@ -67,7 +70,7 @@ public abstract class Component {
             virtG.setColor(new java.awt.Color(0, 0, 0, 0));
             virtG.fillRect(0, 0, width, height);
             virtG.setColor(color.toAWTColor());
-            virtG.setFont(defaultFont);
+            virtG.setFont(boldFont ? defaultFontBold : defaultFontUnbold);
             AffineTransform transform = virtG.getTransform();
             virtG.translate(x / scale, y / scale);
             this.renderDispatch(virtG, isTopPass);
