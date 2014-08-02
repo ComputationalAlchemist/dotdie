@@ -15,7 +15,7 @@ public class Parser {
     private static final int UNARY_INDEX = 1;
     private static final Token[][] operators = new Token[][]{
             {Token.OPEN_PAREN, Token.OPEN_SQUARE, Token.DOT},
-            {Token.NOT}, // This index must be in UNARY_INDEX above.
+            {Token.NOT, Token.ADD, Token.SUBTRACT}, // This index must be in UNARY_INDEX above.
             {Token.MULTIPLY, Token.DIVIDE, Token.REMAINDER},
             {Token.ADD, Token.SUBTRACT},
             {Token.BIAND},

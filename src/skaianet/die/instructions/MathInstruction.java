@@ -42,10 +42,26 @@ public class MathInstruction extends Instruction {
             protected int applyInteger(int left, int right) {
                 return left + right;
             }
+
+            public Object applyUnary(Object param, ExecutionContext context) {
+                if (param instanceof Integer) {
+                    return param;
+                } else {
+                    throw new IllegalArgumentException("Unsupported: unary + on " + param);
+                }
+            }
         }, SUBTRACT {
             @Override
             protected int applyInteger(int left, int right) {
                 return left - right;
+            }
+
+            public Object applyUnary(Object param, ExecutionContext context) {
+                if (param instanceof Integer) {
+                    return -(Integer) param;
+                } else {
+                    throw new IllegalArgumentException("Unsupported: unary + on " + param);
+                }
             }
         }, MULTIPLY {
             @Override

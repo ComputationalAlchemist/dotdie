@@ -286,14 +286,16 @@ public class Compiler {
                 case CMPEQ:
                 case CMPGE:
                 case CMPGT: // Binary operators
-                    expression.checkSize(2);
-                    --nextFreeVar;
-                    compileExpression((Expression) expression.get(0), scope, executionThread);
-                    int param = nextFreeVar;
-                    compileExpression((Expression) expression.get(1), scope, executionThread);
-                    --nextFreeVar;
-                    output.add(new MathInstruction(executionThread, varOut, param, expression.type.getMathOp()));
-                    return;
+                    if (expression.size() != 1 || (expression.type != ExpressionType.ADD && expression.type != ExpressionType.SUBTRACT)) { // Add and subtract can be unary
+                        expression.checkSize(2);
+                        --nextFreeVar;
+                        compileExpression((Expression) expression.get(0), scope, executionThread);
+                        int param = nextFreeVar;
+                        compileExpression((Expression) expression.get(1), scope, executionThread);
+                        --nextFreeVar;
+                        output.add(new MathInstruction(executionThread, varOut, param, expression.type.getMathOp()));
+                        return;
+                    }
                 case NOT: // Unary operators
                     expression.checkSize(1);
                     --nextFreeVar;
