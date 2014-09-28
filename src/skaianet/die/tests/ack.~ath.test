@@ -135,15 +135,15 @@ COMPOUND
 				VARIABLE: @000000@DIE
 === Compiled Bytecode ===
 Procedure[0/8]: 17
-src\skaianet\die\tests\ack.~ath:1
+src/skaianet/die/tests/ack.~ath:1
 0	@000000@	CONST PROCEDURE -> 1
 	Procedure[3/15]: 63
-	src\skaianet\die\tests\ack.~ath:2
+	src/skaianet/die/tests/ack.~ath:2
 	0		@000000@	MOVE 3 -> 4
 	1		@000000@	CONST class java.lang.Integer:1 -> 5
 	2		@000000@	MATH 5 ADD -> 4
 	3		@000000@	IMPORT @000000@bit/@000000@iloop -> 5
-	src\skaianet\die\tests\ack.~ath:4
+	src/skaianet/die/tests/ack.~ath:4
 	4		@000000@	MOVE 5 -> 6
 	5		@000000@	FIELD 6.@000000@bind
 	6		@000000@	MOVE 2 -> 7
@@ -154,10 +154,10 @@ src\skaianet\die\tests\ack.~ath:1
 	11		@000000@	MATH 9 CMPEQ -> 8
 	12		@000000@	MATH 8 LAND -> 7
 	13		@000000@	INVOKE 6(7) -> 6
-	src\skaianet\die\tests\ack.~ath:5
+	src/skaianet/die/tests/ack.~ath:5
 	14		@000000@	MOVE 5 -> 6
 	15		@000000@	ENTER 6 -> 30
-	src\skaianet\die\tests\ack.~ath:6
+	src/skaianet/die/tests/ack.~ath:6
 	16		@000000@	MOVE 1 -> 7
 	17		@000000@	MOVE 1 -> 8
 	18		@000000@	MOVE 2 -> 9
@@ -166,15 +166,15 @@ src\skaianet\die\tests\ack.~ath:1
 	21		@000000@	CONST class java.lang.Integer:1 -> 10
 	22		@000000@	INVOKE 7(8, 9, 10) -> 7
 	23		@000000@	MOVE 7 -> 4
-	src\skaianet\die\tests\ack.~ath:7
+	src/skaianet/die/tests/ack.~ath:7
 	24		@000000@	MOVE 5 -> 7
 	25		@000000@	FIELD 7.@000000@bind
 	26		@000000@	CONST class java.lang.Boolean:false -> 8
 	27		@000000@	INVOKE 7(8) -> 7
 	28		@000000@	EXIT 6 -> 16
-	src\skaianet\die\tests\ack.~ath:8
+	src/skaianet/die/tests/ack.~ath:8
 	29		@000000@	CONST NULL -> 7
-	src\skaianet\die\tests\ack.~ath:9
+	src/skaianet/die/tests/ack.~ath:9
 	30		@000000@	MOVE 5 -> 6
 	31		@000000@	FIELD 6.@000000@bind
 	32		@000000@	MOVE 2 -> 7
@@ -185,10 +185,10 @@ src\skaianet\die\tests\ack.~ath:1
 	37		@000000@	MATH 9 CMPGT -> 8
 	38		@000000@	MATH 8 LAND -> 7
 	39		@000000@	INVOKE 6(7) -> 6
-	src\skaianet\die\tests\ack.~ath:10
+	src/skaianet/die/tests/ack.~ath:10
 	40		@000000@	MOVE 5 -> 6
 	41		@000000@	ENTER 6 -> 62
-	src\skaianet\die\tests\ack.~ath:11
+	src/skaianet/die/tests/ack.~ath:11
 	42		@000000@	MOVE 1 -> 7
 	43		@000000@	MOVE 1 -> 8
 	44		@000000@	MOVE 2 -> 9
@@ -203,25 +203,25 @@ src\skaianet\die\tests\ack.~ath:1
 	53		@000000@	INVOKE 10(11, 12, 13) -> 10
 	54		@000000@	INVOKE 7(8, 9, 10) -> 7
 	55		@000000@	MOVE 7 -> 4
-	src\skaianet\die\tests\ack.~ath:12
+	src/skaianet/die/tests/ack.~ath:12
 	56		@000000@	MOVE 5 -> 7
 	57		@000000@	FIELD 7.@000000@bind
 	58		@000000@	CONST class java.lang.Boolean:false -> 8
 	59		@000000@	INVOKE 7(8) -> 7
 	60		@000000@	EXIT 6 -> 42
-	src\skaianet\die\tests\ack.~ath:13
+	src/skaianet/die/tests/ack.~ath:13
 	61		@000000@	CONST NULL -> 7
-	src\skaianet\die\tests\ack.~ath:14
+	src/skaianet/die/tests/ack.~ath:14
 	62		@000000@	MOVE 4 -> 6
 	Return: 6
-src\skaianet\die\tests\ack.~ath:15
+src/skaianet/die/tests/ack.~ath:15
 1	@000000@	IMPORT @000000@stream/@000000@stdout -> 2
-src\skaianet\die\tests\ack.~ath:17
+src/skaianet/die/tests/ack.~ath:17
 2	@000000@	MOVE 2 -> 3
 3	@000000@	FIELD 3.@000000@println
 4	@000000@	CONST class java.lang.String:Ackermann:  -> 4
 5	@000000@	INVOKE 3(4) -> 3
-src\skaianet\die\tests\ack.~ath:18
+src/skaianet/die/tests/ack.~ath:18
 6	@000000@	MOVE 2 -> 3
 7	@000000@	FIELD 3.@000000@println
 8	@000000@	MOVE 1 -> 4
@@ -230,7 +230,7 @@ src\skaianet\die\tests\ack.~ath:18
 11	@000000@	CONST class java.lang.Integer:5 -> 7
 12	@000000@	INVOKE 4(5, 6, 7) -> 4
 13	@000000@	INVOKE 3(4) -> 3
-src\skaianet\die\tests\ack.~ath:20
+src/skaianet/die/tests/ack.~ath:20
 14	@000000@	THIS @000000@ -> 3
 15	@000000@	FIELD 3.@000000@DIE
 16	@000000@	INVOKE 3() -> 3

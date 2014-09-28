@@ -13,7 +13,7 @@ class Tokenizer {
     private Color currentColor = Color.NO_THREAD;
 
     public Tokenizer(String filename, String code) {
-        this.filename = filename;
+        this.filename = filename.replace(System.getProperty("path.separator"), "/");
         this.code = code;
     }
 

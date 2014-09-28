@@ -65,32 +65,32 @@ COMPOUND
 				VARIABLE: @000000@DIE
 === Compiled Bytecode ===
 Procedure[0/7]: 23
-src\skaianet\die\tests\mobius.~ath:1
+src/skaianet/die/tests/mobius.~ath:1
 0	@000000@	BIFURCATE THREAD -> @FF0000@ @0000FF@
-src\skaianet\die\tests\mobius.~ath:16
+src/skaianet/die/tests/mobius.~ath:16
 1	@000000@	IMPORT @FF0000@universe/@FF0000@U1 -> 1
-src\skaianet\die\tests\mobius.~ath:17
+src/skaianet/die/tests/mobius.~ath:17
 2	@000000@	IMPORT @0000FF@universe/@0000FF@U2 -> 2
-src\skaianet\die\tests\mobius.~ath:20
+src/skaianet/die/tests/mobius.~ath:20
 3	@FF0000@	MOVE 1 -> 3
 4	@FF0000@	ENTER 3 -> 18
-src\skaianet\die\tests\mobius.~ath:22
+src/skaianet/die/tests/mobius.~ath:22
 5	@FF0000@	MOVE 2 -> 4
 6	@FF0000@	MATH UNARY NOT -> 4
 7	@FF0000@	ENTER 4 -> 13
 8	@FF0000@	EXIT 4 -> 8
-src\skaianet\die\tests\mobius.~ath:24
+src/skaianet/die/tests/mobius.~ath:24
 9	@FF0000@	THIS @0000FF@ -> 5
 10	@FF0000@	ENTER 5 -> 13
 11	@FF0000@	EXIT 5 -> 11
 12	@FF0000@	CONST NULL -> 6
 13	@FF0000@	EXIT 3 -> 5
-src\skaianet\die\tests\mobius.~ath:26
+src/skaianet/die/tests/mobius.~ath:26
 14	@FF0000@	THIS @FF0000@ -> 4
 15	@FF0000@	ENTER 4 -> 18
 16	@FF0000@	EXIT 4 -> 16
 17	@FF0000@	CONST NULL -> 5
-src\skaianet\die\tests\mobius.~ath:28
+src/skaianet/die/tests/mobius.~ath:28
 18	@000000@	THIS @FF0000@ -> 3
 19	@000000@	THIS @0000FF@ -> 4
 20	@000000@	ARRAY 3...4 -> 3
